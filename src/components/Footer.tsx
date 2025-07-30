@@ -1,4 +1,3 @@
-import React from 'react';
 import { Facebook, Twitter, Instagram, Linkedin, Youtube, Smartphone, Mail, Phone, MapPin } from 'lucide-react';
 
 const Footer = () => {
@@ -11,26 +10,39 @@ const Footer = () => {
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
           {/* Company Info */}
           <div>
-            <div className="text-2xl font-bold mb-4">
-              <span className="text-red-500">K</span>eplix
+            <div className="mb-4">
+              <img 
+                src={`${import.meta.env.BASE_URL}logo.png`}
+                alt="Keplix Logo" 
+                className="h-28 w-auto transition-all duration-300 hover:scale-105"
+                onError={(e) => {
+                  console.error('Footer logo failed to load:', e);
+                  // Fallback to text logo if image fails
+                  e.currentTarget.style.display = 'none';
+                  e.currentTarget.nextElementSibling?.classList.remove('hidden');
+                }}
+              />
+              <div className="text-2xl font-bold hidden">
+                <span className="text-red-500">K</span>eplix
+              </div>
             </div>
             <p className="text-gray-300 mb-6 leading-relaxed">
               Revolutionizing car care with technology and innovation.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="text-gray-400 hover:text-red-500 transition-colors">
+              <a href="https://facebook.com/keplix" className="text-gray-400 hover:text-red-500 transition-colors">
                 <Facebook size={20} />
               </a>
-              <a href="#" className="text-gray-400 hover:text-red-500 transition-colors">
+              <a href="https://twitter.com/keplix" className="text-gray-400 hover:text-red-500 transition-colors">
                 <Twitter size={20} />
               </a>
-              <a href="#" className="text-gray-400 hover:text-red-500 transition-colors">
+              <a href="https://instagram.com/keplix.co.in" className="text-gray-400 hover:text-red-500 transition-colors">
                 <Instagram size={20} />
               </a>
-              <a href="#" className="text-gray-400 hover:text-red-500 transition-colors">
+              <a href="https://linkedin.com/company/keplix" className="text-gray-400 hover:text-red-500 transition-colors">
                 <Linkedin size={20} />
               </a>
-              <a href="#" className="text-gray-400 hover:text-red-500 transition-colors">
+              <a href="https://youtube.com/keplix" className="text-gray-400 hover:text-red-500 transition-colors">
                 <Youtube size={20} />
               </a>
             </div>
@@ -101,15 +113,26 @@ const Footer = () => {
           <div className="grid md:grid-cols-3 gap-4">
             <div className="flex items-center gap-3">
               <Mail className="w-5 h-5 text-red-500" />
-              <span className="text-gray-300">support@keplix.com</span>
+              <a href="mailto:support@keplix.co.in" className="text-gray-300 hover:text-red-500 transition-colors">
+                support@keplix.co.in
+              </a>
             </div>
             <div className="flex items-center gap-3">
               <Phone className="w-5 h-5 text-red-500" />
-              <span className="text-gray-300">+91 98765 43210</span>
+              <a href="tel:+919818915720" className="text-gray-300 hover:text-red-500 transition-colors">
+                +91 98189 15720
+              </a>
             </div>
             <div className="flex items-center gap-3">
               <MapPin className="w-5 h-5 text-red-500" />
-              <span className="text-gray-300">Mumbai, India</span>
+              <a 
+                href="https://maps.google.com?q=9/2659,+Kailash+Nagar,+Gandhi+Nagar,+Delhi,+110031" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="text-gray-300 hover:text-red-500 transition-colors"
+              >
+                9/2659, Kailash Nagar, Gandhi Nagar, Delhi, 110031
+              </a>
             </div>
           </div>
         </div>

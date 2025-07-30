@@ -24,14 +24,14 @@ const ContactPage = () => {
       icon: <Mail className="w-8 h-8" />,
       title: "Email Us",
       description: "Send us an email and we'll respond within 24 hours",
-      contact: "support@keplix.com",
+      contact: "support@keplix.co.in",
       action: "Send Email"
     },
     {
       icon: <Phone className="w-8 h-8" />,
       title: "Call Us",
       description: "Speak directly with our support team",
-      contact: "+91 98765 43210",
+      contact: "+91 98189 15720",
       action: "Call Now"
     },
     {
@@ -45,22 +45,10 @@ const ContactPage = () => {
 
   const offices = [
     {
-      city: "Mumbai",
-      address: "123 Business District, Bandra Kurla Complex, Mumbai 400051",
-      phone: "+91 98765 43210",
-      email: "mumbai@keplix.com"
-    },
-    {
-      city: "Bangalore",
-      address: "456 Tech Park, Electronic City, Bangalore 560100",
-      phone: "+91 98765 43211",
-      email: "bangalore@keplix.com"
-    },
-    {
       city: "Delhi",
-      address: "789 Corporate Hub, Connaught Place, New Delhi 110001",
-      phone: "+91 98765 43212",
-      email: "delhi@keplix.com"
+      address: "9/2659, Kailash Nagar, Gandhi Nagar, Delhi, 110031",
+      phone: "+91 98189 15720",
+      email: "support@keplix.co.in"
     }
   ];
 
@@ -75,7 +63,6 @@ const ContactPage = () => {
       },
       body: JSON.stringify({
         access_key: 'b1b5319e-a0d5-4e71-8a5d-5e26870b83f3',
-        subject: `New ${formData.inquiryType} Inquiry - Keplix`,
         from_name: formData.name,
         ...formData
       }),
@@ -181,16 +168,16 @@ const ContactPage = () => {
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-12">
             {/* Contact Form */}
-            <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-xl p-8">
-              <div className="flex items-center gap-3 mb-6">
-                <Send className="w-8 h-8 text-red-500" />
-                <h3 className="text-3xl font-bold text-white">Send us a Message</h3>
+            <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-xl p-6">
+              <div className="flex items-center gap-3 mb-4">
+                <Send className="w-6 h-6 text-red-500" />
+                <h3 className="text-2xl font-bold text-white">Send us a Message</h3>
               </div>
               
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid md:grid-cols-2 gap-4">
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div className="grid md:grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-2">
+                    <label className="block text-sm font-medium text-gray-300 mb-1">
                       Full Name *
                     </label>
                     <input
@@ -198,12 +185,12 @@ const ContactPage = () => {
                       name="name"
                       value={formData.name}
                       onChange={handleChange}
-                      className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-red-500 transition-colors"
+                      className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-3 py-2.5 text-white placeholder-gray-400 focus:outline-none focus:border-red-500 transition-colors"
                       required
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-2">
+                    <label className="block text-sm font-medium text-gray-300 mb-1">
                       Email Address *
                     </label>
                     <input
@@ -211,15 +198,15 @@ const ContactPage = () => {
                       name="email"
                       value={formData.email}
                       onChange={handleChange}
-                      className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-red-500 transition-colors"
+                      className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-3 py-2.5 text-white placeholder-gray-400 focus:outline-none focus:border-red-500 transition-colors"
                       required
                     />
                   </div>
                 </div>
 
-                <div className="grid md:grid-cols-2 gap-4">
+                <div className="grid md:grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-2">
+                    <label className="block text-sm font-medium text-gray-300 mb-1">
                       Phone Number
                     </label>
                     <input
@@ -227,18 +214,18 @@ const ContactPage = () => {
                       name="phone"
                       value={formData.phone}
                       onChange={handleChange}
-                      className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-red-500 transition-colors"
+                      className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-3 py-2.5 text-white placeholder-gray-400 focus:outline-none focus:border-red-500 transition-colors"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-2">
+                    <label className="block text-sm font-medium text-gray-300 mb-1">
                       Inquiry Type
                     </label>
                     <select
                       name="inquiryType"
                       value={formData.inquiryType}
                       onChange={handleChange}
-                      className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-red-500 transition-colors"
+                      className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-3 py-2.5 text-white focus:outline-none focus:border-red-500 transition-colors"
                     >
                       {inquiryTypes.map((type) => (
                         <option key={type.value} value={type.value}>
@@ -250,7 +237,7 @@ const ContactPage = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                  <label className="block text-sm font-medium text-gray-300 mb-1">
                     Subject *
                   </label>
                   <input
@@ -258,28 +245,28 @@ const ContactPage = () => {
                     name="subject"
                     value={formData.subject}
                     onChange={handleChange}
-                    className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-red-500 transition-colors"
+                    className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-3 py-2.5 text-white placeholder-gray-400 focus:outline-none focus:border-red-500 transition-colors"
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                  <label className="block text-sm font-medium text-gray-300 mb-1">
                     Message *
                   </label>
                   <textarea
                     name="message"
                     value={formData.message}
                     onChange={handleChange}
-                    rows={6}
-                    className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-red-500 transition-colors resize-none"
+                    rows={4}
+                    className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-3 py-2.5 text-white placeholder-gray-400 focus:outline-none focus:border-red-500 transition-colors resize-none"
                     required
                   />
                 </div>
 
                 <button
                   type="submit"
-                  className="w-full bg-red-500 text-white py-4 rounded-lg font-semibold hover:bg-red-600 transition-colors flex items-center justify-center gap-2"
+                  className="w-full bg-red-500 text-white py-3 rounded-lg font-semibold hover:bg-red-600 transition-colors flex items-center justify-center gap-2"
                 >
                   <Send className="w-5 h-5" />
                   Send Message
@@ -321,7 +308,7 @@ const ContactPage = () => {
               <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-xl p-8">
                 <div className="flex items-center gap-3 mb-6">
                   <MapPin className="w-8 h-8 text-red-500" />
-                  <h3 className="text-2xl font-bold text-white">Our Offices</h3>
+                  <h3 className="text-2xl font-bold text-white">Our Office</h3>
                 </div>
                 <div className="space-y-6">
                   {offices.map((office, index) => (
@@ -335,6 +322,28 @@ const ContactPage = () => {
                     </div>
                   ))}
                 </div>
+              </div>
+
+              {/* Google Map */}
+              <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-xl p-4">
+                <div className="flex items-center gap-3 mb-4">
+                  <MapPin className="w-6 h-6 text-red-500" />
+                  <h3 className="text-xl font-bold text-white">Find Us</h3>
+                </div>
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3501.674!2d77.23148931507842!3d28.650094882430087!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cfd0683916387%3A0x633e9511b6a0e53b!2sKailash%20Nagar%2C%20Gandhi%20Nagar%2C%20Delhi%2C%20110031!5e0!3m2!1sen!2sin!4v1640995200000!5m2!1sen!2sin"
+                  width="100%"
+                  height="300"
+                  style={{ 
+                    border: 0, 
+                    borderRadius: '8px',
+                    filter: 'invert(90%) hue-rotate(180deg) brightness(95%) contrast(85%)'
+                  }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  title="Keplix Office Location - Kailash Nagar, Gandhi Nagar, Delhi"
+                ></iframe>
               </div>
             </div>
           </div>

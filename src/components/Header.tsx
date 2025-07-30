@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 
+// Alternative logo import (uncomment if the public path doesn't work)
+// import logoImage from '/logo.png';
+
 interface HeaderProps {
   currentPage: string;
   setCurrentPage: (page: string) => void;
@@ -31,7 +34,19 @@ const Header: React.FC<HeaderProps> = ({ currentPage, setCurrentPage }) => {
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center cursor-pointer" onClick={() => handleNavClick('home')}>
-            <div className="text-2xl font-bold text-white">
+            <img 
+              src={`${import.meta.env.BASE_URL}logo.png`}
+              alt="Keplix Logo" 
+              className="h-28 w-auto transition-all duration-300 hover:scale-105"
+              onError={(e) => {
+                console.error('Logo failed to load:', e);
+                // Fallback to text logo if image fails
+                e.currentTarget.style.display = 'none';
+                e.currentTarget.nextElementSibling?.classList.remove('hidden');
+              }}
+              onLoad={() => console.log('Logo loaded successfully')}
+            />
+            <div className="text-2xl font-bold text-white hidden">
               <span className="text-red-500">K</span>eplix
             </div>
           </div>
@@ -54,12 +69,6 @@ const Header: React.FC<HeaderProps> = ({ currentPage, setCurrentPage }) => {
               className={`transition-colors ${currentPage === 'blog' ? 'text-red-500' : 'text-white hover:text-red-500'}`}
             >
               Blog
-            </button>
-            <button 
-              onClick={() => handleNavClick('business')}
-              className={`transition-colors ${currentPage === 'business' ? 'text-red-500' : 'text-white hover:text-red-500'}`}
-            >
-              For Business
             </button>
             <button 
               onClick={() => handleNavClick('contact')}
@@ -106,12 +115,6 @@ const Header: React.FC<HeaderProps> = ({ currentPage, setCurrentPage }) => {
                 className={`text-left transition-colors ${currentPage === 'blog' ? 'text-red-500' : 'text-white hover:text-red-500'}`}
               >
                 Blog
-              </button>
-              <button 
-                onClick={() => handleNavClick('business')}
-                className={`text-left transition-colors ${currentPage === 'business' ? 'text-red-500' : 'text-white hover:text-red-500'}`}
-              >
-                For Business
               </button>
               <button 
                 onClick={() => handleNavClick('contact')}

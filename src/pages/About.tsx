@@ -1,4 +1,3 @@
-import React from 'react';
 import { Users, Target, Award, Zap, Heart, Globe } from 'lucide-react';
 
 const About = () => {
@@ -27,28 +26,16 @@ const About = () => {
 
   const team = [
     {
-      name: "Rajesh Kumar",
+      name: "Vardan Chaturvedi",
       role: "CEO & Founder",
       image: "https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=400",
-      description: "15+ years in automotive industry"
+      description: "6+ years in automotive industry"
     },
     {
-      name: "Priya Sharma",
-      role: "CTO",
+      name: "Aditya Narayan",
+      role: "Head of Technology",
       image: "https://images.pexels.com/photos/3756679/pexels-photo-3756679.jpeg?auto=compress&cs=tinysrgb&w=400",
       description: "Tech visionary with AI expertise"
-    },
-    {
-      name: "Amit Patel",
-      role: "Head of Operations",
-      image: "https://images.pexels.com/photos/3785077/pexels-photo-3785077.jpeg?auto=compress&cs=tinysrgb&w=400",
-      description: "Operations excellence specialist"
-    },
-    {
-      name: "Sneha Reddy",
-      role: "Head of Design",
-      image: "https://images.pexels.com/photos/3756681/pexels-photo-3756681.jpeg?auto=compress&cs=tinysrgb&w=400",
-      description: "UX/UI design innovator"
     }
   ];
 
@@ -159,7 +146,7 @@ const About = () => {
       </section>
 
       {/* Team Section */}
-      <section className="py-20 bg-gradient-to-b from-black to-gray-900">
+      <section className="py-20 pb-32 bg-gradient-to-b from-black to-gray-900">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
@@ -170,54 +157,30 @@ const About = () => {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid md:grid-cols-2 gap-12 max-w-6xl mx-auto">
             {team.map((member, index) => (
               <div 
                 key={index}
-                className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-xl p-6 hover:bg-gray-800/80 transition-all duration-300 transform hover:scale-105 group text-center"
+                className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-xl p-12 hover:bg-gray-800/80 transition-all duration-300 transform hover:scale-105 group text-center min-h-[400px] flex flex-col justify-center"
               >
-                <div className="relative mb-6">
+                <div className="relative mb-10">
                   <img 
                     src={member.image}
                     alt={member.name}
-                    className="w-24 h-24 rounded-full mx-auto object-cover border-4 border-red-500/20 group-hover:border-red-500/50 transition-colors"
+                    className="w-40 h-40 rounded-full mx-auto object-cover border-4 border-red-500/20 group-hover:border-red-500/50 transition-colors"
                   />
                 </div>
-                <h3 className="text-white text-xl font-semibold mb-2 group-hover:text-red-500 transition-colors">
+                <h3 className="text-white text-3xl font-bold mb-6 group-hover:text-red-500 transition-colors">
                   {member.name}
                 </h3>
-                <p className="text-red-500 font-medium mb-3">
+                <p className="text-red-500 font-semibold mb-6 text-xl">
                   {member.role}
                 </p>
-                <p className="text-gray-300 text-sm">
+                <p className="text-gray-300 text-lg leading-relaxed font-medium">
                   {member.description}
                 </p>
               </div>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Stats Section */}
-      <section className="py-20 bg-gradient-to-b from-gray-900 to-black">
-        <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-4 gap-8 text-center">
-            <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-xl p-8 hover:bg-gray-800/80 transition-all duration-300">
-              <div className="text-4xl font-bold text-red-500 mb-2">50K+</div>
-              <div className="text-gray-300">Happy Customers</div>
-            </div>
-            <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-xl p-8 hover:bg-gray-800/80 transition-all duration-300">
-              <div className="text-4xl font-bold text-red-500 mb-2">1000+</div>
-              <div className="text-gray-300">Partner Workshops</div>
-            </div>
-            <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-xl p-8 hover:bg-gray-800/80 transition-all duration-300">
-              <div className="text-4xl font-bold text-red-500 mb-2">25+</div>
-              <div className="text-gray-300">Cities Covered</div>
-            </div>
-            <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-xl p-8 hover:bg-gray-800/80 transition-all duration-300">
-              <div className="text-4xl font-bold text-red-500 mb-2">99%</div>
-              <div className="text-gray-300">Satisfaction Rate</div>
-            </div>
           </div>
         </div>
       </section>

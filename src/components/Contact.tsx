@@ -158,11 +158,11 @@ const Contact = () => {
               <div className="space-y-3">
                 <div className="flex items-center gap-3 text-gray-300">
                   <Mail className="w-5 h-5 text-red-500" />
-                  <span>support@keplix.com</span>
+                  <span>support@keplix.co.in</span>
                 </div>
                 <div className="flex items-center gap-3 text-gray-300">
                   <Phone className="w-5 h-5 text-red-500" />
-                  <span>+91 98765 43210</span>
+                  <span>+91 98189 15720</span>
                 </div>
                 <div className="flex items-center gap-3 text-gray-300">
                   <MapPin className="w-5 h-5 text-red-500" />

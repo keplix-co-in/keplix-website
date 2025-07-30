@@ -10,13 +10,12 @@ const CountdownTimer = () => {
   });
 
   React.useEffect(() => {
-    // Set launch date to 30 days from now
-    const launchDate = new Date();
-    launchDate.setDate(launchDate.getDate() + 30);
+    // Set beta testing launch date to August 22, 2025 at 12:00 PM UTC
+    const launchDate = new Date('2025-08-22T12:00:00Z');
 
-    const timer = setInterval(() => {
-      const now = new Date().getTime();
-      const distance = launchDate.getTime() - now;
+    const updateCountdown = () => {
+      const now = new Date();
+      const distance = launchDate.getTime() - now.getTime();
 
       if (distance > 0) {
         setTimeLeft({
@@ -25,8 +24,21 @@ const CountdownTimer = () => {
           minutes: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
           seconds: Math.floor((distance % (1000 * 60)) / 1000)
         });
+      } else {
+        // Beta launch date has passed
+        setTimeLeft({
+          days: 0,
+          hours: 0,
+          minutes: 0,
+          seconds: 0
+        });
       }
-    }, 1000);
+    };
+
+    // Update immediately
+    updateCountdown();
+    
+    const timer = setInterval(updateCountdown, 1000);
 
     return () => clearInterval(timer);
   }, []);
@@ -35,7 +47,7 @@ const CountdownTimer = () => {
     <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-xl p-6 max-w-2xl mx-auto mb-8 animate-fade-in-delay-2">
       <div className="flex items-center justify-center gap-2 mb-4">
         <Clock className="w-5 h-5 text-red-500" />
-        <span className="text-lg font-semibold text-white">Official Launch Countdown</span>
+        <span className="text-lg font-semibold text-white">Beta Testing Launch Countdown</span>
       </div>
       <div className="grid grid-cols-4 gap-4 text-center">
         <div className="bg-gray-700/50 rounded-lg p-3">
