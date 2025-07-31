@@ -28,13 +28,13 @@ const About = () => {
     {
       name: "Vardan Chaturvedi",
       role: "CEO & Founder",
-      image: "https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=400",
+      image: `${import.meta.env.BASE_URL}Vardan.jpg`,
       description: "6+ years in automotive industry"
     },
     {
       name: "Aditya Narayan",
       role: "Head of Technology",
-      image: "https://images.pexels.com/photos/3756679/pexels-photo-3756679.jpeg?auto=compress&cs=tinysrgb&w=400",
+      image: `${import.meta.env.BASE_URL}aditya.webp`,
       description: "Tech visionary with AI expertise"
     }
   ];

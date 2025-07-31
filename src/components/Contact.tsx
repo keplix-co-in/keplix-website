@@ -39,7 +39,7 @@ const Contact = () => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        access_key: 'b1b5319e-a0d5-4e71-8a5d-5e26870b83f3',
+        access_key: '89c66a6e-3aee-4cab-9363-2050f20fa5ec',
         subject: 'New Contact Form Submission - Keplix',
         from_name: formData.name,
         ...formData

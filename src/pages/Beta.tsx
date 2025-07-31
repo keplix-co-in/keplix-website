@@ -2,7 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { Users, Clock, CheckCircle, Star, Zap, Shield, Award } from 'lucide-react';
 
 const Beta = () => {
-  const [seatsRemaining, setSeatsRemaining] = useState(100);
+  const [seatsRemaining, setSeatsRemaining] = useState(() => {
+    // Load from localStorage or default to 100
+    const saved = localStorage.getItem('keplix-beta-seats');
+    return saved ? parseInt(saved, 10) : 100;
+  });
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -14,6 +18,11 @@ const Beta = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+
+  // Save seats remaining to localStorage whenever it changes
+  React.useEffect(() => {
+    localStorage.setItem('keplix-beta-seats', seatsRemaining.toString());
+  }, [seatsRemaining]);
 
   const vehicleTypes = [
     'Sedan',
@@ -89,7 +98,7 @@ const Beta = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          access_key: 'b1b5319e-a0d5-4e71-8a5d-5e26870b83f3',
+          access_key: '89c66a6e-3aee-4cab-9363-2050f20fa5ec',
           subject: 'New Keplix Beta Application',
           from_name: formData.name,
           ...formData,
@@ -216,6 +225,19 @@ const Beta = () => {
             {/* Form */}
             <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-xl p-8">
               <h3 className="text-3xl font-bold text-white mb-6">Apply for Beta Access</h3>
+              
+              {seatsRemaining === 0 && (
+                <div className="bg-yellow-500/20 border border-yellow-500/30 rounded-lg p-6 mb-6 text-center">
+                  <div className="flex items-center justify-center gap-2 text-yellow-500 mb-2">
+                    <Users className="w-6 h-6" />
+                    <span className="font-bold text-lg">Beta Program Full!</span>
+                  </div>
+                  <p className="text-yellow-400 text-sm">
+                    All 100 beta spots have been filled. Thank you for your interest! 
+                    Join our waitlist to be notified when we launch publicly.
+                  </p>
+                </div>
+              )}
               
               {submitStatus === 'success' && (
                 <div className="bg-green-500/20 border border-green-500/30 rounded-lg p-4 mb-6">
