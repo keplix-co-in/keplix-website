@@ -57,14 +57,19 @@ const Future = () => {
             </div>
           </div>
 
-          {/* Car Image */}
+          {/* Car Video */}
           <div className="relative">
             <div className="bg-gradient-to-br from-red-500/20 to-transparent rounded-full absolute inset-0 blur-3xl"></div>
-            <img 
-              src="https://images.pexels.com/photos/3802510/pexels-photo-3802510.jpeg?auto=compress&cs=tinysrgb&w=800"
-              alt="Modern Red Sports Car"
+            <video 
+              src={`${import.meta.env.BASE_URL}mapani.mp4`}
+              autoPlay
+              loop
+              muted
+              playsInline
               className="w-full h-auto rounded-xl shadow-2xl relative z-10 transform hover:scale-105 transition-transform duration-500"
-            />
+            >
+              Your browser does not support the video tag.
+            </video>
           </div>
         </div>
       </div>

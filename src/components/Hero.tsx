@@ -89,7 +89,7 @@ const Hero = () => {
         <div className="absolute bottom-20 right-20 w-24 h-24 bg-red-500 rounded-full blur-2xl animate-pulse delay-1000"></div>
       </div>
 
-      <div className="container mx-auto px-4 py-16 relative z-10 w-full">
+      <div className="container mx-auto px-4 py-16 pt-24 md:pt-16 relative z-10 w-full">
         <div className="text-center max-w-4xl mx-auto">
           <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 animate-fade-in">
             "Drive Smarter. Book Faster.<br />
@@ -97,7 +97,7 @@ const Hero = () => {
           </h1>
           
           <p className="text-xl md:text-2xl text-gray-300 mb-8 animate-fade-in-delay">
-            "Book, compare, and track auto services at your fingertips."
+            "Find, compare, book and track auto services at your fingertips."
           </p>
 
           <CountdownTimer />
