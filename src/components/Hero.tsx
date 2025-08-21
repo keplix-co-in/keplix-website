@@ -1,6 +1,10 @@
 import React from 'react';
 import { Play, Calendar, Clock } from 'lucide-react';
 
+interface HeroProps {
+  setCurrentPage: (page: string) => void;
+}
+
 const CountdownTimer = () => {
   const [timeLeft, setTimeLeft] = React.useState({
     days: 0,
@@ -10,8 +14,8 @@ const CountdownTimer = () => {
   });
 
   React.useEffect(() => {
-    // Set beta testing launch date to August 22, 2025 at 12:00 PM UTC
-    const launchDate = new Date('2025-08-22T12:00:00Z');
+    // Set beta testing launch date to September 15, 2025 at 12:00 PM UTC
+    const launchDate = new Date('2025-09-15T12:00:00Z');
 
     const updateCountdown = () => {
       const now = new Date();
@@ -37,14 +41,14 @@ const CountdownTimer = () => {
 
     // Update immediately
     updateCountdown();
-    
+
     const timer = setInterval(updateCountdown, 1000);
 
     return () => clearInterval(timer);
   }, []);
 
   return (
-    <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-xl p-6 max-w-2xl mx-auto mb-8 animate-fade-in-delay-2">
+    <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-xl p-6 max-w-lg mx-auto mb-8 animate-fade-in-delay-2">
       <div className="flex items-center justify-center gap-2 mb-4">
         <Clock className="w-5 h-5 text-red-500" />
         <span className="text-lg font-semibold text-white">Beta Testing Launch Countdown</span>
@@ -71,7 +75,13 @@ const CountdownTimer = () => {
   );
 };
 
-const Hero = () => {
+// const Hero = () => {
+const Hero: React.FC<HeroProps> = ({ setCurrentPage }) => {
+  const handleNavClick = (page: string) => {
+    setCurrentPage(page);
+    window.scrollTo(0, 0);
+  };
+
   return (
     <section id="home" className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 relative overflow-hidden flex items-center">
       {/* Shooting Stars */}
@@ -89,25 +99,28 @@ const Hero = () => {
         <div className="absolute bottom-20 right-20 w-24 h-24 bg-red-500 rounded-full blur-2xl animate-pulse delay-1000"></div>
       </div>
 
-      <div className="container mx-auto px-4 py-16 pt-24 md:pt-16 relative z-10 w-full">
+      <div className="container mx-auto px-4 py-16 pt-24 md:pt-32 relative z-10 w-full">
         <div className="text-center max-w-4xl mx-auto">
           <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 animate-fade-in">
             "Drive Smarter. Book Faster.<br />
             Trust <span className="text-red-500">Keplix</span>."
           </h1>
-          
+
           <p className="text-xl md:text-2xl text-gray-300 mb-8 animate-fade-in-delay">
             "Find, compare, book and track auto services at your fingertips."
           </p>
 
           <CountdownTimer />
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in-delay-2">
-            <button className="bg-red-500 text-white px-8 py-4 rounded-full font-semibold hover:bg-red-600 transition-all duration-300 transform hover:scale-105 flex items-center gap-2">
+          <div className="flex flex-col sm:flex-row gap-8 sm:gap-4 justify-center items-center animate-fade-in-delay-2">
+            <button
+              onClick={() => handleNavClick('beta')}
+              className="bg-red-500 text-white px-8 py-4 rounded-full font-semibold hover:bg-red-600 transition-all duration-300 transform hover:scale-105 flex items-center gap-2"
+            >
               <Play size={20} />
               Watch the Beta Now
             </button>
-            
+
             <div className="flex items-center gap-2 text-gray-300">
               <Calendar size={20} />
               <span>Quick service within 24 hours</span>
@@ -125,7 +138,7 @@ const Hero = () => {
 
       {/* Animated Circles */}
       <div className="absolute top-1/4 left-10 w-4 h-4 bg-red-500 rounded-full animate-bounce"></div>
-      <div className="absolute top-1/3 right-20 w-6 h-6 bg-red-500 rounded-full animate-bounce delay-500"></div>
+      <div className="absolute top-1/3 right-10 w-6 h-6 bg-red-500 rounded-full animate-bounce delay-500"></div>
       <div className="absolute bottom-1/4 left-1/4 w-3 h-3 bg-red-500 rounded-full animate-bounce delay-1000"></div>
     </section>
   );

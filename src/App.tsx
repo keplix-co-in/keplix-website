@@ -30,7 +30,7 @@ function App() {
       default:
         return (
           <>
-            <Hero />
+            <Hero setCurrentPage={setCurrentPage} />
             <Services />
             <Process />
             <Future />
