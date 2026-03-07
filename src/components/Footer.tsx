@@ -1,6 +1,10 @@
 import { Facebook, Twitter, Instagram, Linkedin, Youtube, Smartphone, Mail, Phone, MapPin } from 'lucide-react';
 
-const Footer = () => {
+interface FooterProps {
+  setCurrentPage: (page: string) => void;
+}
+
+const Footer = ({ setCurrentPage }: FooterProps) => {
   const currentYear = new Date().getFullYear();
 
   return (
@@ -146,9 +150,9 @@ const Footer = () => {
           <div className="flex flex-col items-center justify-center gap-4">
             <div className="flex flex-wrap gap-6 justify-center">
               <a href="#" className="text-gray-300 hover:text-red-500 transition-colors">Legal</a>
-              <a href="#" className="text-gray-300 hover:text-red-500 transition-colors">Privacy Policy</a>
+              <button onClick={() => { setCurrentPage('privacy'); window.scrollTo(0, 0); }} className="text-gray-300 hover:text-red-500 transition-colors">Privacy Policy</button>
               <a href="#" className="text-gray-300 hover:text-red-500 transition-colors">Terms of Service</a>
-              <a href="#" className="text-gray-300 hover:text-red-500 transition-colors">Cookie Policy</a>
+              <button onClick={() => { setCurrentPage('cookie'); window.scrollTo(0, 0); }} className="text-gray-300 hover:text-red-500 transition-colors">Cookie Policy</button>
             </div>
             <p className="text-gray-400 text-sm text-center">
               © {currentYear} Keplix. All rights reserved.

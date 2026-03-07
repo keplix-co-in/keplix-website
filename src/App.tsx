@@ -11,6 +11,8 @@ import Blog from './pages/Blog';
 import Business from './pages/Business';
 import ContactPage from './pages/ContactPage';
 import Beta from './pages/Beta';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import CookiePolicy from './pages/CookiePolicy';
 
 function App() {
   const [currentPage, setCurrentPage] = useState('home');
@@ -27,6 +29,10 @@ function App() {
         return <ContactPage />;
       case 'beta':
         return <Beta />;
+      case 'privacy':
+        return <PrivacyPolicy />;
+      case 'cookie':
+        return <CookiePolicy />;
       default:
         return (
           <>
@@ -44,7 +50,7 @@ function App() {
     <div className="min-h-screen bg-black">
       <Header currentPage={currentPage} setCurrentPage={setCurrentPage} />
       {renderPage()}
-      <Footer />
+      <Footer setCurrentPage={setCurrentPage} />
     </div>
   );
 }
