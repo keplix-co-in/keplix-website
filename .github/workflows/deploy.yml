@@ -24,13 +24,13 @@ jobs:
     - name: Build
       run: npm run build
 
-    - name: Deploy via SFTP
-      uses: appleboy/scp-action@v0.1.7
+    - name: Deploy via FTP
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.5
       with:
-        host: ${{ secrets.SSH_HOST }}
-        username: ${{ secrets.SSH_USERNAME }}
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
-        port: 22
-        source: "./dist/*"
-        target: "/home/sites/10a/7/7a54347459/public_html"
-        strip_components: 1
+        server: ${{ secrets.FTP_SERVER }}
+        username: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        protocol: ftp
+        port: 21
+        local-dir: ./dist/
+        server-dir: /public_html/
