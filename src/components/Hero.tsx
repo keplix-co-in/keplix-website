@@ -1,9 +1,6 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Play, Calendar, Clock } from 'lucide-react';
-
-interface HeroProps {
-  setCurrentPage: (page: string) => void;
-}
 
 const CountdownTimer = () => {
   const [timeLeft, setTimeLeft] = React.useState({
@@ -76,10 +73,11 @@ const CountdownTimer = () => {
 };
 
 // const Hero = () => {
-const Hero: React.FC<HeroProps> = ({ setCurrentPage }) => {
-  const handleNavClick = (page: string) => {
-    setCurrentPage(page);
-    window.scrollTo(0, 0);
+const Hero: React.FC = () => {
+  const navigate = useNavigate();
+
+  const handleNavClick = (path: string) => {
+    navigate(path);
   };
 
   return (
@@ -114,7 +112,7 @@ const Hero: React.FC<HeroProps> = ({ setCurrentPage }) => {
 
           <div className="flex flex-col sm:flex-row gap-8 sm:gap-4 justify-center items-center animate-fade-in-delay-2">
             <button
-              onClick={() => handleNavClick('beta')}
+              onClick={() => handleNavClick('/beta')}
               className="bg-red-500 text-white px-8 py-4 rounded-full font-semibold hover:bg-red-600 transition-all duration-300 transform hover:scale-105 flex items-center gap-2"
             >
               <Play size={20} />

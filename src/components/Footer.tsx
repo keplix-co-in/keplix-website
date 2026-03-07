@@ -1,10 +1,7 @@
+import { Link } from 'react-router-dom';
 import { Facebook, Twitter, Instagram, Linkedin, Youtube, Smartphone, Mail, Phone, MapPin } from 'lucide-react';
 
-interface FooterProps {
-  setCurrentPage: (page: string) => void;
-}
-
-const Footer = ({ setCurrentPage }: FooterProps) => {
+const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   return (
@@ -16,10 +13,10 @@ const Footer = ({ setCurrentPage }: FooterProps) => {
           <div className="flex flex-col text-center">
             <h4 className="text-lg font-semibold mb-4">Navigation</h4>
             <ul className="space-y-2 w-full">
-              <li><a href="#home" className="text-gray-300 hover:text-red-500 transition-colors">Home</a></li>
-              <li><a href="#about" className="text-gray-300 hover:text-red-500 transition-colors">About us</a></li>
+              <li><Link to="/" className="text-gray-300 hover:text-red-500 transition-colors">Home</Link></li>
+              <li><Link to="/about" className="text-gray-300 hover:text-red-500 transition-colors">About us</Link></li>
               <li><a href="#services" className="text-gray-300 hover:text-red-500 transition-colors">Services</a></li>
-              <li><a href="#contact" className="text-gray-300 hover:text-red-500 transition-colors">Contact</a></li>
+              <li><Link to="/contact" className="text-gray-300 hover:text-red-500 transition-colors">Contact</Link></li>
             </ul>
           </div>
 
@@ -150,9 +147,9 @@ const Footer = ({ setCurrentPage }: FooterProps) => {
           <div className="flex flex-col items-center justify-center gap-4">
             <div className="flex flex-wrap gap-6 justify-center">
               <a href="#" className="text-gray-300 hover:text-red-500 transition-colors">Legal</a>
-              <button onClick={() => { setCurrentPage('privacy'); window.scrollTo(0, 0); }} className="text-gray-300 hover:text-red-500 transition-colors">Privacy Policy</button>
+              <Link to="/privacy-policy" className="text-gray-300 hover:text-red-500 transition-colors">Privacy Policy</Link>
               <a href="#" className="text-gray-300 hover:text-red-500 transition-colors">Terms of Service</a>
-              <button onClick={() => { setCurrentPage('cookie'); window.scrollTo(0, 0); }} className="text-gray-300 hover:text-red-500 transition-colors">Cookie Policy</button>
+              <Link to="/cookie-policy" className="text-gray-300 hover:text-red-500 transition-colors">Cookie Policy</Link>
             </div>
             <p className="text-gray-400 text-sm text-center">
               © {currentYear} Keplix. All rights reserved.

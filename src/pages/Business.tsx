@@ -1,4 +1,3 @@
-import React from 'react';
 import { Building, Users, TrendingUp, Shield, Clock, Award, CheckCircle, ArrowRight } from 'lucide-react';
 
 const Business = () => {
