@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Users, Clock, CheckCircle, Star, Zap, Shield, Award } from 'lucide-react';
+import PageBlob from '../components/PageBlob';
 
 const Beta = () => {
   const [seatsRemaining, setSeatsRemaining] = useState(() => {
@@ -44,22 +45,26 @@ const Beta = () => {
 
   const betaFeatures = [
     {
-      icon: <Zap className="w-6 h-6" />,
+      icon: <Zap className="h-8 w-8" />,
+      iconColor: 'text-brand-red',
       title: "Early Access",
       description: "Be among the first to experience Keplix's revolutionary platform"
     },
     {
-      icon: <Star className="w-6 h-6" />,
+      icon: <Star className="h-8 w-8" />,
+      iconColor: 'text-ink',
       title: "Exclusive Discounts",
       description: "Up to 50% off on all services during the beta period"
     },
     {
-      icon: <Shield className="w-6 h-6" />,
+      icon: <Shield className="h-8 w-8" />,
+      iconColor: 'text-brand-red',
       title: "Priority Support",
       description: "Direct access to our development team for feedback and support"
     },
     {
-      icon: <Award className="w-6 h-6" />,
+      icon: <Award className="h-8 w-8" />,
+      iconColor: 'text-ink',
       title: "Lifetime Benefits",
       description: "Special pricing and features that continue after beta launch"
     }
@@ -136,13 +141,11 @@ const Beta = () => {
   };
 
   return (
-    <div className="bg-transparent">
+    <div className="relative overflow-hidden">
+      <PageBlob />
+
       {/* Hero Section */}
-      <section className="pt-8 pb-16 relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-20 left-20 w-32 h-32 bg-red-500 rounded-full blur-3xl animate-pulse"></div>
-          <div className="absolute bottom-20 right-20 w-24 h-24 bg-red-500 rounded-full blur-2xl animate-pulse delay-1000"></div>
-        </div>
+      <section className="relative z-10 pb-16 pt-[69px]">
 
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center max-w-4xl mx-auto">
@@ -186,7 +189,7 @@ const Beta = () => {
       </section>
 
       {/* Beta Features */}
-      <section className="py-16">
+      <section className="relative z-10 py-16">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
@@ -199,14 +202,14 @@ const Beta = () => {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {betaFeatures.map((feature, index) => (
-              <div 
+              <div
                 key={index}
-                className="bg-white border border-line-soft shadow-card rounded-xl p-6 text-center hover:shadow-cardHover transition-all duration-300 transform hover:scale-105 group"
+                className="rounded-2xl bg-blush-200/70 p-6 text-center transition-transform duration-300 hover:scale-105"
               >
-                <div className="text-brand-red mb-4 group-hover:scale-110 transition-transform duration-300 flex justify-center">
+                <div className={`mb-4 flex justify-center ${feature.iconColor}`}>
                   {feature.icon}
                 </div>
-                <h3 className="text-ink-heading text-xl font-semibold mb-3 group-hover:text-brand-red transition-colors">
+                <h3 className="text-ink-heading text-xl font-semibold mb-3">
                   {feature.title}
                 </h3>
                 <p className="text-ink-body leading-relaxed">
@@ -219,7 +222,7 @@ const Beta = () => {
       </section>
 
       {/* Application Form */}
-      <section className="py-16">
+      <section className="relative z-10 py-16">
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-12">
             {/* Form */}
@@ -416,7 +419,7 @@ const Beta = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16">
+      <section className="relative z-10 py-16">
         <div className="container mx-auto px-4">
           <div className="bg-white border border-line-soft shadow-card rounded-xl p-12 text-center max-w-4xl mx-auto">
             <h3 className="text-4xl font-bold text-ink-heading mb-6">

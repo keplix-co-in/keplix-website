@@ -20,25 +20,34 @@ const featureGroups = [
     icon: '/icons/svc-book-compare.svg',
     title: 'BOOK & COMPARE',
     description: 'Find the right service at the right price.',
-    subCards: ['Compare Pricing', 'Book Service'],
+    subCards: [
+      { icon: '/icons/svc-compare-pricing.svg', label: 'Compare Pricing' },
+      { icon: '/icons/svc-book-service.svg', label: 'Book Service' },
+    ],
   },
   {
     icon: '/icons/svc-manage-vehicle.svg',
     title: 'MANAGE VEHICLE',
     description: 'Keep track of your car and service history.',
-    subCards: ['Service History', 'Maintenance Records'],
+    subCards: [
+      { icon: '/icons/svc-service-history.svg', label: 'Service History' },
+      { icon: '/icons/svc-maintenance-records.svg', label: 'Maintenance Records' },
+    ],
   },
   {
     icon: '/icons/svc-trust-support.svg',
     title: 'TRUST & SUPPORT',
     description: "We've got your back, always.",
-    subCards: ['Verified Workshops', 'Customer Support'],
+    subCards: [
+      { icon: '/icons/svc-verified-workshops.svg', label: 'Verified Workshops' },
+      { icon: '/icons/svc-customer-support.svg', label: 'Customer Support' },
+    ],
   },
 ];
 
 const Services: React.FC = () => {
   return (
-    <section className="mx-auto max-w-page px-4 py-16 sm:px-8">
+    <section className="relative z-10 mx-auto max-w-page px-4 py-16 sm:px-8">
       {/* Problem -> Solution card */}
       <div className="flex flex-col gap-8 rounded-card border border-line-soft bg-white p-6 shadow-card sm:p-10">
         <h2 className="text-center text-2xl font-bold text-ink-heading sm:text-[28px]">
@@ -125,11 +134,12 @@ const Services: React.FC = () => {
               <div className="flex gap-4">
                 {subCards.map((card) => (
                   <div
-                    key={card}
-                    className="flex flex-1 flex-col items-center justify-center rounded-xl border border-line-soft px-4 py-4 text-center lg:w-[180px]"
+                    key={card.label}
+                    className="flex h-[100px] w-[180px] shrink-0 flex-col items-center justify-center gap-2 rounded-xl border border-line-soft px-4 py-4 text-center"
                   >
+                    <img src={card.icon} alt="" className="h-6 w-6" />
                     <span className="text-base font-semibold text-ink-body">
-                      {card}
+                      {card.label}
                     </span>
                   </div>
                 ))}

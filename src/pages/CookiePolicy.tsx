@@ -1,5 +1,6 @@
 import React from 'react';
 import { Cookie } from 'lucide-react';
+import PageBlob from '../components/PageBlob';
 
 const Section: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
   <div className="mb-10">
@@ -10,9 +11,11 @@ const Section: React.FC<{ title: string; children: React.ReactNode }> = ({ title
 
 const CookiePolicy: React.FC = () => {
   return (
-    <div className="bg-transparent">
+    <div className="relative overflow-hidden">
+      <PageBlob />
+
       {/* Hero Banner */}
-      <div className="pt-8 pb-8 px-4">
+      <div className="relative z-10 px-4 pb-8 pt-[69px]">
         <div className="max-w-4xl mx-auto text-center">
           <div className="flex justify-center mb-4">
             <Cookie className="w-14 h-14 text-brand-red" />
@@ -25,7 +28,8 @@ const CookiePolicy: React.FC = () => {
       </div>
 
       {/* Content */}
-      <div className="max-w-4xl mx-auto px-4 py-12">
+      <div className="relative z-10 max-w-4xl mx-auto px-4 py-12">
+        <div className="rounded-2xl bg-white shadow-card p-6 sm:p-10">
 
         {/* Intro */}
         <div className="mb-10 text-ink-body leading-relaxed space-y-4">
@@ -273,6 +277,7 @@ const CookiePolicy: React.FC = () => {
           </div>
         </Section>
 
+        </div>
       </div>
     </div>
   );

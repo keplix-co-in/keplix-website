@@ -3,8 +3,8 @@ import { Star } from 'lucide-react';
 
 const Process: React.FC = () => {
   return (
-    <section className="mx-auto max-w-page px-4 py-16 sm:px-8">
-      <div className="flex flex-wrap justify-center gap-6">
+    <section className="relative z-10 mx-auto max-w-page px-4 py-16 sm:px-8">
+      <div className="grid grid-cols-2 gap-6 sm:grid-cols-4">
         {[
           '/home-app-screen-1.png',
           '/home-app-screen-2.png',
@@ -15,7 +15,7 @@ const Process: React.FC = () => {
             key={src}
             src={src}
             alt="Keplix app showcase"
-            className="w-full max-w-[220px] rounded-2xl shadow-card"
+            className="w-full rounded-2xl shadow-card"
           />
         ))}
       </div>

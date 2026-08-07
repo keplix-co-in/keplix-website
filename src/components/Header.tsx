@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 
@@ -12,10 +12,23 @@ const navLinks = [
 
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
   const currentPath = location.pathname;
+  const isBusiness = currentPath === '/business';
+  const activeColor = isBusiness ? 'text-partner' : 'text-brand-accent';
+
+  // The header is transparent in the Figma design so the page background,
+  // its decorative circle and the Workshops gradient run unbroken beneath it.
+  // A tinted, blurred background only fades in once content scrolls under it.
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   const handleNavClick = (path: string) => {
     navigate(path);
@@ -23,13 +36,19 @@ const Header: React.FC = () => {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-blush-50/90 backdrop-blur-md">
-      <div className="mx-auto flex max-w-page items-center justify-between px-4 py-5 sm:px-8">
+    <header
+      className={`sticky top-0 z-50 w-full transition-colors duration-300 ${
+        scrolled
+          ? `${isBusiness ? 'bg-[#f2f3f8]/90' : 'bg-blush-50/90'} shadow-sm backdrop-blur-md`
+          : 'bg-transparent'
+      }`}
+    >
+      <div className="mx-auto flex h-20 max-w-page items-center justify-between px-4 sm:px-8 lg:px-16">
         <Link to="/" className="flex shrink-0 items-center">
           <img
             src="/keplix-logo.png"
             alt="Keplix"
-            className="h-[58px] w-[64px] object-contain sm:h-[79px] sm:w-[87px]"
+            className="h-10 w-11 object-contain sm:h-12 sm:w-[53px]"
           />
         </Link>
 
@@ -40,7 +59,7 @@ const Header: React.FC = () => {
               to={link.path}
               className={`pl-10 font-nav text-base leading-6 transition-colors first:pl-0 hover:text-brand-accent ${
                 currentPath === link.path
-                  ? 'font-bold text-brand-accent'
+                  ? `font-bold ${activeColor}`
                   : 'font-medium text-ink'
               }`}
             >
@@ -52,7 +71,11 @@ const Header: React.FC = () => {
         <div className="flex items-center gap-4">
           <button
             onClick={() => handleNavClick('/beta')}
-            className="h-[53px] w-[141px] rounded-btn bg-brand-red text-base font-bold leading-7 text-white shadow-btn transition-colors hover:bg-brand-redHover max-sm:h-11 max-sm:w-auto max-sm:px-5 max-sm:text-sm"
+            className={`h-[53px] w-[141px] rounded-btn text-base font-bold leading-7 text-white shadow-btn transition-colors max-sm:h-11 max-sm:w-auto max-sm:px-5 max-sm:text-sm ${
+              isBusiness
+                ? 'bg-partner hover:opacity-90'
+                : 'bg-brand-red hover:bg-brand-redHover'
+            }`}
           >
             Join Beta
           </button>
@@ -76,7 +99,7 @@ const Header: React.FC = () => {
                 onClick={() => handleNavClick(link.path)}
                 className={`py-3 text-left font-nav text-base transition-colors ${
                   currentPath === link.path
-                    ? 'font-bold text-brand-accent'
+                    ? `font-bold ${activeColor}`
                     : 'font-medium text-ink hover:text-brand-accent'
                 }`}
               >

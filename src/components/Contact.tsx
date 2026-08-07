@@ -1,21 +1,20 @@
 import React, { useState } from 'react';
-import { Cpu, Bell, MapPin } from 'lucide-react';
 
 const RADIO_ACCENT = '#2563eb';
 
 const futureFeatures = [
   {
-    icon: Cpu,
+    icon: '/icons/future-ai-chip.svg',
     title: 'AI-Powered Diagnostics',
     description: 'Detect issues early with smart AI technology.',
   },
   {
-    icon: Bell,
+    icon: '/icons/future-bell.svg',
     title: 'Electric Vehicle Services',
     description: 'Specialized EV service and battery care solutions.',
   },
   {
-    icon: MapPin,
+    icon: '/icons/future-location-pin.svg',
     title: 'Expanding to 50+ Cities',
     description: 'Bringing trusted car care to your city soon.',
   },
@@ -58,15 +57,20 @@ const Contact: React.FC = () => {
   };
 
   return (
-    <section className="bg-black px-4 py-16 sm:px-8">
+    <section className="relative z-10 bg-black px-4 py-16 sm:px-8">
       <div className="mx-auto max-w-page">
         <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
           <div className="aspect-square w-full max-w-md overflow-hidden rounded-3xl bg-black">
-            <img
-              src="/future-map-illustration.png"
-              alt="Illustration of a city map with location pins"
-              className="h-full w-full object-contain"
-            />
+            <video
+              src="/mapani.mp4"
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="h-full w-full object-cover"
+            >
+              Your browser does not support the video tag.
+            </video>
           </div>
 
           <div>
@@ -79,12 +83,12 @@ const Contact: React.FC = () => {
             </p>
 
             <div className="mt-8 grid gap-4 sm:grid-cols-3">
-              {futureFeatures.map(({ icon: Icon, title, description }) => (
+              {futureFeatures.map(({ icon, title, description }) => (
                 <div
                   key={title}
                   className="rounded-xl border border-[#434e64] p-5 text-center"
                 >
-                  <Icon className="mx-auto text-gray-400" size={28} />
+                  <img src={icon} alt="" className="mx-auto h-10 w-10" />
                   <h3 className="mt-4 text-base font-bold text-white">
                     {title}
                   </h3>
@@ -93,7 +97,7 @@ const Contact: React.FC = () => {
               ))}
             </div>
 
-            <button className="mt-8 rounded-btn bg-brand-red px-8 py-3 text-base font-bold text-white shadow-btn transition-colors hover:bg-brand-redHover">
+            <button className="mt-8 flex h-[53px] w-[180px] items-center justify-center rounded-btn bg-brand-red text-base font-bold text-white transition-colors hover:bg-brand-redHover">
               Explore our vision
             </button>
           </div>

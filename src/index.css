@@ -27,6 +27,12 @@ body {
   background-attachment: fixed;
 }
 
+/* Workshops page background: holds a near-flat lilac for the top third, then
+   deepens toward the footer. Stops sampled from the Figma frame (431:4758). */
+.business-wash {
+  background: linear-gradient(180deg, #f3f4f9 0%, #f2f3f8 36%, #a1b1e6 100%);
+}
+
 /* Custom animations */
 @keyframes fade-in {
   from {

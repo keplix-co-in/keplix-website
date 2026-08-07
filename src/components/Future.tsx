@@ -4,11 +4,6 @@ import {
   Tag,
   CalendarCheck,
   RefreshCw,
-  Users,
-  BadgeCheck,
-  IndianRupee,
-  FileText,
-  Lock,
   ChevronLeft,
   ChevronRight,
   Star,
@@ -23,11 +18,11 @@ const steps = [
 ];
 
 const trustItems = [
-  { icon: Users, value: '500+', label: 'Partner Workshops' },
-  { icon: BadgeCheck, value: 'Verified', label: 'Service Centers' },
-  { icon: IndianRupee, value: 'Transparent', label: 'Pricing' },
-  { icon: FileText, value: 'Service History', label: 'Records' },
-  { icon: Lock, value: 'Secure', label: 'Payments' },
+  { icon: '/icons/trust-workshops.svg', value: '500+', label: 'Partner Workshops' },
+  { icon: '/icons/trust-verified.svg', value: 'Verified', label: 'Service Centers' },
+  { icon: '/icons/trust-transparent.svg', value: 'Transparent', label: 'Pricing' },
+  { icon: '/icons/trust-history.svg', value: 'Service History', label: 'Records' },
+  { icon: '/icons/trust-secure.svg', value: 'Secure', label: 'Payments' },
 ];
 
 const testimonials = [
@@ -42,16 +37,19 @@ const Future: React.FC = () => {
   const [active, setActive] = useState(0);
 
   return (
-    <section className="mx-auto max-w-page px-4 py-16 sm:px-8">
+    <section className="relative z-10 mx-auto max-w-page px-4 py-16 sm:px-8">
       <h2 className="text-center text-2xl font-bold text-ink-heading sm:text-[28px]">
         How Keplix Works
       </h2>
       <div className="mt-12 grid grid-cols-2 gap-8 sm:grid-cols-4">
         {steps.map(({ icon: Icon, title, description }, i) => (
           <div key={title} className="flex flex-col items-center text-center">
-            <div className="relative mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-red-50">
-              <Icon className="text-brand-red" size={28} />
-              <span className="absolute -bottom-1 -right-1 flex h-6 w-6 items-center justify-center rounded-full bg-brand-red text-xs font-bold text-white">
+            <div className="relative mb-5 flex h-16 w-16 items-center justify-center">
+              <div className="absolute inset-0 rounded-full bg-red-50" />
+              <div className="relative flex h-14 w-14 items-center justify-center rounded-full border border-red-100 bg-white shadow-sm">
+                <Icon className="text-brand-red" size={26} />
+              </div>
+              <span className="absolute -bottom-2 left-1/2 flex h-6 w-6 -translate-x-1/2 items-center justify-center rounded-full bg-[#dc2626] text-xs font-bold text-white">
                 {i + 1}
               </span>
             </div>
@@ -72,36 +70,46 @@ const Future: React.FC = () => {
           Why Car Owners Trust Keplix
         </h2>
 
-        <div className="mt-10 grid gap-6 lg:grid-cols-[minmax(0,1fr)_2fr]">
-          <div className="flex min-h-[220px] items-center gap-4 rounded-2xl bg-blush-300 p-6">
-            <div className="flex flex-col gap-4">
-              {[0, 1, 2].map((i) => (
-                <div key={i} className="h-10 w-10 rounded-full bg-gray-300" />
-              ))}
-            </div>
-            <div className="flex flex-1 flex-col gap-6">
-              {[0, 1, 2].map((i) => (
-                <div key={i} className="flex flex-col gap-2">
-                  <div className="h-2 w-full rounded-full bg-white/60" />
-                  <div className="h-2 w-2/3 rounded-full bg-white/60" />
-                </div>
-              ))}
-            </div>
-          </div>
+        <div className="mt-10 flex flex-col items-center gap-8 lg:flex-row lg:items-start">
+          <img
+            src="/trust-illustration.png"
+            alt="Customer reviews illustration"
+            className="w-full max-w-[355px] shrink-0 rounded-2xl"
+          />
 
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
-            {trustItems.map(({ icon: Icon, value, label }) => (
-              <div
-                key={label}
-                className="flex flex-col items-center justify-center rounded-2xl border border-line-soft p-6 text-center"
-              >
-                <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-full bg-gray-100">
-                  <Icon className="text-ink" size={20} />
+          <div className="flex flex-col items-center gap-8">
+            <div className="flex flex-wrap justify-center gap-6 sm:gap-[62px]">
+              {trustItems.slice(0, 3).map(({ icon, value, label }) => (
+                <div
+                  key={label}
+                  className="flex h-[185px] w-[174px] flex-col items-center justify-center gap-4 rounded-[20px] border border-[#e9ebef] text-center"
+                >
+                  <div className="flex h-[54px] w-[54px] items-center justify-center rounded-full bg-[#f8faff]">
+                    <img src={icon} alt="" className="h-6 w-6" />
+                  </div>
+                  <div>
+                    <div className="text-xl font-bold text-[#1e293b]">{value}</div>
+                    <div className="text-base text-[#64748b]">{label}</div>
+                  </div>
                 </div>
-                <div className="text-lg font-bold text-ink-heading">{value}</div>
-                <div className="text-sm text-ink-muted">{label}</div>
-              </div>
-            ))}
+              ))}
+            </div>
+            <div className="flex flex-wrap justify-center gap-6 sm:gap-12">
+              {trustItems.slice(3).map(({ icon, value, label }) => (
+                <div
+                  key={label}
+                  className="flex h-[185px] w-[174px] flex-col items-center justify-center gap-4 rounded-[20px] border border-[#e9ebef] text-center"
+                >
+                  <div className="flex h-[54px] w-[54px] items-center justify-center rounded-full bg-[#f8faff]">
+                    <img src={icon} alt="" className="h-6 w-6" />
+                  </div>
+                  <div>
+                    <div className="text-xl font-bold text-[#1e293b]">{value}</div>
+                    <div className="text-base text-[#64748b]">{label}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 

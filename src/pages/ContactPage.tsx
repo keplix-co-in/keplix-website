@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Clock, MapPin, Send, HeadphonesIcon } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
+import PageBlob from '../components/PageBlob';
 
 const contactMethods = [
   {
@@ -47,6 +48,19 @@ const inquiryTypes = [
   { value: 'press', label: 'Press & Media' },
   { value: 'careers', label: 'Careers' },
 ];
+
+const businessHours = [
+  { day: 'Monday - Friday', hours: '9:00 AM - 8:00 PM' },
+  { day: 'Saturday', hours: '10:00 AM - 6:00 PM' },
+  { day: 'Sunday', hours: '12:00 PM - 5:00 PM' },
+];
+
+const fieldClass =
+  'h-[50px] w-full rounded-[8px] border border-black/10 bg-white px-4 text-[14px] text-ink outline-none transition-colors focus:border-brand-red';
+const labelClass = 'block text-[14px] font-medium leading-[20px] text-[#363636]';
+const cardClass =
+  'rounded-[12px] bg-white p-6 drop-shadow-[0px_4px_2px_rgba(0,0,0,0.25)]';
+const cardHeadingClass = 'text-[16px] font-semibold leading-[28px] text-black';
 
 const ContactPage: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -98,217 +112,219 @@ const ContactPage: React.FC = () => {
   };
 
   return (
-    <div>
-      {/* Hero */}
-      <section className="mx-auto max-w-page px-4 pb-8 pt-8 sm:px-8">
-        <h1 className="text-4xl font-extrabold text-ink sm:text-5xl">
-          Contact Keplix
-        </h1>
-        <p className="mt-4 max-w-xl text-lg text-ink-muted">
-          We&apos;re here to help. Reach out to us through any of the channels
-          below.
-        </p>
-      </section>
+    <div className="relative overflow-hidden">
+      <PageBlob />
 
-      {/* Get in Touch */}
-      <section className="mx-auto max-w-page px-4 py-8 sm:px-8">
-        <h2 className="text-center text-3xl font-bold text-black">
-          Get in <span className="text-[#f84a4a]">Touch</span>
-        </h2>
-        <p className="mt-4 text-center text-xl text-[#636363]">
-          Choose the method that works best for you. We&apos;re available
-          24/7 to assist you.
-        </p>
+      {/* Hero + Get in Touch */}
+      <section className="relative z-10">
+        <div className="mx-auto max-w-page px-4 pt-[74px] sm:px-8 lg:px-16">
+          {/* Text content */}
+          <div className="flex flex-col gap-7 pb-[42px]">
+            <h1 className="text-4xl font-bold leading-tight text-ink sm:text-[56px] sm:leading-[72px]">
+              Contact Keplix
+            </h1>
+            <p className="max-w-[512px] text-lg font-medium text-ink-muted sm:text-[20px]">
+              We&apos;re here to help. Reach out to us through any of the
+              channels below..
+            </p>
+          </div>
 
-        <div className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {contactMethods.map(({ icon, title, description, contact }) => (
-            <div
-              key={title}
-              className="flex flex-col items-center rounded-xl bg-blush-300/60 px-8 py-8 text-center shadow-[0px_1px_1px_rgba(0,0,0,0.05)]"
-            >
-              <img src={icon} alt="" className="h-12 w-12" />
-              <h3 className="mt-3 text-xl font-bold text-ink-heading">
-                {title}
-              </h3>
-              <p className="mt-3 max-w-[200px] text-base text-gray-600">
-                {description}
-              </p>
-              <p className="mt-3 text-base font-medium text-[#d91f26]">
-                {contact}
-              </p>
+          {/* Get in Touch */}
+          <div className="pb-16 pt-[19px]">
+            <h2 className="text-[28px] font-bold text-black">
+              Get in <span className="text-[#f84a4a]">Touch</span>
+            </h2>
+            <p className="mt-4 text-[20px] text-[#636363]">
+              Choose the method that works best for you. We&apos;re available
+              24/7 to assist you.
+            </p>
+
+            <div className="mx-auto mt-[53px] grid grid-cols-1 gap-8 sm:grid-cols-2 lg:max-w-[856px] lg:grid-cols-3">
+              {contactMethods.map(({ icon, title, description, contact }) => (
+                <div
+                  key={title}
+                  className="flex flex-col items-center rounded-[12px] bg-[#fbf0f0] px-8 pb-[34px] pt-8 text-center drop-shadow-[0px_1px_1px_rgba(0,0,0,0.05)]"
+                >
+                  <img src={icon} alt="" className="h-12 w-12" />
+                  <h3 className="mt-3 text-[20px] font-bold text-[#111827]">
+                    {title}
+                  </h3>
+                  <p className="mt-6 text-[16px] font-medium text-[#4b5563]">
+                    {description}
+                  </p>
+                  <p className="mt-3 text-[16px] font-medium text-[#d91f26]">
+                    {contact}
+                  </p>
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
         </div>
       </section>
 
       {/* Form + Info */}
-      <section className="mx-auto max-w-page px-4 py-16 sm:px-8">
-        <div className="grid gap-8 lg:grid-cols-[1.3fr_1fr]">
-          <div className="rounded-2xl border border-line-soft bg-white p-6 shadow-card sm:p-8">
-            <h3 className="text-xl font-bold text-ink-heading">
-              Send us a Message
-            </h3>
-            <form onSubmit={handleSubmit} className="mt-6 flex flex-col gap-4">
-              <div className="grid gap-4 sm:grid-cols-2">
-                <div>
-                  <label className="mb-1 block text-sm font-medium text-ink-body">
-                    Full Name *
-                  </label>
+      <section className="relative z-10 mx-auto max-w-[1232px] px-4 pb-16 sm:px-6">
+        <div className="grid gap-8 lg:grid-cols-[705fr_495fr]">
+          {/* Message form */}
+          <div className="rounded-[12px] bg-white p-8 drop-shadow-[0px_4px_2px_rgba(0,0,0,0.28)]">
+            <h2 className={cardHeadingClass}>Send us a Message</h2>
+
+            <form onSubmit={handleSubmit} className="mt-8 flex flex-col gap-6">
+              <div className="grid gap-6 sm:grid-cols-2">
+                <div className="flex flex-col gap-2">
+                  <label className={labelClass}>Full Name *</label>
                   <input
                     type="text"
                     name="name"
                     value={formData.name}
                     onChange={handleChange}
                     required
-                    className="w-full rounded-btn border border-line px-4 py-3 text-ink focus:border-brand-red focus:outline-none"
+                    className={fieldClass}
                   />
                 </div>
-                <div>
-                  <label className="mb-1 block text-sm font-medium text-ink-body">
-                    Email Address *
-                  </label>
+                <div className="flex flex-col gap-2">
+                  <label className={labelClass}>Email Address *</label>
                   <input
                     type="email"
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
                     required
-                    className="w-full rounded-btn border border-line px-4 py-3 text-ink focus:border-brand-red focus:outline-none"
+                    className={fieldClass}
                   />
                 </div>
               </div>
 
-              <div className="grid gap-4 sm:grid-cols-2">
-                <div>
-                  <label className="mb-1 block text-sm font-medium text-ink-body">
-                    Phone Number
-                  </label>
+              <div className="grid gap-6 sm:grid-cols-2">
+                <div className="flex flex-col gap-2">
+                  <label className={labelClass}>Phone Number</label>
                   <input
                     type="tel"
                     name="phone"
                     value={formData.phone}
                     onChange={handleChange}
-                    className="w-full rounded-btn border border-line px-4 py-3 text-ink focus:border-brand-red focus:outline-none"
+                    className={fieldClass}
                   />
                 </div>
-                <div>
-                  <label className="mb-1 block text-sm font-medium text-ink-body">
-                    Inquiry Type
-                  </label>
-                  <select
-                    name="inquiryType"
-                    value={formData.inquiryType}
-                    onChange={handleChange}
-                    className="w-full rounded-btn border border-line px-4 py-3 text-ink focus:border-brand-red focus:outline-none"
-                  >
-                    {inquiryTypes.map((type) => (
-                      <option key={type.value} value={type.value}>
-                        {type.label}
-                      </option>
-                    ))}
-                  </select>
+                <div className="flex flex-col gap-2">
+                  <label className={labelClass}>Inquiry Type</label>
+                  <div className="relative">
+                    <select
+                      name="inquiryType"
+                      value={formData.inquiryType}
+                      onChange={handleChange}
+                      className={`${fieldClass} appearance-none pr-11 text-[12px]`}
+                    >
+                      {inquiryTypes.map((type) => (
+                        <option key={type.value} value={type.value}>
+                          {type.label}
+                        </option>
+                      ))}
+                    </select>
+                    <ChevronDown
+                      className="pointer-events-none absolute right-[9px] top-1/2 -translate-y-1/2 text-ink"
+                      size={24}
+                    />
+                  </div>
                 </div>
               </div>
 
-              <div>
-                <label className="mb-1 block text-sm font-medium text-ink-body">
-                  Subject *
-                </label>
+              <div className="flex flex-col gap-2">
+                <label className={labelClass}>Subject *</label>
                 <input
                   type="text"
                   name="subject"
                   value={formData.subject}
                   onChange={handleChange}
                   required
-                  className="w-full rounded-btn border border-line px-4 py-3 text-ink focus:border-brand-red focus:outline-none"
+                  className={fieldClass}
                 />
               </div>
 
-              <div>
-                <label className="mb-1 block text-sm font-medium text-ink-body">
-                  Message *
-                </label>
+              <div className="flex flex-col gap-2 pb-1.5">
+                <label className={labelClass}>Message *</label>
                 <textarea
                   name="message"
                   value={formData.message}
                   onChange={handleChange}
-                  rows={5}
                   required
-                  className="w-full resize-none rounded-btn border border-line px-4 py-3 text-ink focus:border-brand-red focus:outline-none"
+                  className="h-[170px] w-full resize-none rounded-[8px] border border-black/10 bg-white px-4 py-3 text-[14px] text-ink outline-none transition-colors focus:border-brand-red"
                 />
               </div>
 
               <button
                 type="submit"
-                className="flex items-center justify-center gap-2 rounded-btn bg-brand-red py-4 text-base font-bold text-white shadow-btn transition-colors hover:bg-brand-redHover"
+                className="w-full rounded-[8px] bg-[#da1e27] py-4 text-center text-[16px] font-bold leading-6 text-white transition-opacity hover:opacity-90"
               >
-                <Send size={18} />
                 Send Message
               </button>
             </form>
           </div>
 
-          <div className="flex flex-col gap-6">
-            <div className="rounded-2xl border border-line-soft bg-white p-6 shadow-card">
-              <div className="flex items-center gap-3">
-                <Clock className="text-ink" size={22} />
-                <h3 className="text-lg font-bold text-ink-heading">
-                  Business Hours
-                </h3>
+          {/* Sidebar */}
+          <div className="flex flex-col gap-8">
+            {/* Business hours */}
+            <div className={cardClass}>
+              <h2 className={cardHeadingClass}>Business Hours</h2>
+              <div className="mt-6 flex flex-col gap-4">
+                {businessHours.map(({ day, hours }) => (
+                  <div key={day} className="flex items-center justify-between">
+                    <span className="text-[14px] leading-5 text-[#363636]">
+                      {day}
+                    </span>
+                    <span className="text-[14px] font-medium leading-5 text-black">
+                      {hours}
+                    </span>
+                  </div>
+                ))}
               </div>
-              <div className="mt-4 flex flex-col gap-2 text-sm text-ink-body">
-                <div className="flex justify-between">
-                  <span>Monday - Friday</span>
-                  <span>9:00 AM - 8:00 PM</span>
+              <div className="mt-6 flex items-center gap-2 border-t border-[#d6d6d7] pt-[25px]">
+                <img src="/icons/contact-headset.svg" alt="" className="h-5 w-5" />
+                <span className="text-[14px] font-semibold leading-5 text-[#f84a4a]">
+                  24/7 Emergency Support Available
+                </span>
+              </div>
+            </div>
+
+            {/* Our office */}
+            <div className={cardClass}>
+              <h2 className={cardHeadingClass}>Our Office</h2>
+              <div className="mt-6 flex flex-col gap-[15px]">
+                <p className="text-[16px] font-bold leading-6 text-[#f84a4a]">
+                  Delhi
+                </p>
+                <p className="text-[14px] leading-[22.75px] text-[#363636]">
+                  9/2659, Kailash Nagar, Gandhi Nagar, Delhi, 110031
+                </p>
+                <div className="flex items-center gap-3">
+                  <img
+                    src="/icons/contact-phone-sm.svg"
+                    alt=""
+                    className="h-4 w-4"
+                  />
+                  <span className="text-[14px] leading-5 text-[#363636]">
+                    +91 98189 15720
+                  </span>
                 </div>
-                <div className="flex justify-between">
-                  <span>Saturday</span>
-                  <span>10:00 AM - 6:00 PM</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Sunday</span>
-                  <span>12:00 PM - 5:00 PM</span>
-                </div>
-                <div className="mt-2 flex items-center gap-2 border-t border-line-soft pt-3 text-brand-red">
-                  <HeadphonesIcon size={16} />
-                  <span className="font-semibold">
-                    24/7 Emergency Support Available
+                <div className="flex items-center gap-3">
+                  <img
+                    src="/icons/contact-mail-sm.svg"
+                    alt=""
+                    className="h-4 w-4"
+                  />
+                  <span className="text-[14px] leading-5 text-[#363636]">
+                    support@keplix.co.in
                   </span>
                 </div>
               </div>
             </div>
 
-            <div className="rounded-2xl border border-line-soft bg-white p-6 shadow-card">
-              <div className="flex items-center gap-3">
-                <MapPin className="text-ink" size={22} />
-                <h3 className="text-lg font-bold text-ink-heading">
-                  Our Office
-                </h3>
-              </div>
-              <h4 className="mt-4 text-base font-semibold text-brand-red">
-                Delhi
-              </h4>
-              <p className="mt-1 text-sm text-ink-muted">
-                9/2659, Kailash Nagar, Gandhi Nagar, Delhi, 110031
-              </p>
-              <div className="mt-3 flex flex-col gap-1 text-sm text-ink-faint">
-                <span>+91 98189 15720</span>
-                <span>support@keplix.co.in</span>
-              </div>
-            </div>
-
-            <div className="rounded-2xl border border-line-soft bg-white p-4 shadow-card">
-              <div className="mb-3 flex items-center gap-3 px-2">
-                <MapPin className="text-ink" size={20} />
-                <h3 className="text-base font-bold text-ink-heading">
-                  Find Us
-                </h3>
-              </div>
+            {/* Find us */}
+            <div className={`${cardClass} flex flex-col gap-6`}>
+              <h2 className={cardHeadingClass}>Find Us</h2>
               <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3501.674!2d77.23148931507842!3d28.650094882430087!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cfd0683916387%3A0x633e9511b6a0e53b!2sKailash%20Nagar%2C%20Gandhi%20Nagar%2C%20Delhi%2C%20110031!5e0!3m2!1sen!2sin!4v1640995200000!5m2!1sen!2sin"
-                width="100%"
-                height="220"
-                style={{ border: 0, borderRadius: '12px' }}
+                className="h-[203px] w-full rounded-[8px] border border-[#494f56]"
                 allowFullScreen
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
