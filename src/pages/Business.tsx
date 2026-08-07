@@ -328,7 +328,10 @@ const Business: React.FC = () => {
 
       {/* CTA */}
       <section className="relative z-10 mx-auto max-w-page px-4 py-16 sm:px-8">
-        <div className="flex flex-col items-center justify-between gap-8 rounded-[24px] bg-[#15023d] p-8 shadow-[0px_20px_25px_-5px_rgba(0,0,0,0.1),0px_8px_10px_-6px_rgba(0,0,0,0.1)] lg:flex-row lg:p-16">
+        <div className="rounded-[24px] bg-[#15023d] p-8 shadow-[0px_20px_25px_-5px_rgba(0,0,0,0.1),0px_8px_10px_-6px_rgba(0,0,0,0.1)] lg:p-16">
+          {/* Capped to Figma's inner width (774 text + 329 art) so the two
+              blocks stay adjacent instead of spreading apart on wide screens. */}
+          <div className="mx-auto flex w-full max-w-[1103px] flex-col items-center justify-between gap-8 lg:flex-row">
           <div className="flex flex-col items-center gap-8 sm:flex-row lg:w-[774px]">
             <div className="shrink-0 rounded-2xl bg-partner p-6">
               <img
@@ -353,6 +356,7 @@ const Business: React.FC = () => {
             aria-hidden
             className="h-[220px] w-[220px] shrink-0 object-cover lg:h-[329px] lg:w-[329px]"
           />
+          </div>
         </div>
       </section>
     </div>

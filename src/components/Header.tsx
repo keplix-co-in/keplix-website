@@ -43,12 +43,12 @@ const Header: React.FC = () => {
           : 'bg-transparent'
       }`}
     >
-      <div className="mx-auto flex h-20 max-w-page items-center justify-between px-4 sm:px-8">
+      <div className="mx-auto flex h-24 max-w-page items-center justify-between px-4 sm:px-8">
         <Link to="/" className="flex shrink-0 items-center">
           <img
             src="/keplix-logo.png"
             alt="Keplix"
-            className="h-12 w-[53px] object-contain sm:h-16 sm:w-[70px]"
+            className="h-14 w-[62px] object-contain sm:h-20 sm:w-[88px]"
           />
         </Link>
 

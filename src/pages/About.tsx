@@ -54,9 +54,9 @@ const About: React.FC = () => {
 
       {/* Hero */}
       <section className="relative z-10">
-        <div className="mx-auto max-w-page px-4 pt-[59px] sm:px-8">
+        <div className="mx-auto max-w-page px-4 sm:px-8">
           <div className="grid items-center gap-8 lg:grid-cols-[656fr_520fr]">
-            <div className="flex flex-col gap-7 pb-[42px]">
+            <div className="flex flex-col gap-7 py-[42px]">
               <h1 className="text-4xl font-bold leading-tight text-ink sm:text-[56px] sm:leading-[72px]">
                 About Keplix
               </h1>
@@ -82,11 +82,13 @@ const About: React.FC = () => {
 
       {/* Pillars */}
       <section className="relative z-10 mx-auto max-w-page px-4 py-8 sm:px-8">
-        <div className="flex flex-wrap justify-center gap-8">
+        {/* Grid rather than fixed 264px cards, so the row fills the container
+            and scales with the page instead of bunching in the middle. */}
+        <div className="grid grid-cols-2 gap-8 lg:grid-cols-4">
           {pillars.map(({ icon, title, description }) => (
             <div
               key={title}
-              className="flex w-full max-w-[264px] flex-col items-center rounded-[12px] bg-[#fbf0f0] px-8 pb-[34px] pt-8 text-center drop-shadow-[0px_1px_1px_rgba(0,0,0,0.05)] sm:h-[234px]"
+              className="flex flex-col items-center rounded-[12px] bg-[#fbf0f0] px-8 pb-[34px] pt-8 text-center drop-shadow-[0px_1px_1px_rgba(0,0,0,0.05)] sm:min-h-[234px]"
             >
               <img src={icon} alt="" className="h-10 w-10" />
               <h3 className="mt-4 text-[20px] font-bold text-[#111827]">
@@ -101,7 +103,7 @@ const About: React.FC = () => {
       </section>
 
       {/* Journey */}
-      <section className="relative z-10 mx-auto max-w-[1125px] px-4 py-16 sm:px-8">
+      <section className="relative z-10 mx-auto max-w-page px-4 py-16 sm:px-8">
         <h2 className={sectionHeadingClass}>Our Journey</h2>
         <div className="relative mt-7">
           <div
@@ -129,11 +131,9 @@ const About: React.FC = () => {
       </section>
 
       {/* Our Story */}
-      <section className="relative z-10 bg-[#F3414B] px-4 py-20 sm:px-8">
+      <section className="relative z-10 px-4 py-20 sm:px-8">
         <div className="mx-auto max-w-page">
-          <h2 className="text-2xl font-semibold leading-8 text-white sm:text-[28px]">
-            Our Story
-          </h2>
+          <h2 className={sectionHeadingClass}>Our Story</h2>
 
           <div className="mt-12 grid gap-12 lg:grid-cols-[620fr_562fr] lg:items-start lg:gap-16">
             {/* The story runs long, so the video sticks alongside it while you
@@ -145,23 +145,23 @@ const About: React.FC = () => {
                 loop
                 muted
                 playsInline
-                className="aspect-[620/353] w-full rounded-2xl object-cover shadow-[0px_20px_40px_-12px_rgba(0,0,0,0.35)]"
+                className="aspect-[620/353] w-full rounded-2xl object-cover shadow-[0px_16px_32px_-12px_rgba(11,21,33,0.25)]"
               >
                 Your browser does not support the video tag.
               </video>
-              <p className="mt-5 text-sm font-semibold uppercase tracking-[0.12em] text-white/70">
+              <p className="mt-5 text-sm font-semibold uppercase tracking-[0.12em] text-ink-faint">
                 Vardan Chaturvedi &middot; Founder
               </p>
             </div>
 
             <div className="max-w-[562px]">
-              <p className="text-xl font-bold leading-8 text-white sm:text-2xl">
+              <p className="text-xl font-bold leading-8 text-[#111827] sm:text-2xl">
                 From a broken-down car to building KEPLIX
               </p>
-              <p className="mt-6 text-lg font-medium leading-8 text-white">
+              <p className="mt-6 text-lg font-medium leading-8 text-[#374151]">
                 Hey everyone,
               </p>
-              <div className="mt-4 flex flex-col gap-5 text-base font-medium leading-7 text-white/90">
+              <div className="mt-4 flex flex-col gap-5 text-base font-medium leading-7 text-[#6b7280]">
                 {storyParagraphs.map((paragraph, i) => (
                   <p key={i}>{paragraph}</p>
                 ))}
@@ -175,8 +175,9 @@ const About: React.FC = () => {
       <section className="relative z-10 bg-white px-4 py-20 sm:px-8">
         <div className="mx-auto flex max-w-page flex-col gap-12">
           <h2 className={sectionHeadingClass}>Our Leadership</h2>
-          <div className="flex flex-col items-start justify-center gap-12 lg:flex-row">
-            <div className="flex w-full shrink-0 flex-col items-center gap-3 lg:w-[512px]">
+          {/* Figma's 512 / 656 split expressed as fractions so it scales. */}
+          <div className="grid items-start gap-12 lg:grid-cols-[512fr_656fr]">
+            <div className="flex w-full flex-col items-center gap-3">
               <div className="rounded-full border-2 border-[#f3f4f6] p-1.5">
                 <img
                   src="/ceo-vardan.jpg"
@@ -191,7 +192,7 @@ const About: React.FC = () => {
                 CEO &amp; Founder
               </p>
             </div>
-            <div className="w-full max-w-[528px] text-center text-[16px] font-medium leading-6 text-[#6b7280]">
+            <div className="mx-auto w-full max-w-[528px] text-center text-[16px] font-medium leading-6 text-[#6b7280]">
               <p>
                 I am the Founder and Executive Director at Keplix Pvt Ltd, with
                 a strong background in automotive design and business. My

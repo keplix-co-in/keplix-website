@@ -52,7 +52,10 @@ export default {
         cardHover: '0px 10px 20px -6px rgba(217,4,13,0.12)',
       },
       maxWidth: {
-        page: '1280px',
+        // Figma frames are 1280 wide, but max-width only caps — so content is
+        // still exactly 1216 (Figma) at 1280 and only stretches on wider
+        // monitors, where a 1280 cap left ~350px of bare background per side.
+        page: '1728px',
       },
     },
   },

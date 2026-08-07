@@ -20,7 +20,7 @@ const Hero: React.FC = () => {
         <div className="grid items-start lg:grid-cols-2">
           {/* Text content. Figma puts the heading 87px below the header and the
               video 33px below it, so the video sits slightly higher. */}
-          <div className="flex flex-col items-start gap-8 px-4 pb-16 pt-10 sm:px-8 sm:pt-[87px] lg:pl-[max(2rem,calc((100vw-1280px)/2+2rem))] lg:pr-12">
+          <div className="flex flex-col items-start gap-8 px-4 pb-16 pt-10 sm:px-8 sm:pt-[87px] lg:pl-[max(2rem,calc((100vw-1728px)/2+2rem))] lg:pr-12">
             <h1 className="text-4xl font-extrabold leading-tight text-ink sm:text-5xl lg:text-[56px] lg:leading-[72px]">
               Find Trusted
               <br />
@@ -74,8 +74,10 @@ const Hero: React.FC = () => {
             </span>
           </div>
           <div className="grid gap-6 lg:grid-cols-2">
-            {/* Card sizes/colours measured from Figma 400:620 and 400:733.
-                overflow-hidden lets the phone mockup bleed off the bottom edge. */}
+            {/* Card sizes/colours measured from Figma 400:620 and 400:733. The
+                phone mockups are sized by height, not width: the two PNGs have
+                different aspect ratios, so a shared width renders them at
+                different heights and the cards look uneven. */}
             <div className="flex items-center justify-between gap-6 overflow-hidden rounded-[24px] bg-[#fff1f2] p-8 shadow-[0px_1px_2px_rgba(0,0,0,0.05)]">
               <div className="flex flex-col">
                 <div className="flex items-center gap-3">
@@ -99,7 +101,7 @@ const Hero: React.FC = () => {
               <img
                 src="/hero-phone-customer.png"
                 alt="Keplix customer app"
-                className="-mb-16 hidden w-[124px] shrink-0 self-end sm:block"
+                className="hidden h-[280px] w-auto shrink-0 object-contain sm:block lg:h-[320px]"
               />
             </div>
 
@@ -126,7 +128,7 @@ const Hero: React.FC = () => {
               <img
                 src="/hero-phone-garage.png"
                 alt="Keplix garage partner app"
-                className="-mb-16 hidden w-[124px] shrink-0 self-end sm:block"
+                className="hidden h-[280px] w-auto shrink-0 object-contain sm:block lg:h-[320px]"
               />
             </div>
           </div>

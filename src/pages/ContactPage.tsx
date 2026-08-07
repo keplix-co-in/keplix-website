@@ -117,9 +117,9 @@ const ContactPage: React.FC = () => {
 
       {/* Hero + Get in Touch */}
       <section className="relative z-10">
-        <div className="mx-auto max-w-page px-4 pt-[74px] sm:px-8">
+        <div className="mx-auto max-w-page px-4 sm:px-8">
           {/* Text content */}
-          <div className="flex flex-col gap-7 pb-[42px]">
+          <div className="flex flex-col gap-7 py-[42px]">
             <h1 className="text-4xl font-bold leading-tight text-ink sm:text-[56px] sm:leading-[72px]">
               Contact Keplix
             </h1>
@@ -139,7 +139,10 @@ const ContactPage: React.FC = () => {
               24/7 to assist you.
             </p>
 
-            <div className="mx-auto mt-[53px] grid grid-cols-1 gap-8 sm:grid-cols-2 lg:max-w-[856px] lg:grid-cols-3">
+            {/* Fills the container so the cards' left edge lines up with the
+                heading above, and the 3 columns scale with the page instead of
+                staying pinned at Figma's 856px and drifting off-centre. */}
+            <div className="mt-[53px] grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
               {contactMethods.map(({ icon, title, description, contact }) => (
                 <div
                   key={title}
@@ -163,7 +166,7 @@ const ContactPage: React.FC = () => {
       </section>
 
       {/* Form + Info */}
-      <section className="relative z-10 mx-auto max-w-[1232px] px-4 pb-16 sm:px-6">
+      <section className="relative z-10 mx-auto max-w-page px-4 pb-16 sm:px-8">
         <div className="grid gap-8 lg:grid-cols-[705fr_495fr]">
           {/* Message form */}
           <div className="rounded-[12px] bg-white p-8 drop-shadow-[0px_4px_2px_rgba(0,0,0,0.28)]">

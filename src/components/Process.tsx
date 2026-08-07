@@ -15,7 +15,7 @@ const Process: React.FC = () => {
             key={src}
             src={src}
             alt="Keplix app showcase"
-            className="w-full rounded-2xl shadow-card"
+            className="w-full rounded-2xl bg-[#f7e6e6]"
           />
         ))}
       </div>
