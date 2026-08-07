@@ -1,187 +1,168 @@
-import { Users, Target, Award, Zap, Heart, Globe } from 'lucide-react';
+import React from 'react';
 
-const About = () => {
-  const values = [
-    {
-      icon: <Heart className="w-8 h-8" />,
-      title: "Customer First",
-      description: "Every decision we make is centered around delivering exceptional value and service to our customers."
-    },
-    {
-      icon: <Zap className="w-8 h-8" />,
-      title: "Innovation",
-      description: "We continuously push boundaries with cutting-edge technology to revolutionize automotive care."
-    },
-    {
-      icon: <Award className="w-8 h-8" />,
-      title: "Quality",
-      description: "We maintain the highest standards in service delivery and partner only with certified professionals."
-    },
-    {
-      icon: <Globe className="w-8 h-8" />,
-      title: "Accessibility",
-      description: "Making quality automotive services accessible to everyone, everywhere across India."
-    }
-  ];
+const pillars = [
+  {
+    icon: '/icons/about-mission.svg',
+    title: 'Our Mission',
+    description: 'To simplify car care and build trust between car owners and garages.',
+  },
+  {
+    icon: '/icons/about-vision.svg',
+    title: 'Our Vision',
+    description: "To become India's most trusted car care platform.",
+  },
+  {
+    icon: '/icons/about-values.svg',
+    title: 'Our Values',
+    description: 'Transparency, Trust, Customer First, Innovation.',
+  },
+  {
+    icon: '/icons/about-promise.svg',
+    title: 'Our Promise',
+    description: 'Better car care experiences for everyone.',
+  },
+];
 
-  const team = [
-    {
-      name: "Vardan Chaturvedi",
-      role: "CEO & Founder",
-      image: `${import.meta.env.BASE_URL}Vardan.jpg`,
-      description: "6+ years in automotive industry"
-    },
-    {
-      name: "Aditya Narayan",
-      role: "Head of Technology",
-      image: `${import.meta.env.BASE_URL}aditya.webp`,
-      description: "Tech visionary with AI expertise"
-    }
-  ];
+const journey = [
+  { year: '2024', title: 'The Idea', description: 'KEPLIX was founded with a simple idea to make car care better.' },
+  { year: '2024', title: 'Early Growth', description: 'Onboarded 100+ verified garages in Delhi-NCR.' },
+  { year: '2025', title: 'Expanding', description: 'Launched our customer app and grew our community.' },
+  { year: '2026', title: 'The Future', description: 'Continuing to innovate and expand across India.' },
+];
 
+const storyParagraphs = [
+  "I'm Vardan, Founder of KEPLIX.",
+  "These days, everyone seems to be building a startup — but I often ask myself, how many are born out of a real problem?",
+  "For me, KEPLIX isn't just another startup. It's deeply personal. A few years ago, I was driving on the Delhi-Dehradun highway when my car suddenly broke down — right in the middle of nowhere, late at night. I started calling nearby garages, googling nearby mechanics wasting a lot of time, and to my surprise, everyone was quoting insanely high prices for something that would normally cost barely ₹1,000.",
+  "That night stuck with me. I realised how unorganised and unfair the automotive service space really was — especially for people stranded or unaware of genuine pricing.",
+  "That's where the seed for KEPLIX was planted.",
+  "Since then, I've worked with brands like Hero, Studio 34 and Ace, explored automotive design colleges across India — from DYPDC Pune to UPES Dehradun (where I finally pursued my degree) — and continued diving deeper into what drives this industry forward.",
+  "I've always loved cars. But KEPLIX is more than just a passion project. It's a solution I wished existed that night on the highway — and one that millions of people still need today.",
+  "We're building an open marketplace that connects vehicle owners directly to their nearby trusted automotive service providers where a user can compare prices and review and can book a time slot according to their affordability and time — fair, transparent, and nearby.",
+  "Our product is launching soon, and it finally feels like everything is coming together.",
+  "This isn't about chasing trends. It's about solving a real problem with something I truly believe in.",
+];
+
+const About: React.FC = () => {
   return (
-    <div className="min-h-screen bg-black text-white">
-      {/* Hero Section */}
-      <section className="pt-32 pb-20 bg-gradient-to-br from-gray-900 via-black to-gray-800 relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-20 left-20 w-32 h-32 bg-red-500 rounded-full blur-3xl animate-pulse"></div>
-          <div className="absolute bottom-20 right-20 w-24 h-24 bg-red-500 rounded-full blur-2xl animate-pulse delay-1000"></div>
-        </div>
-
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="text-center max-w-4xl mx-auto">
-            <h1 className="text-5xl md:text-7xl font-bold mb-6 animate-fade-in">
-              About <span className="text-red-500">Keplix</span>
+    <div>
+      {/* Hero */}
+      <section className="mx-auto max-w-page px-4 pb-8 pt-8 sm:px-8">
+        <div className="grid gap-10 lg:grid-cols-2 lg:items-center">
+          <div>
+            <h1 className="text-4xl font-extrabold leading-tight text-ink sm:text-5xl">
+              About Keplix
             </h1>
-            <p className="text-xl md:text-2xl text-gray-300 mb-8 animate-fade-in-delay">
-              Revolutionizing automotive care through technology, innovation, and unwavering commitment to excellence.
+            <p className="mt-6 text-lg text-ink-muted">
+              We&apos;re on a mission to make car care simple, transparent and
+              trustworthy for every car owner.
+            </p>
+            <p className="mt-4 text-lg text-ink-muted">
+              KEPLIX connects car owners with verified garages, bringing
+              transparency, convenience and reliability to car care.
             </p>
           </div>
-        </div>
-
-        {/* Large ABOUT Text Overlay */}
-        <div className="absolute bottom-0 left-0 right-0 overflow-hidden pointer-events-none">
-          <div className="text-[20vw] md:text-[15vw] font-black text-white/5 text-center leading-none">
-            ABOUT
+          <div className="flex justify-center">
+            <img
+              src="/about-hero-illustration.png"
+              alt="Illustration of a person working at a laptop"
+              className="w-full max-w-sm rounded-3xl sm:max-w-md"
+            />
           </div>
         </div>
       </section>
 
-      {/* Mission & Vision */}
-      <section className="py-20 bg-gradient-to-b from-black to-gray-900">
-        <div className="container mx-auto px-4">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-xl p-8 mb-8">
-                <div className="flex items-center gap-4 mb-6">
-                  <Target className="w-10 h-10 text-red-500" />
-                  <h2 className="text-3xl font-bold">Our Mission</h2>
-                </div>
-                <p className="text-gray-300 text-lg leading-relaxed">
-                  To democratize access to quality automotive services by connecting vehicle owners with trusted professionals through innovative technology, ensuring transparency, convenience, and excellence in every interaction.
-                </p>
-              </div>
-
-              <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-xl p-8">
-                <div className="flex items-center gap-4 mb-6">
-                  <Users className="w-10 h-10 text-red-500" />
-                  <h2 className="text-3xl font-bold">Our Vision</h2>
-                </div>
-                <p className="text-gray-300 text-lg leading-relaxed">
-                  To become India's most trusted automotive service ecosystem, where every vehicle owner has seamless access to reliable, transparent, and affordable car care solutions powered by cutting-edge technology.
-                </p>
-              </div>
+      {/* Pillars */}
+      <section className="mx-auto max-w-page px-4 py-8 sm:px-8">
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+          {pillars.map(({ icon, title, description }) => (
+            <div
+              key={title}
+              className="flex flex-col items-center gap-3 rounded-xl bg-blush-300/60 px-6 py-8 text-center shadow-[0px_1px_1px_rgba(0,0,0,0.05)]"
+            >
+              <img src={icon} alt="" className="h-10 w-10" />
+              <h3 className="text-xl font-bold text-ink-heading">{title}</h3>
+              <p className="text-base text-gray-600">{description}</p>
             </div>
-
-            <div className="relative">
-              <div className="bg-gradient-to-br from-red-500/20 to-transparent rounded-full absolute inset-0 blur-3xl"></div>
-              <img 
-                src="https://images.pexels.com/photos/3807277/pexels-photo-3807277.jpeg?auto=compress&cs=tinysrgb&w=800"
-                alt="Team collaboration"
-                className="w-full h-auto rounded-xl shadow-2xl relative z-10 transform hover:scale-105 transition-transform duration-500"
-              />
-            </div>
-          </div>
+          ))}
         </div>
       </section>
 
-      {/* Our Values */}
-      <section className="py-20 bg-gradient-to-b from-gray-900 to-black relative overflow-hidden">
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              Our <span className="text-red-500">Values</span>
-            </h2>
-            <p className="text-gray-300 text-lg max-w-2xl mx-auto">
-              The principles that guide everything we do and shape our commitment to excellence.
-            </p>
-          </div>
+      {/* Journey */}
+      <section className="mx-auto max-w-page px-4 py-16 sm:px-8">
+        <h2 className="text-2xl font-bold text-ink-heading sm:text-[28px]">
+          Our Journey
+        </h2>
+        <div className="mt-10 grid grid-cols-2 gap-8 border-t-2 border-line-soft pt-8 sm:grid-cols-4">
+          {journey.map(({ year, title, description }) => (
+            <div key={year} className="relative">
+              <span className="absolute -top-[41px] left-0 h-3 w-3 -translate-y-1/2 rounded-full bg-brand-red" />
+              <span className="text-sm font-bold text-brand-red">{year}</span>
+              <h3 className="mt-2 text-lg font-bold text-ink-heading">
+                {title}
+              </h3>
+              <p className="mt-2 text-sm text-ink-muted">{description}</p>
+            </div>
+          ))}
+        </div>
+      </section>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {values.map((value, index) => (
-              <div 
-                key={index}
-                className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-xl p-6 hover:bg-gray-800/80 transition-all duration-300 transform hover:scale-105 hover:border-red-500/50 group text-center"
-              >
-                <div className="text-red-500 mb-4 group-hover:scale-110 transition-transform duration-300 flex justify-center">
-                  {value.icon}
-                </div>
-                <h3 className="text-white text-xl font-semibold mb-3 group-hover:text-red-500 transition-colors">
-                  {value.title}
-                </h3>
-                <p className="text-gray-300 leading-relaxed">
-                  {value.description}
-                </p>
-              </div>
+      {/* Our Story */}
+      <section className="mx-auto max-w-page px-4 py-16 sm:px-8">
+        <h2 className="text-2xl font-bold text-ink-heading sm:text-[28px]">
+          Our Story
+        </h2>
+        <div className="mt-10 grid gap-10 lg:grid-cols-[1fr_1.3fr] lg:items-start">
+          <video
+            src="/mapani.mp4"
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="w-full rounded-2xl object-cover shadow-card"
+          >
+            Your browser does not support the video tag.
+          </video>
+          <div className="flex flex-col gap-4 text-base leading-relaxed text-ink-body">
+            <p className="font-semibold text-ink-heading">
+              From a broken-down car to building KEPLIX
+            </p>
+            <p>Hey everyone,</p>
+            {storyParagraphs.map((p, i) => (
+              <p key={i}>{p}</p>
             ))}
           </div>
         </div>
-
-        {/* Large VALUES Text Overlay */}
-        <div className="absolute bottom-0 left-0 right-0 overflow-hidden pointer-events-none">
-          <div className="text-[20vw] md:text-[15vw] font-black text-white/5 text-center leading-none">
-            VALUES
-          </div>
-        </div>
       </section>
 
-      {/* Team Section */}
-      <section className="py-20 pb-32 bg-gradient-to-b from-black to-gray-900">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              Meet Our <span className="text-red-500">Team</span>
-            </h2>
-            <p className="text-gray-300 text-lg max-w-2xl mx-auto">
-              The passionate individuals driving innovation in automotive care.
+      {/* Leadership */}
+      <section className="mx-auto max-w-page px-4 py-16 sm:px-8">
+        <h2 className="text-2xl font-bold text-ink-heading sm:text-[28px]">
+          Our Leadership
+        </h2>
+        <div className="mt-10 flex flex-col items-center gap-8 sm:flex-row sm:items-start sm:justify-center">
+          <div className="flex w-full max-w-[512px] flex-col items-center text-center">
+            <div className="h-32 w-32 rounded-full border-2 border-line-soft bg-[#b9b9b9] p-1.5" />
+            <h3 className="mt-6 text-2xl font-medium text-ink-heading">
+              Vardan Chaturvedi
+            </h3>
+            <p className="mt-1 text-base font-medium text-ink-muted">
+              CEO &amp; Founder
             </p>
           </div>
-
-          <div className="grid md:grid-cols-2 gap-12 max-w-6xl mx-auto">
-            {team.map((member, index) => (
-              <div 
-                key={index}
-                className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-xl p-12 hover:bg-gray-800/80 transition-all duration-300 transform hover:scale-105 group text-center min-h-[400px] flex flex-col justify-center"
-              >
-                <div className="relative mb-10">
-                  <img 
-                    src={member.image}
-                    alt={member.name}
-                    className="w-40 h-40 rounded-full mx-auto object-cover border-4 border-red-500/20 group-hover:border-red-500/50 transition-colors"
-                  />
-                </div>
-                <h3 className="text-white text-3xl font-bold mb-6 group-hover:text-red-500 transition-colors">
-                  {member.name}
-                </h3>
-                <p className="text-red-500 font-semibold mb-6 text-xl">
-                  {member.role}
-                </p>
-                <p className="text-gray-300 text-lg leading-relaxed font-medium">
-                  {member.description}
-                </p>
-              </div>
-            ))}
-          </div>
+          <p className="max-w-[528px] text-center text-base font-medium leading-6 text-ink-muted">
+            I am the Founder and Executive Director at Keplix Pvt Ltd, with a
+            strong background in automotive design and business. My
+            Bachelor&apos;s degree in Automotive Design has equipped me with
+            the skills to create innovative and user-centric vehicle
+            concepts.
+            <br />
+            <br />
+            My professional journey blends creative design expertise with
+            strategic business leadership. At Keplix, I lead a team dedicated
+            to delivering cutting-edge automotive solutions that push the
+            boundaries of technology and user experience.
+          </p>
         </div>
       </section>
     </div>

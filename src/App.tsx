@@ -27,7 +27,7 @@ const HomePage = () => (
 
 function App() {
   return (
-    <div className="min-h-screen bg-black">
+    <div className="page-wash min-h-screen">
       <ScrollToTop />
       <Header />
       <Routes>

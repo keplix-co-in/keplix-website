@@ -1,143 +1,122 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Play, Calendar, Clock } from 'lucide-react';
+import { Car, Warehouse, PlayCircle } from 'lucide-react';
 
-const CountdownTimer = () => {
-  const [timeLeft, setTimeLeft] = React.useState({
-    days: 0,
-    hours: 0,
-    minutes: 0,
-    seconds: 0
-  });
+const avatarColors = ['#fca5a5', '#93c5fd', '#fcd34d', '#a7f3d0'];
 
-  React.useEffect(() => {
-    // Set beta testing launch date to September 15, 2025 at 12:00 PM UTC
-    const launchDate = new Date('2025-09-15T12:00:00Z');
-
-    const updateCountdown = () => {
-      const now = new Date();
-      const distance = launchDate.getTime() - now.getTime();
-
-      if (distance > 0) {
-        setTimeLeft({
-          days: Math.floor(distance / (1000 * 60 * 60 * 24)),
-          hours: Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
-          minutes: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
-          seconds: Math.floor((distance % (1000 * 60)) / 1000)
-        });
-      } else {
-        // Beta launch date has passed
-        setTimeLeft({
-          days: 0,
-          hours: 0,
-          minutes: 0,
-          seconds: 0
-        });
-      }
-    };
-
-    // Update immediately
-    updateCountdown();
-
-    const timer = setInterval(updateCountdown, 1000);
-
-    return () => clearInterval(timer);
-  }, []);
-
-  return (
-    <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-xl p-6 max-w-lg mx-auto mb-8 animate-fade-in-delay-2">
-      <div className="flex items-center justify-center gap-2 mb-4">
-        <Clock className="w-5 h-5 text-red-500" />
-        <span className="text-lg font-semibold text-white">Beta Testing Launch Countdown</span>
-      </div>
-      <div className="grid grid-cols-4 gap-4 text-center">
-        <div className="bg-gray-700/50 rounded-lg p-3">
-          <div className="text-2xl md:text-3xl font-bold text-red-500">{timeLeft.days}</div>
-          <div className="text-sm text-gray-400">Days</div>
-        </div>
-        <div className="bg-gray-700/50 rounded-lg p-3">
-          <div className="text-2xl md:text-3xl font-bold text-red-500">{timeLeft.hours}</div>
-          <div className="text-sm text-gray-400">Hours</div>
-        </div>
-        <div className="bg-gray-700/50 rounded-lg p-3">
-          <div className="text-2xl md:text-3xl font-bold text-red-500">{timeLeft.minutes}</div>
-          <div className="text-sm text-gray-400">Minutes</div>
-        </div>
-        <div className="bg-gray-700/50 rounded-lg p-3">
-          <div className="text-2xl md:text-3xl font-bold text-red-500">{timeLeft.seconds}</div>
-          <div className="text-sm text-gray-400">Seconds</div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-// const Hero = () => {
 const Hero: React.FC = () => {
   const navigate = useNavigate();
 
-  const handleNavClick = (path: string) => {
-    navigate(path);
-  };
-
   return (
-    <section id="home" className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 relative overflow-hidden flex items-center">
-      {/* Shooting Stars */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="shooting-star shooting-star-1"></div>
-        <div className="shooting-star shooting-star-2"></div>
-        <div className="shooting-star shooting-star-3"></div>
-        <div className="shooting-star shooting-star-4"></div>
-        <div className="shooting-star shooting-star-5"></div>
-      </div>
+    <section className="relative overflow-hidden pt-8 sm:pt-12">
+      <div className="mx-auto max-w-page px-4 sm:px-8">
+        <div className="grid items-center gap-12 lg:grid-cols-2">
+          {/* Text content */}
+          <div className="flex flex-col items-start gap-8">
+            <h1 className="text-4xl font-extrabold leading-tight text-ink sm:text-5xl lg:text-[56px] lg:leading-[72px]">
+              Find Trusted
+              <br />
+              <span className="text-brand-red">Car Services</span>
+              <br />
+              in Minutes
+            </h1>
+            <p className="max-w-md text-lg font-medium leading-relaxed text-ink-muted sm:text-xl">
+              Compare prices from verified workshops, book appointments
+              instantly and track your vehicle service journey
+            </p>
+            <div className="flex flex-wrap items-center gap-4 pt-2">
+              <button
+                onClick={() => navigate('/beta')}
+                className="flex h-[53px] w-[141px] items-center justify-center rounded-btn bg-brand-red text-base font-bold text-white shadow-btn transition-colors hover:bg-brand-redHover"
+              >
+                Join Beta
+              </button>
+              <button className="flex h-[53px] items-center justify-center gap-3 rounded-btn border border-line bg-white px-9 text-base font-bold text-ink transition-colors hover:border-ink">
+                <PlayCircle size={24} />
+                Watch Demo
+              </button>
+            </div>
+            <div className="flex items-center gap-3 pt-2">
+              <div className="flex items-center">
+                {avatarColors.map((color, i) => (
+                  <div
+                    key={i}
+                    className="-ml-2 h-10 w-10 rounded-full border-2 border-white first:ml-0"
+                    style={{ backgroundColor: color }}
+                  />
+                ))}
+              </div>
+              <span className="text-sm font-medium text-ink-muted">
+                Trusted by 10,000+ car owners
+              </span>
+            </div>
+          </div>
 
-      {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute top-20 left-20 w-32 h-32 bg-red-500 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-20 right-20 w-24 h-24 bg-red-500 rounded-full blur-2xl animate-pulse delay-1000"></div>
-      </div>
+          {/* Role selection cards */}
+          <div className="relative pt-10 lg:pt-0">
+            <div className="absolute left-1/2 top-0 z-10 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white px-6 py-3 shadow-card">
+              <span className="whitespace-nowrap text-lg font-bold text-ink">
+                Who Are You?
+              </span>
+            </div>
+            <div className="flex flex-col gap-6 sm:flex-row">
+              <div className="flex flex-1 items-center justify-between gap-4 rounded-2xl bg-blush-300 p-6">
+                <div>
+                  <div className="flex items-center gap-3">
+                    <Car className="text-brand-red" size={28} />
+                    <h3 className="text-xl font-bold text-ink-heading">
+                      I&apos;m a Car Owner
+                    </h3>
+                  </div>
+                  <p className="mt-3 max-w-[200px] text-sm font-medium leading-6 text-gray-600">
+                    Find trusted garages, compare prices, and book your next
+                    service.
+                  </p>
+                  <div className="mt-6 h-1 w-8 rounded-full bg-blush-300" />
+                  <button
+                    onClick={() => navigate('/beta')}
+                    className="mt-4 rounded-btn bg-[#e11d48] px-6 py-3 text-sm font-medium text-white shadow-card transition-colors hover:bg-brand-redHover"
+                  >
+                    Download Customer App
+                  </button>
+                </div>
+                <img
+                  src="/hero-phone-customer.png"
+                  alt="Keplix customer app"
+                  className="h-auto w-[110px] shrink-0 drop-shadow-xl"
+                />
+              </div>
 
-      <div className="container mx-auto px-4 py-16 pt-24 md:pt-32 relative z-10 w-full">
-        <div className="text-center max-w-4xl mx-auto">
-          <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 animate-fade-in">
-            "Drive Smarter. Book Faster.<br />
-            Trust <span className="text-red-500">Keplix</span>."
-          </h1>
-
-          <p className="text-xl md:text-2xl text-gray-300 mb-8 animate-fade-in-delay">
-            "Find, compare, book and track auto services at your fingertips."
-          </p>
-
-          <CountdownTimer />
-
-          <div className="flex flex-col sm:flex-row gap-8 sm:gap-4 justify-center items-center animate-fade-in-delay-2">
-            <button
-              onClick={() => handleNavClick('/beta')}
-              className="bg-red-500 text-white px-8 py-4 rounded-full font-semibold hover:bg-red-600 transition-all duration-300 transform hover:scale-105 flex items-center gap-2"
-            >
-              <Play size={20} />
-              Watch the Beta Now
-            </button>
-
-            <div className="flex items-center gap-2 text-gray-300">
-              <Calendar size={20} />
-              <span>Quick service within 24 hours</span>
+              <div className="flex flex-1 items-center justify-between gap-4 rounded-2xl bg-partner-soft p-6">
+                <div>
+                  <div className="flex items-center gap-3">
+                    <Warehouse className="text-partner" size={28} />
+                    <h3 className="text-xl font-bold text-ink-heading">
+                      I Own a Garage
+                    </h3>
+                  </div>
+                  <p className="mt-3 max-w-[200px] text-sm font-medium leading-6 text-gray-600">
+                    Grow your business, receive verified bookings, and manage
+                    everything digitally.
+                  </p>
+                  <div className="mt-6 h-1 w-8 rounded-full bg-partner-soft" />
+                  <button
+                    onClick={() => navigate('/business')}
+                    className="mt-4 rounded-btn bg-brand-blue px-6 py-3 text-sm font-medium text-white shadow-card transition-colors hover:opacity-90"
+                  >
+                    Become a Garage Partner
+                  </button>
+                </div>
+                <img
+                  src="/hero-phone-garage.png"
+                  alt="Keplix garage partner app"
+                  className="h-auto w-[110px] shrink-0 drop-shadow-xl"
+                />
+              </div>
             </div>
           </div>
         </div>
-
-        {/* Large KEPLIX Text Overlay */}
-        <div className="absolute bottom-0 left-0 right-0 overflow-hidden pointer-events-none">
-          <div className="text-[20vw] md:text-[15vw] font-black text-white/5 text-center leading-none">
-            KEPLIX
-          </div>
-        </div>
       </div>
-
-      {/* Animated Circles */}
-      <div className="absolute top-1/4 left-10 w-4 h-4 bg-red-500 rounded-full animate-bounce"></div>
-      <div className="absolute top-1/3 right-10 w-6 h-6 bg-red-500 rounded-full animate-bounce delay-500"></div>
-      <div className="absolute bottom-1/4 left-1/4 w-3 h-3 bg-red-500 rounded-full animate-bounce delay-1000"></div>
     </section>
   );
 };

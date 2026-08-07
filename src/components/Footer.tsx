@@ -1,159 +1,183 @@
-import { Link } from 'react-router-dom';
-import { Facebook, Twitter, Instagram, Linkedin, Youtube, Smartphone, Mail, Phone, MapPin } from 'lucide-react';
+import React from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { Facebook, Instagram, Linkedin, Youtube } from 'lucide-react';
 
-const Footer = () => {
-  const currentYear = new Date().getFullYear();
+const columns = [
+  {
+    heading: 'Company',
+    links: [
+      { label: 'About Us', path: '/about' },
+      { label: 'Careers', path: '/about' },
+      { label: 'Blog', path: '/blog' },
+      { label: 'Contact Us', path: '/contact' },
+    ],
+  },
+  {
+    heading: 'Services',
+    links: [
+      { label: 'Car Service', path: '/' },
+      { label: 'Maintenance', path: '/' },
+      { label: 'Repairs', path: '/' },
+      { label: 'Accessories', path: '/' },
+      { label: 'Fleet Solutions', path: '/business' },
+    ],
+  },
+  {
+    heading: 'Support',
+    links: [
+      { label: 'Help Center', path: '/contact' },
+      { label: 'FAQ', path: '/contact' },
+      { label: 'Terms of Service', path: '/privacy-policy' },
+      { label: 'Privacy Policy', path: '/privacy-policy' },
+      { label: 'Refund Policy', path: '/privacy-policy' },
+    ],
+  },
+  {
+    heading: 'For Businesses',
+    links: [
+      { label: 'Workshop Partner', path: '/business' },
+      { label: 'Become a Partner', path: '/business' },
+      { label: 'Corporate Solutions', path: '/business' },
+    ],
+  },
+];
+
+const socials = [
+  { Icon: Facebook, label: 'Facebook' },
+  { Icon: Instagram, label: 'Instagram' },
+  { Icon: Linkedin, label: 'LinkedIn' },
+  { Icon: Youtube, label: 'YouTube' },
+];
+
+const Footer: React.FC = () => {
+  const { pathname } = useLocation();
+  const isPartner = pathname === '/business';
 
   return (
-    <footer className="bg-black text-white py-16">
-      <div className="container mx-auto px-4">
-        {/* Main Footer Content */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-12 items-start">
-          {/* Navigation */}
-          <div className="flex flex-col text-center">
-            <h4 className="text-lg font-semibold mb-4">Navigation</h4>
-            <ul className="space-y-2 w-full">
-              <li><Link to="/" className="text-gray-300 hover:text-red-500 transition-colors">Home</Link></li>
-              <li><Link to="/about" className="text-gray-300 hover:text-red-500 transition-colors">About us</Link></li>
-              <li><a href="#services" className="text-gray-300 hover:text-red-500 transition-colors">Services</a></li>
-              <li><Link to="/contact" className="text-gray-300 hover:text-red-500 transition-colors">Contact</Link></li>
-            </ul>
-          </div>
-
-          {/* Services */}
-          <div className="flex flex-col text-center">
-            <h4 className="text-lg font-semibold mb-4">Services</h4>
-            <ul className="space-y-2 w-full">
-              <li><a href="#" className="text-gray-300 hover:text-red-500 transition-colors">Car Service</a></li>
-              <li><a href="#" className="text-gray-300 hover:text-red-500 transition-colors">Maintenance</a></li>
-              <li><a href="#" className="text-gray-300 hover:text-red-500 transition-colors">Modifications</a></li>
-              <li><a href="#" className="text-gray-300 hover:text-red-500 transition-colors">Consultation</a></li>
-              <li><a href="#" className="text-gray-300 hover:text-red-500 transition-colors">Fleet Management</a></li>
-            </ul>
-          </div>
-
-          {/* Career Section */}
-          <div className="flex flex-col text-center">
-            <h4 className="text-lg font-semibold mb-4">Careers Section</h4>
-            <ul className="space-y-2 w-full">
-              <li><a href="#" className="text-gray-300 hover:text-red-500 transition-colors">Opportunities</a></li>
-              <li><a href="#" className="text-gray-300 hover:text-red-500 transition-colors">Work With Us</a></li>
-              <li><a href="#" className="text-gray-300 hover:text-red-500 transition-colors">Open Roles</a></li>
-              <li><a href="#" className="text-gray-300 hover:text-red-500 transition-colors">Culture</a></li>
-            </ul>
-          </div>
-        </div>
-
-
-        {/* Company Info */}
-        <div className="border-t border-gray-800 pt-8 mb-8">
-          <div className="flex flex-col items-center text-center">
-            <div className="mb-4 flex flex-col items-center">
-              <img
-                src={`${import.meta.env.BASE_URL}logo.png`}
-                alt="Keplix Logo"
-                className="h-28 w-auto transition-all duration-300 hover:scale-105"
-                onError={(e) => {
-                  console.error('Footer logo failed to load:', e);
-                  // Fallback to text logo if image fails
-                  e.currentTarget.style.display = 'none';
-                  e.currentTarget.nextElementSibling?.classList.remove('hidden');
-                }}
-              />
-              <div className="text-2xl font-bold hidden">
-                <span className="text-red-500">K</span>eplix
-              </div>
-            </div>
-            <p className="text-gray-300 mb-6 leading-relaxed">
-              Revolutionizing car care with technology and innovation.
+    <footer
+      className={`w-full px-4 pb-8 pt-12 sm:px-8 ${
+        isPartner ? 'bg-partner-band' : ''
+      }`}
+    >
+      <div className="mx-auto max-w-page">
+        {/* Brand + navigation columns */}
+        <div
+          className={`flex flex-col gap-12 border-b pb-12 lg:flex-row ${
+            isPartner ? 'border-partner/20' : 'border-line-soft'
+          }`}
+        >
+          <div className="w-full lg:w-[271px] lg:shrink-0">
+            <img
+              src="/keplix-logo.png"
+              alt="Keplix"
+              className="h-[63px] w-[69px] object-contain"
+            />
+            <p className="mt-6 max-w-xs text-base leading-[22.75px] text-ink-muted">
+              India&apos;s most trusted platform for car services. Compare, book
+              and track with confidence.
             </p>
-            <div className="flex space-x-4 justify-center">
-              <a href="https://facebook.com/keplix" className="text-gray-400 hover:text-red-500 transition-colors">
-                <Facebook size={20} />
-              </a>
-              <a href="https://twitter.com/keplix" className="text-gray-400 hover:text-red-500 transition-colors">
-                <Twitter size={20} />
-              </a>
-              <a href="https://instagram.com/keplix.co.in" className="text-gray-400 hover:text-red-500 transition-colors">
-                <Instagram size={20} />
-              </a>
-              <a href="https://linkedin.com/company/keplix" className="text-gray-400 hover:text-red-500 transition-colors">
-                <Linkedin size={20} />
-              </a>
-              <a href="https://youtube.com/keplix" className="text-gray-400 hover:text-red-500 transition-colors">
-                <Youtube size={20} />
-              </a>
+            <div className="mt-6 flex gap-4">
+              {socials.map(({ Icon, label }) => (
+                <a
+                  key={label}
+                  href="#"
+                  aria-label={label}
+                  className="flex h-8 w-8 items-center justify-center rounded-full bg-line-soft text-ink-muted transition-colors hover:bg-brand-red hover:text-white"
+                >
+                  <Icon size={14} />
+                </a>
+              ))}
             </div>
           </div>
-        </div>
 
-        {/* App Download Section */}
-        <div className="border-t border-gray-800 pt-8 mb-8">
-          <div className="flex flex-col items-center justify-center lg:flex-row lg:items-center lg:justify-center gap-6">
-            <div className="flex items-center gap-3">
-              <Smartphone className="w-8 h-8 text-red-500" />
-              <div>
-                <h5 className="text-lg font-semibold">Download the App</h5>
-                <p className="text-gray-300">Get the Keplix app on your phone</p>
+          <div className="grid flex-1 grid-cols-2 gap-8 sm:grid-cols-4 lg:gap-12">
+            {columns.map((column) => (
+              <div key={column.heading}>
+                <h4 className="text-base font-semibold leading-6 text-ink-heading">
+                  {column.heading}
+                </h4>
+                <ul className="mt-6 flex flex-col gap-4">
+                  {column.links.map((link) => (
+                    <li key={link.label}>
+                      <Link
+                        to={link.path}
+                        className="text-sm leading-5 text-ink-muted transition-colors hover:text-brand-red"
+                      >
+                        {link.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
               </div>
-            </div>
-            <div className="flex gap-3">
-              <img
-                src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg"
-                alt="Google Play Store"
-                className="h-12"
-              />
-              <img
-                src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg"
-                alt="App Store"
-                className="h-12"
-              />
-            </div>
+            ))}
           </div>
         </div>
 
-        {/* Contact Info */}
-        <div className="border-t border-gray-800 pt-8 mb-8">
-          <div className="flex flex-col gap-4 items-center justify-center">
-            <div className="flex flex-col items-center gap-1 text-center">
-              <Mail className="w-5 h-5 text-red-500 mb-1" />
-              <a href="mailto:support@keplix.co.in" className="text-gray-300 hover:text-red-500 transition-colors">
-                support@keplix.co.in
-              </a>
-            </div>
-            <div className="flex flex-col items-center gap-1 text-center">
-              <Phone className="w-5 h-5 text-red-500 mb-1" />
-              <a href="tel:+919818915720" className="text-gray-300 hover:text-red-500 transition-colors">
-                +91 98189 15720
-              </a>
-            </div>
-            <div className="flex flex-col items-center gap-1 text-center">
-              <MapPin className="w-5 h-5 text-red-500 mb-1" />
+        {/* App download + newsletter */}
+        <div className="flex flex-col gap-12 border-b border-line-soft py-12 lg:flex-row">
+          <div className="flex-1">
+            <h4 className="text-base font-bold leading-6 text-ink-heading">
+              Download the App
+            </h4>
+            <div className="mt-4 flex gap-4">
               <a
-                href="https://maps.google.com?q=9/2659,+Kailash+Nagar,+Gandhi+Nagar,+Delhi,+110031"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-300 hover:text-red-500 transition-colors"
+                href="#"
+                className="flex h-[53px] items-center justify-center rounded-btn bg-brand-blue px-9 text-base font-bold leading-7 text-white shadow-btn transition-opacity hover:opacity-90"
               >
-                9/2659, Kailash Nagar, Gandhi Nagar, Delhi, 110031
+                Vendors
+              </a>
+              <a
+                href="#"
+                className="flex h-[53px] items-center justify-center rounded-btn bg-brand-red px-9 text-base font-bold leading-7 text-white shadow-btn transition-colors hover:bg-brand-redHover"
+              >
+                Users
               </a>
             </div>
           </div>
+
+          <div className="flex-1">
+            <h4 className="text-base font-bold leading-6 text-ink-heading">
+              Newsletter
+            </h4>
+            <p className="mt-4 text-sm leading-5 text-ink-muted">
+              Subscribe for updates and offers.
+            </p>
+            <form
+              className="mt-4 flex gap-3"
+              onSubmit={(e) => e.preventDefault()}
+            >
+              <input
+                type="email"
+                placeholder="Enter your email"
+                className="min-w-0 flex-1 rounded-btn border border-line bg-white px-4 py-3.5 text-sm text-ink placeholder:text-ink-muted focus:border-brand-red focus:outline-none"
+              />
+              <button
+                type="submit"
+                className="shrink-0 rounded-btn bg-brand-subscribe px-8 py-3 text-sm font-semibold leading-5 text-white transition-colors hover:bg-brand-redHover"
+              >
+                Subscribe
+              </button>
+            </form>
+          </div>
         </div>
 
-
-        {/* Legal Links */}
-        <div className="border-t border-gray-800 pt-8">
-          <div className="flex flex-col items-center justify-center gap-4">
-            <div className="flex flex-wrap gap-6 justify-center">
-              <a href="#" className="text-gray-300 hover:text-red-500 transition-colors">Legal</a>
-              <Link to="/privacy-policy" className="text-gray-300 hover:text-red-500 transition-colors">Privacy Policy</Link>
-              <a href="#" className="text-gray-300 hover:text-red-500 transition-colors">Terms of Service</a>
-              <Link to="/cookie-policy" className="text-gray-300 hover:text-red-500 transition-colors">Cookie Policy</Link>
-            </div>
-            <p className="text-gray-400 text-sm text-center">
-              © {currentYear} Keplix. All rights reserved.
-            </p>
+        {/* Bottom bar */}
+        <div className="flex flex-col items-center justify-between gap-4 pt-8 sm:flex-row">
+          <p className="text-sm leading-5 text-ink-faint">
+            © 2026 Keplix. All rights reserved.
+          </p>
+          <div className="flex items-center gap-6 text-sm leading-5 text-ink-faint">
+            <Link to="/privacy-policy" className="hover:text-brand-red">
+              Privacy Policy
+            </Link>
+            <span className="text-line">|</span>
+            <Link to="/privacy-policy" className="hover:text-brand-red">
+              Terms of Service
+            </Link>
+            <span className="text-line">|</span>
+            <Link to="/cookie-policy" className="hover:text-brand-red">
+              Cookie Policy
+            </Link>
           </div>
         </div>
       </div>

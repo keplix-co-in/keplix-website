@@ -3,23 +3,23 @@ import { Cookie } from 'lucide-react';
 
 const Section: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
   <div className="mb-10">
-    <h2 className="text-xl font-bold text-white mb-4 border-b border-gray-700 pb-2">{title}</h2>
-    <div className="text-gray-300 space-y-4 leading-relaxed">{children}</div>
+    <h2 className="text-xl font-bold text-ink-heading mb-4 border-b border-line-soft pb-2">{title}</h2>
+    <div className="text-ink-body space-y-4 leading-relaxed">{children}</div>
   </div>
 );
 
 const CookiePolicy: React.FC = () => {
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="bg-transparent">
       {/* Hero Banner */}
-      <div className="bg-gradient-to-b from-gray-900 to-black pt-32 pb-12 px-4">
+      <div className="pt-8 pb-8 px-4">
         <div className="max-w-4xl mx-auto text-center">
           <div className="flex justify-center mb-4">
-            <Cookie className="w-14 h-14 text-red-500" />
+            <Cookie className="w-14 h-14 text-brand-red" />
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">Cookie Policy</h1>
-          <p className="text-gray-400 text-lg">
-            Last updated: <span className="text-red-400 font-semibold">March 07, 2026</span>
+          <h1 className="text-4xl md:text-5xl font-bold mb-4 text-ink">Cookie Policy</h1>
+          <p className="text-ink-muted text-lg">
+            Last updated: <span className="text-brand-red font-semibold">March 07, 2026</span>
           </p>
         </div>
       </div>
@@ -28,12 +28,12 @@ const CookiePolicy: React.FC = () => {
       <div className="max-w-4xl mx-auto px-4 py-12">
 
         {/* Intro */}
-        <div className="mb-10 text-gray-300 leading-relaxed space-y-4">
+        <div className="mb-10 text-ink-body leading-relaxed space-y-4">
           <p>
             This Cookie Policy explains how{' '}
-            <strong className="text-white">Keplix Private Limited</strong> ("Company," "we," "us," and "our") uses
+            <strong className="text-ink-heading">Keplix Private Limited</strong> ("Company," "we," "us," and "our") uses
             cookies and similar technologies to recognize you when you visit our website at{' '}
-            <a href="http://www.keplix.co.in" target="_blank" rel="noopener noreferrer" className="text-red-400 hover:underline">
+            <a href="http://www.keplix.co.in" target="_blank" rel="noopener noreferrer" className="text-brand-red hover:underline">
               http://www.keplix.co.in
             </a>{' '}
             ("Website"). It explains what these technologies are and why we use them, as well as your rights to control
@@ -52,7 +52,7 @@ const CookiePolicy: React.FC = () => {
             as well as to provide reporting information.
           </p>
           <p>
-            Cookies set by the website owner (in this case, <strong className="text-white">Keplix Private Limited</strong>)
+            Cookies set by the website owner (in this case, <strong className="text-ink-heading">Keplix Private Limited</strong>)
             are called "first-party cookies." Cookies set by parties other than the website owner are called
             "third-party cookies." Third-party cookies enable third-party features or functionality to be provided on or
             through the website (e.g., advertising, interactive content, and analytics). The parties that set these
@@ -89,27 +89,27 @@ const CookiePolicy: React.FC = () => {
           </p>
 
           <div className="mt-4">
-            <h3 className="text-lg font-semibold text-white mb-3 underline">Unclassified cookies:</h3>
-            <p className="mb-3 text-gray-400 text-sm italic">
+            <h3 className="text-lg font-semibold text-ink-heading mb-3 underline">Unclassified cookies:</h3>
+            <p className="mb-3 text-ink-muted text-sm italic">
               These are cookies that have not yet been categorized. We are in the process of classifying these cookies
               with the help of their providers.
             </p>
-            <div className="border border-gray-700 rounded-xl overflow-hidden">
+            <div className="border border-line-soft rounded-xl overflow-hidden">
               <table className="w-full text-sm">
-                <thead className="bg-gray-800">
+                <thead className="bg-gray-100">
                   <tr>
-                    <th className="text-left px-4 py-2 text-gray-300 font-semibold">Name</th>
-                    <th className="text-left px-4 py-2 text-gray-300 font-semibold">Provider</th>
-                    <th className="text-left px-4 py-2 text-gray-300 font-semibold">Type</th>
-                    <th className="text-left px-4 py-2 text-gray-300 font-semibold">Expires in</th>
+                    <th className="text-left px-4 py-2 text-ink-body font-semibold">Name</th>
+                    <th className="text-left px-4 py-2 text-ink-body font-semibold">Provider</th>
+                    <th className="text-left px-4 py-2 text-ink-body font-semibold">Type</th>
+                    <th className="text-left px-4 py-2 text-ink-body font-semibold">Expires in</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr className="border-t border-gray-700">
-                    <td className="px-4 py-2 text-gray-400">WMF-Uniq</td>
-                    <td className="px-4 py-2 text-gray-400">.upload.wikimedia.org</td>
-                    <td className="px-4 py-2 text-gray-400">server_cookie</td>
-                    <td className="px-4 py-2 text-gray-400">31492011 seconds</td>
+                  <tr className="border-t border-line-soft">
+                    <td className="px-4 py-2 text-ink-muted">WMF-Uniq</td>
+                    <td className="px-4 py-2 text-ink-muted">.upload.wikimedia.org</td>
+                    <td className="px-4 py-2 text-ink-muted">server_cookie</td>
+                    <td className="px-4 py-2 text-ink-muted">31492011 seconds</td>
                   </tr>
                 </tbody>
               </table>
@@ -125,32 +125,32 @@ const CookiePolicy: React.FC = () => {
           </p>
           <ul className="list-disc list-inside ml-4 space-y-1">
             <li>
-              <a href="https://support.google.com/chrome/answer/95647#zippy=%2Callow-or-block-cookies" target="_blank" rel="noopener noreferrer" className="text-red-400 hover:underline">
+              <a href="https://support.google.com/chrome/answer/95647#zippy=%2Callow-or-block-cookies" target="_blank" rel="noopener noreferrer" className="text-brand-red hover:underline">
                 Chrome
               </a>
             </li>
             <li>
-              <a href="https://support.microsoft.com/en-us/windows/delete-and-manage-cookies-168dab11-0753-043d-7c16-ede5947fc64d" target="_blank" rel="noopener noreferrer" className="text-red-400 hover:underline">
+              <a href="https://support.microsoft.com/en-us/windows/delete-and-manage-cookies-168dab11-0753-043d-7c16-ede5947fc64d" target="_blank" rel="noopener noreferrer" className="text-brand-red hover:underline">
                 Internet Explorer
               </a>
             </li>
             <li>
-              <a href="https://support.mozilla.org/en-US/kb/enhanced-tracking-protection-firefox-desktop?redirectslug=enable-and-disable-cookies-website-preferences&redirectlocale=en-US" target="_blank" rel="noopener noreferrer" className="text-red-400 hover:underline">
+              <a href="https://support.mozilla.org/en-US/kb/enhanced-tracking-protection-firefox-desktop?redirectslug=enable-and-disable-cookies-website-preferences&redirectlocale=en-US" target="_blank" rel="noopener noreferrer" className="text-brand-red hover:underline">
                 Firefox
               </a>
             </li>
             <li>
-              <a href="https://support.apple.com/en-ie/guide/safari/sfri11471/mac" target="_blank" rel="noopener noreferrer" className="text-red-400 hover:underline">
+              <a href="https://support.apple.com/en-ie/guide/safari/sfri11471/mac" target="_blank" rel="noopener noreferrer" className="text-brand-red hover:underline">
                 Safari
               </a>
             </li>
             <li>
-              <a href="https://support.microsoft.com/en-us/windows/microsoft-edge-browsing-data-and-privacy-bb8174ba-9d73-dcf2-9b4a-c582b4e640dd" target="_blank" rel="noopener noreferrer" className="text-red-400 hover:underline">
+              <a href="https://support.microsoft.com/en-us/windows/microsoft-edge-browsing-data-and-privacy-bb8174ba-9d73-dcf2-9b4a-c582b4e640dd" target="_blank" rel="noopener noreferrer" className="text-brand-red hover:underline">
                 Edge
               </a>
             </li>
             <li>
-              <a href="https://help.opera.com/en/latest/web-preferences/" target="_blank" rel="noopener noreferrer" className="text-red-400 hover:underline">
+              <a href="https://help.opera.com/en/latest/web-preferences/" target="_blank" rel="noopener noreferrer" className="text-brand-red hover:underline">
                 Opera
               </a>
             </li>
@@ -161,17 +161,17 @@ const CookiePolicy: React.FC = () => {
           </p>
           <ul className="list-disc list-inside ml-4 space-y-1">
             <li>
-              <a href="http://www.aboutads.info/choices/" target="_blank" rel="noopener noreferrer" className="text-red-400 hover:underline">
+              <a href="http://www.aboutads.info/choices/" target="_blank" rel="noopener noreferrer" className="text-brand-red hover:underline">
                 Digital Advertising Alliance
               </a>
             </li>
             <li>
-              <a href="https://youradchoices.ca/" target="_blank" rel="noopener noreferrer" className="text-red-400 hover:underline">
+              <a href="https://youradchoices.ca/" target="_blank" rel="noopener noreferrer" className="text-brand-red hover:underline">
                 Digital Advertising Alliance of Canada
               </a>
             </li>
             <li>
-              <a href="http://www.youronlinechoices.com/" target="_blank" rel="noopener noreferrer" className="text-red-400 hover:underline">
+              <a href="http://www.youronlinechoices.com/" target="_blank" rel="noopener noreferrer" className="text-brand-red hover:underline">
                 European Interactive Digital Advertising Alliance
               </a>
             </li>
@@ -204,7 +204,7 @@ const CookiePolicy: React.FC = () => {
               href="http://www.macromedia.com/support/documentation/en/flashplayer/help/settings_manager07.html"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-red-400 hover:underline"
+              className="text-brand-red hover:underline"
             >
               Website Storage Settings Panel
             </a>
@@ -213,7 +213,7 @@ const CookiePolicy: React.FC = () => {
               href="http://www.macromedia.com/support/documentation/en/flashplayer/help/settings_manager03.html"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-red-400 hover:underline"
+              className="text-brand-red hover:underline"
             >
               Global Storage Settings Panel
             </a>{' '}
@@ -253,20 +253,20 @@ const CookiePolicy: React.FC = () => {
 
         <Section title="Where can I get further information?">
           <p>If you have any questions about our use of cookies or other technologies, please contact us at:</p>
-          <div className="bg-gray-900 border border-gray-700 rounded-xl p-5 mt-4 space-y-1">
-            <p className="font-semibold text-white">Keplix Private Limited</p>
+          <div className="bg-gray-50 border border-line-soft rounded-xl p-5 mt-4 space-y-1">
+            <p className="font-semibold text-ink-heading">Keplix Private Limited</p>
             <p>IX/2659, Street no 17, Kailash Nagar</p>
             <p>Delhi, Delhi 110031</p>
             <p>India</p>
             <p className="mt-2">
               Email:{' '}
-              <a href="mailto:privacy@keplix.co.in" className="text-red-400 hover:underline">
+              <a href="mailto:privacy@keplix.co.in" className="text-brand-red hover:underline">
                 privacy@keplix.co.in
               </a>
             </p>
             <p>
               Phone:{' '}
-              <a href="tel:+919818915720" className="text-red-400 hover:underline">
+              <a href="tel:+919818915720" className="text-brand-red hover:underline">
                 +91 98189 15720
               </a>
             </p>

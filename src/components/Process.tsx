@@ -1,71 +1,85 @@
 import React from 'react';
-import { Download, Search, Calendar, Clock } from 'lucide-react';
+import { Star } from 'lucide-react';
 
-const Process = () => {
-  const steps = [
-    {
-      number: 1,
-      icon: <Download className="w-8 h-8" />,
-      title: "Download Keplix",
-      description: "Get the app from your app store and sign up for your free account with access to all features."
-    },
-    {
-      number: 2,
-      icon: <Search className="w-8 h-8" />,
-      title: "Choose Your Service",
-      description: "Pick the best service for your needs. Connect with top-rated certified mechanics and shop appointment with just a few taps and secure your bookings."
-    },
-    {
-      number: 3,
-      icon: <Calendar className="w-8 h-8" />,
-      title: "Compare & Book",
-      description: "Browse and compare auto services, prices, and offerings, then book your appointment with ease and efficiency."
-    },
-    {
-      number: 4,
-      icon: <Clock className="w-8 h-8" />,
-      title: "Track in Real-Time",
-      description: "Follow service progress, receive updates, and get comprehensive list of everything done on your vehicle with full transparency."
-    }
-  ];
-
+const Process: React.FC = () => {
   return (
-    <section className="py-20 bg-gradient-to-b from-gray-900 to-black relative">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-            Car Care, <span className="text-red-500">Redefined</span> in 4 Steps
-          </h2>
-          <p className="text-gray-300 text-lg max-w-2xl mx-auto">
-            Keplix simplifies the entire process of finding, booking, and managing automotive services with cutting-edge technology.
-          </p>
+    <section className="mx-auto max-w-page px-4 py-16 sm:px-8">
+      <div className="flex flex-wrap justify-center gap-6">
+        {[
+          '/home-app-screen-1.png',
+          '/home-app-screen-2.png',
+          '/home-app-screen-3.png',
+          '/home-app-screen-4.png',
+        ].map((src) => (
+          <img
+            key={src}
+            src={src}
+            alt="Keplix app showcase"
+            className="w-full max-w-[220px] rounded-2xl shadow-card"
+          />
+        ))}
+      </div>
+
+      <div className="mx-auto mt-16 max-w-2xl text-center">
+        <h2 className="text-3xl font-extrabold text-ink sm:text-4xl">
+          Smart Carcare in Your Pocket
+        </h2>
+        <p className="mt-4 text-lg text-ink-muted">
+          Find trusted workshops, compare prices, book instantly and track
+          your car service — all in one app.
+        </p>
+
+        <p className="mt-10 text-base text-ink-muted">
+          Trusted by 50,000+ car owners across India
+        </p>
+        <div className="mt-4 flex items-center justify-center gap-3">
+          <div className="flex items-center">
+            {[0, 1, 2, 3].map((i) => (
+              <div
+                key={i}
+                className="-ml-2 h-9 w-9 rounded-full border-2 border-white bg-gray-300 first:ml-0"
+              />
+            ))}
+          </div>
+          <div className="flex items-center gap-1 text-yellow-400">
+            {[...Array(5)].map((_, i) => (
+              <Star key={i} size={18} fill="currentColor" strokeWidth={0} />
+            ))}
+          </div>
+          <span className="text-base font-semibold text-ink">
+            4.8/5 <span className="font-normal text-ink-muted">average rating</span>
+          </span>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {steps.map((step, index) => (
-            <div 
-              key={index}
-              className="bg-white rounded-xl p-8 text-center hover:shadow-2xl transition-all duration-300 transform hover:scale-105 relative overflow-hidden group"
-            >
-              {/* Background Number */}
-              <div className="absolute top-4 right-4 text-6xl font-black text-gray-100 group-hover:text-red-50 transition-colors">
-                {step.number}
-              </div>
-              
-              {/* Icon */}
-              <div className="bg-red-500 text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-red-600 transition-colors relative z-10">
-                {step.icon}
-              </div>
-              
-              {/* Content */}
-              <h3 className="text-xl font-bold text-gray-800 mb-4 relative z-10">
-                {step.title}
-              </h3>
-              <p className="text-gray-600 leading-relaxed relative z-10">
-                {step.description}
-              </p>
-            </div>
-          ))}
+        <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
+          <a
+            href="#"
+            className="flex items-center gap-3 rounded-xl border border-line bg-white px-5 py-3 text-left shadow-card transition-colors hover:border-ink"
+          >
+            <img src="/icons/google-play.svg" alt="" className="h-8 w-8" />
+            <span>
+              <span className="block text-[10px] font-bold uppercase text-slate-500">
+                GET IT ON
+              </span>
+              <span className="block text-xl font-bold text-slate-800">
+                Google Play
+              </span>
+            </span>
+          </a>
+          <a
+            href="#"
+            className="flex items-center gap-3 rounded-xl border border-line bg-white px-5 py-3 text-left shadow-card transition-colors hover:border-ink"
+          >
+            <img src="/icons/app-store.svg" alt="" className="h-8 w-8" />
+            <span>
+              <span className="block text-[10px] font-bold text-slate-500">
+                Download on the
+              </span>
+              <span className="block text-xl font-bold text-slate-800">
+                App Store
+              </span>
+            </span>
+          </a>
         </div>
       </div>
     </section>
