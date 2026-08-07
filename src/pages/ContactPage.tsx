@@ -117,7 +117,7 @@ const ContactPage: React.FC = () => {
 
       {/* Hero + Get in Touch */}
       <section className="relative z-10">
-        <div className="mx-auto max-w-page px-4 pt-[74px] sm:px-8 lg:px-16">
+        <div className="mx-auto max-w-page px-4 pt-[74px] sm:px-8">
           {/* Text content */}
           <div className="flex flex-col gap-7 pb-[42px]">
             <h1 className="text-4xl font-bold leading-tight text-ink sm:text-[56px] sm:leading-[72px]">

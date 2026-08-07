@@ -71,7 +71,7 @@ const Blog: React.FC = () => {
       <PageBlob />
 
       <section className="relative z-10">
-        <div className="mx-auto max-w-page px-4 pb-4 pt-[69px] text-center sm:px-8 lg:px-16">
+        <div className="mx-auto max-w-page px-4 pb-4 pt-[69px] text-center sm:px-8">
           <h1 className="text-4xl font-bold text-[#0f172a] sm:text-[56px] sm:leading-[48px]">
             Blogs &amp; Resources
           </h1>

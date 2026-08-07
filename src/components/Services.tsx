@@ -58,8 +58,8 @@ const Services: React.FC = () => {
             <div key={label[0]} className="flex flex-col items-center">
               <div className="relative mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-red-50">
                 <img src={icon} alt="" className="h-8 w-8" />
-                <span className="absolute -bottom-0.5 -right-0.5 flex h-5 w-5 items-center justify-center rounded-full border-2 border-white bg-red-500 text-[10px] text-white">
-                  !
+                <span className="absolute -bottom-0.5 -right-0.5 flex h-5 w-5 items-center justify-center rounded-full border-2 border-white bg-red-500 text-[11px] font-bold leading-none text-white">
+                  &times;
                 </span>
               </div>
               <p className="text-center text-base font-semibold text-ink-body">

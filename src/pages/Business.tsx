@@ -110,8 +110,8 @@ const Business: React.FC = () => {
       <PageBlobRight />
 
       {/* Hero */}
-      <section className="relative z-10">
-        <div className="mx-auto max-w-page px-4 pb-16 pt-[13px] sm:px-8 lg:px-16">
+      <section className="relative z-2">
+        <div className="mx-auto max-w-page px-4 pb-16 pt-[13px] sm:px-8">
           <h1 className="max-w-[518px] text-4xl font-extrabold leading-tight text-ink sm:text-5xl lg:text-[56px] lg:leading-[72px]">
             Grow Your Garage Business with{' '}
             <span className="text-partner">Keplix</span>

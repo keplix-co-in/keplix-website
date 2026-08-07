@@ -54,7 +54,7 @@ const About: React.FC = () => {
 
       {/* Hero */}
       <section className="relative z-10">
-        <div className="mx-auto max-w-page px-4 pt-[59px] sm:px-8 lg:px-16">
+        <div className="mx-auto max-w-page px-4 pt-[59px] sm:px-8">
           <div className="grid items-center gap-8 lg:grid-cols-[656fr_520fr]">
             <div className="flex flex-col gap-7 pb-[42px]">
               <h1 className="text-4xl font-bold leading-tight text-ink sm:text-[56px] sm:leading-[72px]">
@@ -129,30 +129,43 @@ const About: React.FC = () => {
       </section>
 
       {/* Our Story */}
-      <section className="relative z-10 bg-[#F3414B] px-4 py-16 sm:px-8">
-        <div className="mx-auto flex max-w-[1233px] flex-col gap-12">
+      <section className="relative z-10 bg-[#F3414B] px-4 py-20 sm:px-8">
+        <div className="mx-auto max-w-page">
           <h2 className="text-2xl font-semibold leading-8 text-white sm:text-[28px]">
             Our Story
           </h2>
-          <div className="flex flex-col items-start gap-8 lg:flex-row lg:justify-center">
-            <video
-              src="/our-story-video.mp4"
-              autoPlay
-              loop
-              muted
-              playsInline
-              className="w-full shrink-0 rounded-2xl object-cover lg:h-[353px] lg:w-[620px]"
-            >
-              Your browser does not support the video tag.
-            </video>
-            <div className="flex w-full flex-col gap-4 text-[16px] font-medium text-white/90 lg:max-w-[562px]">
-              <p className="font-semibold text-white">
+
+          <div className="mt-12 grid gap-12 lg:grid-cols-[620fr_562fr] lg:items-start lg:gap-16">
+            {/* The story runs long, so the video sticks alongside it while you
+                read instead of leaving a tall empty column. */}
+            <div className="lg:sticky lg:top-28">
+              <video
+                src="/our-story-video.mp4"
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="aspect-[620/353] w-full rounded-2xl object-cover shadow-[0px_20px_40px_-12px_rgba(0,0,0,0.35)]"
+              >
+                Your browser does not support the video tag.
+              </video>
+              <p className="mt-5 text-sm font-semibold uppercase tracking-[0.12em] text-white/70">
+                Vardan Chaturvedi &middot; Founder
+              </p>
+            </div>
+
+            <div className="max-w-[562px]">
+              <p className="text-xl font-bold leading-8 text-white sm:text-2xl">
                 From a broken-down car to building KEPLIX
               </p>
-              <p>Hey everyone,</p>
-              {storyParagraphs.map((paragraph, i) => (
-                <p key={i}>{paragraph}</p>
-              ))}
+              <p className="mt-6 text-lg font-medium leading-8 text-white">
+                Hey everyone,
+              </p>
+              <div className="mt-4 flex flex-col gap-5 text-base font-medium leading-7 text-white/90">
+                {storyParagraphs.map((paragraph, i) => (
+                  <p key={i}>{paragraph}</p>
+                ))}
+              </div>
             </div>
           </div>
         </div>

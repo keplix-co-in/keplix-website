@@ -2,7 +2,7 @@ import React from 'react';
 
 const HeroVideoPanel: React.FC = () => {
   return (
-    <div className="relative hidden items-center lg:flex">
+    <div className="relative hidden pt-[33px] lg:block">
       <video
         src="/hero-animation.mp4"
         autoPlay

@@ -16,10 +16,11 @@ const Hero: React.FC = () => {
   return (
     <>
       {/* Hero row: text */}
-      <section className="relative z-10 pt-[33px]">
-        <div className="grid lg:grid-cols-2 lg:items-stretch">
-          {/* Text content */}
-          <div className="flex flex-col items-start justify-center gap-8 px-4 py-16 sm:px-8 sm:py-24 lg:min-h-[640px] lg:pl-[max(4rem,calc((100vw-1280px)/2+4rem))] lg:pr-12">
+      <section className="relative z-10">
+        <div className="grid items-start lg:grid-cols-2">
+          {/* Text content. Figma puts the heading 87px below the header and the
+              video 33px below it, so the video sits slightly higher. */}
+          <div className="flex flex-col items-start gap-8 px-4 pb-16 pt-10 sm:px-8 sm:pt-[87px] lg:pl-[max(2rem,calc((100vw-1280px)/2+2rem))] lg:pr-12">
             <h1 className="text-4xl font-extrabold leading-tight text-ink sm:text-5xl lg:text-[56px] lg:leading-[72px]">
               Find Trusted
               <br />
@@ -72,23 +73,25 @@ const Hero: React.FC = () => {
               Who Are You?
             </span>
           </div>
-          <div className="flex flex-col gap-6 sm:flex-row">
-            <div className="flex flex-1 items-center justify-between gap-4 rounded-2xl bg-blush-300 p-6">
-              <div>
+          <div className="grid gap-6 lg:grid-cols-2">
+            {/* Card sizes/colours measured from Figma 400:620 and 400:733.
+                overflow-hidden lets the phone mockup bleed off the bottom edge. */}
+            <div className="flex items-center justify-between gap-6 overflow-hidden rounded-[24px] bg-[#fff1f2] p-8 shadow-[0px_1px_2px_rgba(0,0,0,0.05)]">
+              <div className="flex flex-col">
                 <div className="flex items-center gap-3">
-                  <Car className="text-brand-red" size={28} />
-                  <h3 className="text-xl font-bold text-ink-heading">
+                  <Car className="shrink-0 text-brand-red" size={32} />
+                  <h3 className="text-2xl font-bold leading-[30px] text-[#111827]">
                     I&apos;m a Car Owner
                   </h3>
                 </div>
-                <p className="mt-3 max-w-[200px] text-sm font-medium leading-6 text-gray-600">
+                <p className="mt-4 max-w-[320px] text-base font-medium leading-6 text-[#4b5563]">
                   Find trusted garages, compare prices, and book your next
                   service.
                 </p>
-                <div className="mt-6 h-1 w-8 rounded-full bg-blush-300" />
+                <div className="mt-6 h-1 w-8 rounded-full bg-[#fecaca]" />
                 <button
                   onClick={() => navigate('/beta')}
-                  className="mt-4 rounded-btn bg-[#e11d48] px-6 py-3 text-sm font-medium text-white shadow-card transition-colors hover:bg-brand-redHover"
+                  className="mt-7 self-start rounded-[8px] bg-[#e11d48] px-8 py-3 text-base font-medium leading-6 text-white shadow-[0px_4px_6px_-1px_rgba(0,0,0,0.1),0px_2px_4px_-2px_rgba(0,0,0,0.1)] transition-opacity hover:opacity-90"
                 >
                   Download Customer App
                 </button>
@@ -96,26 +99,26 @@ const Hero: React.FC = () => {
               <img
                 src="/hero-phone-customer.png"
                 alt="Keplix customer app"
-                className="h-auto w-[110px] shrink-0 drop-shadow-xl"
+                className="-mb-16 hidden w-[124px] shrink-0 self-end sm:block"
               />
             </div>
 
-            <div className="flex flex-1 items-center justify-between gap-4 rounded-2xl bg-partner-soft p-6">
-              <div>
+            <div className="flex items-center justify-between gap-6 overflow-hidden rounded-[24px] bg-[#eff6ff] p-8 shadow-[0px_1px_2px_rgba(0,0,0,0.05)]">
+              <div className="flex flex-col">
                 <div className="flex items-center gap-3">
-                  <Warehouse className="text-partner" size={28} />
-                  <h3 className="text-xl font-bold text-ink-heading">
+                  <Warehouse className="shrink-0 text-[#1f41af]" size={32} />
+                  <h3 className="text-2xl font-bold leading-[30px] text-[#111827]">
                     I Own a Garage
                   </h3>
                 </div>
-                <p className="mt-3 max-w-[200px] text-sm font-medium leading-6 text-gray-600">
+                <p className="mt-4 max-w-[320px] text-base font-medium leading-6 text-[#4b5563]">
                   Grow your business, receive verified bookings, and manage
                   everything digitally.
                 </p>
-                <div className="mt-6 h-1 w-8 rounded-full bg-partner-soft" />
+                <div className="mt-6 h-1 w-8 rounded-full bg-[#bfdbfe]" />
                 <button
                   onClick={() => navigate('/business')}
-                  className="mt-4 rounded-btn bg-brand-blue px-6 py-3 text-sm font-medium text-white shadow-card transition-colors hover:opacity-90"
+                  className="mt-7 self-start rounded-[8px] bg-[#1f41af] px-8 py-3 text-base font-medium leading-6 text-white shadow-[0px_4px_6px_-1px_rgba(0,0,0,0.1),0px_2px_4px_-2px_rgba(0,0,0,0.1)] transition-opacity hover:opacity-90"
                 >
                   Become a Garage Partner
                 </button>
@@ -123,7 +126,7 @@ const Hero: React.FC = () => {
               <img
                 src="/hero-phone-garage.png"
                 alt="Keplix garage partner app"
-                className="h-auto w-[110px] shrink-0 drop-shadow-xl"
+                className="-mb-16 hidden w-[124px] shrink-0 self-end sm:block"
               />
             </div>
           </div>
