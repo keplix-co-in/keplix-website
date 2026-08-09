@@ -143,14 +143,21 @@ const Blog: React.FC = () => {
         </div>
         )}
 
-        <div className="mt-10 text-center">
-          <a
-            href="#"
-            className="text-xl font-bold text-[#ef4444] hover:underline"
-          >
-            View All Blogs
-          </a>
-        </div>
+        {/* This page is the full listing, so "view all" means clearing any
+            active search or category filter. */}
+        {(search !== '' || activeCategory !== 'All') && (
+          <div className="mt-10 text-center">
+            <button
+              onClick={() => {
+                setSearch('');
+                setActiveCategory('All');
+              }}
+              className="text-xl font-bold text-[#ef4444] hover:underline"
+            >
+              View All Blogs
+            </button>
+          </div>
+        )}
       </section>
     </div>
   );

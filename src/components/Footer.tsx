@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Facebook, Instagram, Linkedin, Youtube } from 'lucide-react';
+import { APP_LINKS, SOCIALS } from '../constants/links';
+import { submitForm } from '../lib/submitForm';
 
 const columns = [
   {
@@ -43,15 +45,33 @@ const columns = [
 ];
 
 const socials = [
-  { Icon: Facebook, label: 'Facebook' },
-  { Icon: Instagram, label: 'Instagram' },
-  { Icon: Linkedin, label: 'LinkedIn' },
-  { Icon: Youtube, label: 'YouTube' },
+  { Icon: Facebook, label: 'Facebook', href: SOCIALS.facebook },
+  { Icon: Instagram, label: 'Instagram', href: SOCIALS.instagram },
+  { Icon: Linkedin, label: 'LinkedIn', href: SOCIALS.linkedin },
+  { Icon: Youtube, label: 'YouTube', href: SOCIALS.youtube },
 ];
 
 const Footer: React.FC = () => {
   const { pathname } = useLocation();
   const isPartner = pathname === '/business';
+
+  const [email, setEmail] = useState('');
+  const [status, setStatus] = useState<'idle' | 'sending' | 'done' | 'error'>('idle');
+  const [error, setError] = useState('');
+
+  const handleSubscribe = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email.trim()) return;
+    setStatus('sending');
+    const result = await submitForm('newsletter', { email });
+    if (result.ok) {
+      setStatus('done');
+      setEmail('');
+    } else {
+      setStatus('error');
+      setError(result.error);
+    }
+  };
 
   return (
     <footer
@@ -77,10 +97,12 @@ const Footer: React.FC = () => {
               and track with confidence.
             </p>
             <div className="mt-6 flex gap-4">
-              {socials.map(({ Icon, label }) => (
+              {socials.map(({ Icon, label, href }) => (
                 <a
                   key={label}
-                  href="#"
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   aria-label={label}
                   className="flex h-8 w-8 items-center justify-center rounded-full bg-line-soft text-ink-muted transition-colors hover:bg-brand-red hover:text-white"
                 >
@@ -121,13 +143,17 @@ const Footer: React.FC = () => {
             </h4>
             <div className="mt-4 flex gap-4">
               <a
-                href="#"
+                href={APP_LINKS.vendorAndroid}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="flex h-[53px] items-center justify-center rounded-btn bg-brand-blue px-9 text-base font-bold leading-7 text-white shadow-btn transition-opacity hover:opacity-90"
               >
                 Vendors
               </a>
               <a
-                href="#"
+                href={APP_LINKS.customerAndroid}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="flex h-[53px] items-center justify-center rounded-btn bg-brand-red px-9 text-base font-bold leading-7 text-white shadow-btn transition-colors hover:bg-brand-redHover"
               >
                 Users
@@ -142,22 +168,32 @@ const Footer: React.FC = () => {
             <p className="mt-4 text-sm leading-5 text-ink-muted">
               Subscribe for updates and offers.
             </p>
-            <form
-              className="mt-4 flex gap-3"
-              onSubmit={(e) => e.preventDefault()}
-            >
+            <form className="mt-4 flex gap-3" onSubmit={handleSubscribe}>
               <input
                 type="email"
+                name="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email"
                 className="min-w-0 flex-1 rounded-btn border border-line bg-white px-4 py-3.5 text-sm text-ink placeholder:text-ink-muted focus:border-brand-red focus:outline-none"
               />
               <button
                 type="submit"
-                className="shrink-0 rounded-btn bg-brand-subscribe px-8 py-3 text-sm font-semibold leading-5 text-white transition-colors hover:bg-brand-redHover"
+                disabled={status === 'sending'}
+                className="shrink-0 rounded-btn bg-brand-subscribe px-8 py-3 text-sm font-semibold leading-5 text-white transition-colors hover:bg-brand-redHover disabled:opacity-60"
               >
-                Subscribe
+                {status === 'sending' ? 'Sending…' : 'Subscribe'}
               </button>
             </form>
+            {status === 'done' && (
+              <p className="mt-3 text-sm text-emerald-600">
+                Thanks — you&apos;re on the list.
+              </p>
+            )}
+            {status === 'error' && (
+              <p className="mt-3 text-sm text-brand-red">{error}</p>
+            )}
           </div>
         </div>
 

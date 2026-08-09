@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Car, Warehouse, PlayCircle } from 'lucide-react';
 import HeroVideoPanel from './HeroVideoPanel';
+import { APP_LINKS } from '../constants/links';
 
 const avatars = [
   '/avatars/avatar-1.jpg',
@@ -91,12 +92,14 @@ const Hero: React.FC = () => {
                   service.
                 </p>
                 <div className="mt-6 h-1 w-8 rounded-full bg-[#fecaca]" />
-                <button
-                  onClick={() => navigate('/beta')}
+                <a
+                  href={APP_LINKS.customerAndroid}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="mt-7 self-start rounded-[8px] bg-[#e11d48] px-8 py-3 text-base font-medium leading-6 text-white shadow-[0px_4px_6px_-1px_rgba(0,0,0,0.1),0px_2px_4px_-2px_rgba(0,0,0,0.1)] transition-opacity hover:opacity-90"
                 >
                   Download Customer App
-                </button>
+                </a>
               </div>
               <img
                 src="/hero-phone-customer.png"

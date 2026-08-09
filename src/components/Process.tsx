@@ -1,5 +1,7 @@
 import React from 'react';
 import { Star } from 'lucide-react';
+import StoreBadges from './StoreBadges';
+import { APP_LINKS } from '../constants/links';
 
 const Process: React.FC = () => {
   return (
@@ -51,36 +53,10 @@ const Process: React.FC = () => {
           </span>
         </div>
 
-        <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
-          <a
-            href="#"
-            className="flex items-center gap-3 rounded-xl border border-line bg-white px-5 py-3 text-left shadow-card transition-colors hover:border-ink"
-          >
-            <img src="/icons/google-play.svg" alt="" className="h-8 w-8" />
-            <span>
-              <span className="block text-[10px] font-bold uppercase text-slate-500">
-                GET IT ON
-              </span>
-              <span className="block text-xl font-bold text-slate-800">
-                Google Play
-              </span>
-            </span>
-          </a>
-          <a
-            href="#"
-            className="flex items-center gap-3 rounded-xl border border-line bg-white px-5 py-3 text-left shadow-card transition-colors hover:border-ink"
-          >
-            <img src="/icons/app-store.svg" alt="" className="h-8 w-8" />
-            <span>
-              <span className="block text-[10px] font-bold text-slate-500">
-                Download on the
-              </span>
-              <span className="block text-xl font-bold text-slate-800">
-                App Store
-              </span>
-            </span>
-          </a>
-        </div>
+        <StoreBadges
+          androidHref={APP_LINKS.customerAndroid}
+          className="mt-8 justify-center"
+        />
       </div>
     </section>
   );

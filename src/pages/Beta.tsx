@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Users, Clock, CheckCircle, Star, Zap, Shield, Award } from 'lucide-react';
 import PageBlob from '../components/PageBlob';
+import { submitForm } from '../lib/submitForm';
 
 const Beta = () => {
   const [seatsRemaining, setSeatsRemaining] = useState(() => {
@@ -97,21 +98,12 @@ const Beta = () => {
     setSubmitStatus('idle');
 
     try {
-      const response = await fetch('https://api.web3forms.com/submit', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          access_key: '89c66a6e-3aee-4cab-9363-2050f20fa5ec',
-          subject: 'New Keplix Beta Application',
-          from_name: formData.name,
-          ...formData,
-          seats_remaining: seatsRemaining - 1
-        }),
+      const result = await submitForm('beta', {
+        ...formData,
+        seatsRemaining: String(seatsRemaining - 1),
       });
 
-      if (response.ok) {
+      if (result.ok) {
         setSubmitStatus('success');
         setSeatsRemaining(prev => Math.max(0, prev - 1));
         setFormData({
@@ -126,8 +118,6 @@ const Beta = () => {
       } else {
         setSubmitStatus('error');
       }
-    } catch (error) {
-      setSubmitStatus('error');
     } finally {
       setIsSubmitting(false);
     }

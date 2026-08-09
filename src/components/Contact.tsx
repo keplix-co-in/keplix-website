@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { submitForm } from '../lib/submitForm';
 
 const RADIO_ACCENT = '#2563eb';
 
@@ -24,36 +25,37 @@ type Role = 'Car Owner' | 'Workshop Owner' | 'Partner / Other';
 
 const Contact: React.FC = () => {
   const [role, setRole] = useState<Role>('Car Owner');
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
   const [help, setHelp] = useState('');
   const [message, setMessage] = useState('');
+  const [honeypot, setHoneypot] = useState('');
+  const [status, setStatus] = useState<'idle' | 'sending' | 'done' | 'error'>(
+    'idle',
+  );
+  const [errorMessage, setErrorMessage] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setStatus('sending');
+    setErrorMessage('');
 
-    fetch('https://api.web3forms.com/submit', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        access_key: '89c66a6e-3aee-4cab-9363-2050f20fa5ec',
-        subject: 'New Contact Form Submission - Keplix',
-        role,
-        help,
-        message,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.success) {
-          alert("Thank you for your message! We'll get back to you soon.");
-          setHelp('');
-          setMessage('');
-        } else {
-          alert('There was an error sending your message. Please try again.');
-        }
-      })
-      .catch(() => {
-        alert('There was an error sending your message. Please try again.');
-      });
+    const result = await submitForm(
+      'quick',
+      { name, email, role, help, message },
+      honeypot,
+    );
+
+    if (result.ok) {
+      setStatus('done');
+      setName('');
+      setEmail('');
+      setHelp('');
+      setMessage('');
+    } else {
+      setStatus('error');
+      setErrorMessage(result.error);
+    }
   };
 
   return (
@@ -133,6 +135,29 @@ const Contact: React.FC = () => {
               </div>
             </div>
 
+            {/* Name and email are required — without them a submission can't
+                be replied to. */}
+            <div className="grid gap-4 sm:grid-cols-2">
+              <input
+                type="text"
+                name="name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Your name"
+                required
+                className="rounded-btn border border-gray-700 bg-white px-4 py-3 text-ink placeholder:text-ink-muted focus:outline-none"
+              />
+              <input
+                type="email"
+                name="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Your email"
+                required
+                className="rounded-btn border border-gray-700 bg-white px-4 py-3 text-ink placeholder:text-ink-muted focus:outline-none"
+              />
+            </div>
+
             <select
               value={help}
               onChange={(e) => setHelp(e.target.value)}
@@ -153,12 +178,36 @@ const Contact: React.FC = () => {
               className="resize-none rounded-btn border border-gray-700 bg-white px-4 py-3 text-ink placeholder:text-ink-muted focus:outline-none"
             />
 
+            {/* Honeypot — hidden from people, irresistible to bots. */}
+            <input
+              type="text"
+              name="company"
+              tabIndex={-1}
+              autoComplete="off"
+              aria-hidden="true"
+              value={honeypot}
+              onChange={(e) => setHoneypot(e.target.value)}
+              className="hidden"
+            />
+
             <button
               type="submit"
-              className="rounded-btn bg-brand-red py-4 text-base font-bold text-white transition-colors hover:bg-brand-redHover"
+              disabled={status === 'sending'}
+              className="rounded-btn bg-brand-red py-4 text-base font-bold text-white transition-colors hover:bg-brand-redHover disabled:opacity-60"
             >
-              Send a message
+              {status === 'sending' ? 'Sending…' : 'Send a message'}
             </button>
+
+            {status === 'done' && (
+              <p className="rounded-btn bg-emerald-500/15 px-4 py-3 text-sm font-medium text-emerald-300">
+                Thanks — your message is on its way. We&apos;ll be in touch soon.
+              </p>
+            )}
+            {status === 'error' && (
+              <p className="rounded-btn bg-red-500/15 px-4 py-3 text-sm font-medium text-red-300">
+                {errorMessage}
+              </p>
+            )}
           </form>
         </div>
       </div>

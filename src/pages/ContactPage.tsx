@@ -1,43 +1,51 @@
 import React, { useState } from 'react';
 import { ChevronDown } from 'lucide-react';
 import PageBlob from '../components/PageBlob';
+import { CONTACT, SOCIALS } from '../constants/links';
+import { submitForm } from '../lib/submitForm';
 
 const contactMethods = [
   {
     icon: '/icons/contact-email.svg',
     title: 'Email us',
     description: "Send us an email and we'll respond within 24 hour",
-    contact: 'support@keplix.co.in',
+    contact: CONTACT.email,
+    href: CONTACT.gmailCompose,
   },
   {
     icon: '/icons/contact-phone.svg',
     title: 'Call us',
     description: 'Speak directly with our support team',
-    contact: '+91 98189 15720',
+    contact: CONTACT.phoneDisplay,
+    href: CONTACT.tel,
   },
   {
     icon: '/icons/contact-chat.svg',
     title: 'Live Chat',
     description: 'Chat with us in real-time for instant support',
     contact: 'Available 24/7',
+    href: CONTACT.whatsapp,
   },
   {
     icon: '/icons/contact-instagram.svg',
     title: 'Instagram',
     description: 'DM us on instagram for quick responses',
     contact: '@keplix_official',
+    href: SOCIALS.instagram,
   },
   {
     icon: '/icons/contact-twitter.svg',
     title: 'Twitter',
     description: 'Tweet to us and we’ll get back to you',
     contact: '@keplix_official',
+    href: SOCIALS.twitter,
   },
   {
     icon: '/icons/contact-facebook.svg',
     title: 'Facebook',
     description: 'Message us on facebook for support',
     contact: '@keplix_official',
+    href: SOCIALS.facebook,
   },
 ];
 
@@ -72,37 +80,33 @@ const ContactPage: React.FC = () => {
     inquiryType: 'general',
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const [status, setStatus] = useState<'idle' | 'sending' | 'done' | 'error'>(
+    'idle',
+  );
+  const [errorMessage, setErrorMessage] = useState('');
+  const [honeypot, setHoneypot] = useState('');
 
-    fetch('https://api.web3forms.com/submit', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        access_key: '89c66a6e-3aee-4cab-9363-2050f20fa5ec',
-        from_name: formData.name,
-        ...formData,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.success) {
-          alert("Thank you for your message! We'll get back to you soon.");
-          setFormData({
-            name: '',
-            email: '',
-            phone: '',
-            subject: '',
-            message: '',
-            inquiryType: 'general',
-          });
-        } else {
-          alert('There was an error sending your message. Please try again.');
-        }
-      })
-      .catch(() => {
-        alert('There was an error sending your message. Please try again.');
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus('sending');
+    setErrorMessage('');
+
+    const result = await submitForm('contact', formData, honeypot);
+
+    if (result.ok) {
+      setStatus('done');
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        subject: '',
+        message: '',
+        inquiryType: 'general',
       });
+    } else {
+      setStatus('error');
+      setErrorMessage(result.error);
+    }
   };
 
   const handleChange = (
@@ -146,10 +150,13 @@ const ContactPage: React.FC = () => {
               70% reproduces Figma's 856-in-1216 at 1280 and scales from there. */}
           <div className="pb-16">
             <div className="mx-auto mt-[53px] grid grid-cols-1 gap-8 sm:grid-cols-2 lg:max-w-[70%] lg:grid-cols-3">
-              {contactMethods.map(({ icon, title, description, contact }) => (
-                <div
+              {contactMethods.map(({ icon, title, description, contact, href }) => (
+                <a
                   key={title}
-                  className="flex flex-col items-center rounded-[12px] bg-[#fbf0f0] px-8 pb-[34px] pt-8 text-center drop-shadow-[0px_1px_1px_rgba(0,0,0,0.05)]"
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex flex-col items-center rounded-[12px] bg-[#fbf0f0] px-8 pb-[34px] pt-8 text-center drop-shadow-[0px_1px_1px_rgba(0,0,0,0.05)] transition-transform hover:-translate-y-0.5"
                 >
                   <img src={icon} alt="" className="h-12 w-12" />
                   <h3 className="mt-3 text-[20px] font-bold text-[#111827]">
@@ -161,7 +168,7 @@ const ContactPage: React.FC = () => {
                   <p className="mt-3 text-[16px] font-medium text-[#d91f26]">
                     {contact}
                   </p>
-                </div>
+                </a>
               ))}
             </div>
           </div>
@@ -258,12 +265,37 @@ const ContactPage: React.FC = () => {
                 />
               </div>
 
+              {/* Honeypot — hidden from people, irresistible to bots. */}
+              <input
+                type="text"
+                name="company"
+                tabIndex={-1}
+                autoComplete="off"
+                aria-hidden="true"
+                value={honeypot}
+                onChange={(e) => setHoneypot(e.target.value)}
+                className="hidden"
+              />
+
               <button
                 type="submit"
-                className="w-full rounded-[8px] bg-[#da1e27] py-4 text-center text-[16px] font-bold leading-6 text-white transition-opacity hover:opacity-90"
+                disabled={status === 'sending'}
+                className="w-full rounded-[8px] bg-[#da1e27] py-4 text-center text-[16px] font-bold leading-6 text-white transition-opacity hover:opacity-90 disabled:opacity-60"
               >
-                Send Message
+                {status === 'sending' ? 'Sending…' : 'Send Message'}
               </button>
+
+              {status === 'done' && (
+                <p className="rounded-[8px] bg-emerald-50 px-4 py-3 text-center text-sm font-medium text-emerald-700">
+                  Thanks — your message is on its way. We&apos;ll get back to you
+                  within 24 hours.
+                </p>
+              )}
+              {status === 'error' && (
+                <p className="rounded-[8px] bg-red-50 px-4 py-3 text-center text-sm font-medium text-brand-red">
+                  {errorMessage}
+                </p>
+              )}
             </form>
           </div>
 
@@ -300,28 +332,33 @@ const ContactPage: React.FC = () => {
                   Delhi
                 </p>
                 <p className="text-[14px] leading-[22.75px] text-[#363636]">
-                  9/2659, Kailash Nagar, Gandhi Nagar, Delhi, 110031
+                  {CONTACT.address}
                 </p>
-                <div className="flex items-center gap-3">
+                <a href={CONTACT.tel} className="flex items-center gap-3 group">
                   <img
                     src="/icons/contact-phone-sm.svg"
                     alt=""
                     className="h-4 w-4"
                   />
-                  <span className="text-[14px] leading-5 text-[#363636]">
-                    +91 98189 15720
+                  <span className="text-[14px] leading-5 text-[#363636] group-hover:text-brand-red">
+                    {CONTACT.phoneDisplay}
                   </span>
-                </div>
-                <div className="flex items-center gap-3">
+                </a>
+                <a
+                  href={CONTACT.gmailCompose}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 group"
+                >
                   <img
                     src="/icons/contact-mail-sm.svg"
                     alt=""
                     className="h-4 w-4"
                   />
-                  <span className="text-[14px] leading-5 text-[#363636]">
-                    support@keplix.co.in
+                  <span className="text-[14px] leading-5 text-[#363636] group-hover:text-brand-red">
+                    {CONTACT.email}
                   </span>
-                </div>
+                </a>
               </div>
             </div>
 

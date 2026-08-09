@@ -2,6 +2,8 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ChevronRight } from 'lucide-react';
 import PageBlob, { PageBlobRight } from '../components/PageBlob';
+import StoreBadges from '../components/StoreBadges';
+import { APP_LINKS } from '../constants/links';
 
 const stats = [
   { icon: '/icons/biz-stat-free.svg', line1: '100% Free', line2: 'to Join' },
@@ -69,36 +71,7 @@ const benefitLabelClass =
   'text-sm font-semibold uppercase leading-tight text-black';
 
 const storeBadges = (
-  <div className="flex flex-wrap justify-center gap-4">
-    <a
-      href="#"
-      className="flex items-center gap-3 rounded-xl border border-line bg-white px-5 py-3 shadow-card"
-    >
-      <img src="/icons/google-play.svg" alt="" className="h-8 w-8" />
-      <span className="block text-left">
-        <span className="block text-[10px] font-bold uppercase text-slate-500">
-          GET IT ON
-        </span>
-        <span className="block text-xl font-bold text-slate-800">
-          Google Play
-        </span>
-      </span>
-    </a>
-    <a
-      href="#"
-      className="flex items-center gap-3 rounded-xl border border-line bg-white px-5 py-3 shadow-card"
-    >
-      <img src="/icons/app-store.svg" alt="" className="h-8 w-8" />
-      <span className="block text-left">
-        <span className="block text-[10px] font-bold text-slate-500">
-          Download on the
-        </span>
-        <span className="block text-xl font-bold text-slate-800">
-          App Store
-        </span>
-      </span>
-    </a>
-  </div>
+  <StoreBadges androidHref={APP_LINKS.vendorAndroid} className="justify-center" />
 );
 
 const Business: React.FC = () => {
@@ -124,13 +97,15 @@ const Business: React.FC = () => {
             manage your workshop digitally —all from one powerful platform
           </p>
           <div className="mt-9 flex flex-wrap gap-4">
-            <button
-              onClick={() => navigate('/beta')}
+            <a
+              href={APP_LINKS.vendorAndroid}
+              target="_blank"
+              rel="noopener noreferrer"
               className="flex h-[53px] w-full items-center justify-center gap-3 rounded-[8px] bg-partner text-base font-bold leading-7 text-white shadow-[0px_10px_15px_-3px_#caccfe,0px_4px_6px_-4px_#cecafe] transition-opacity hover:opacity-90 sm:w-[313px]"
             >
               <img src="/icons/biz-btn-download.svg" alt="" className="h-5 w-5" />
               Download Garage Partner App
-            </button>
+            </a>
             <button
               onClick={() => navigate('/contact')}
               className="flex h-[53px] w-full items-center justify-center rounded-[8px] border border-[#e5e7eb] bg-white text-base font-bold leading-7 text-ink transition-colors hover:border-ink sm:w-[190px]"

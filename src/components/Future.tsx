@@ -70,7 +70,9 @@ const Future: React.FC = () => {
           Why Car Owners Trust Keplix
         </h2>
 
-        <div className="mt-10 flex flex-col items-center gap-8 lg:flex-row lg:items-start">
+        {/* Centre the illustration + cards as one group, rather than letting the
+            row start left and leaving the cards floating in the leftover space. */}
+        <div className="mt-10 flex flex-col items-center gap-8 lg:flex-row lg:items-center lg:justify-center lg:gap-16">
           <img
             src="/trust-illustration.png"
             alt="Customer reviews illustration"
@@ -94,7 +96,7 @@ const Future: React.FC = () => {
                 </div>
               ))}
             </div>
-            <div className="flex flex-wrap justify-center gap-6 sm:gap-12">
+            <div className="flex flex-wrap justify-center gap-6 sm:gap-[62px]">
               {trustItems.slice(3).map(({ icon, value, label }) => (
                 <div
                   key={label}
