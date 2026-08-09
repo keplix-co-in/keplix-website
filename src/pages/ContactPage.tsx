@@ -118,31 +118,34 @@ const ContactPage: React.FC = () => {
       {/* Hero + Get in Touch */}
       <section className="relative z-10">
         <div className="mx-auto max-w-page px-4 sm:px-8">
-          {/* Text content */}
-          <div className="flex flex-col gap-7 py-[42px]">
-            <h1 className="text-4xl font-bold leading-tight text-ink sm:text-[56px] sm:leading-[72px]">
-              Contact Keplix
-            </h1>
-            <p className="max-w-[512px] text-lg font-medium text-ink-muted sm:text-[20px]">
-              We&apos;re here to help. Reach out to us through any of the
-              channels below..
-            </p>
-          </div>
+          {/* Figma indents this page's text to x=163 in a 1280 frame. Expressed
+              as a % of the container so the indent scales with the page. */}
+          <div className="lg:pl-[10.8%]">
+            {/* Text content */}
+            <div className="flex flex-col gap-7 py-[42px]">
+              <h1 className="text-4xl font-bold leading-tight text-ink sm:text-[56px] sm:leading-[72px]">
+                Contact Keplix
+              </h1>
+              <p className="max-w-[512px] text-lg font-medium text-ink-muted sm:text-[20px]">
+                We&apos;re here to help. Reach out to us through any of the
+                channels below..
+              </p>
+            </div>
 
-          {/* Get in Touch */}
-          <div className="pb-16 pt-[19px]">
-            <h2 className="text-[28px] font-bold text-black">
+            {/* Get in Touch */}
+            <h2 className="pt-[19px] text-[28px] font-bold text-black">
               Get in <span className="text-[#f84a4a]">Touch</span>
             </h2>
             <p className="mt-4 text-[20px] text-[#636363]">
               Choose the method that works best for you. We&apos;re available
               24/7 to assist you.
             </p>
+          </div>
 
-            {/* Fills the container so the cards' left edge lines up with the
-                heading above, and the 3 columns scale with the page instead of
-                staying pinned at Figma's 856px and drifting off-centre. */}
-            <div className="mt-[53px] grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          {/* Cards sit in their own inset block, centred in the container —
+              70% reproduces Figma's 856-in-1216 at 1280 and scales from there. */}
+          <div className="pb-16">
+            <div className="mx-auto mt-[53px] grid grid-cols-1 gap-8 sm:grid-cols-2 lg:max-w-[70%] lg:grid-cols-3">
               {contactMethods.map(({ icon, title, description, contact }) => (
                 <div
                   key={title}

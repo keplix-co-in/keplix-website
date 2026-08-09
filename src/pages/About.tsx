@@ -56,7 +56,9 @@ const About: React.FC = () => {
       <section className="relative z-10">
         <div className="mx-auto max-w-page px-4 sm:px-8">
           <div className="grid items-center gap-8 lg:grid-cols-[656fr_520fr]">
-            <div className="flex flex-col gap-7 py-[42px]">
+            {/* Figma indents this page's text to x=139 in a 1280 frame — as a
+                % of the column so the indent scales with the page. */}
+            <div className="flex flex-col gap-7 py-[42px] lg:pl-[16%]">
               <h1 className="text-4xl font-bold leading-tight text-ink sm:text-[56px] sm:leading-[72px]">
                 About Keplix
               </h1>
