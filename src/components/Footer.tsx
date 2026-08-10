@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Facebook, Instagram, Linkedin, Youtube } from 'lucide-react';
+import { Facebook, Instagram, Linkedin, Twitter, Youtube } from 'lucide-react';
+import ThreadsIcon from './ThreadsIcon';
 import { APP_LINKS, SOCIALS } from '../constants/links';
 import { submitForm } from '../lib/submitForm';
 
@@ -45,9 +46,11 @@ const columns = [
 ];
 
 const socials = [
-  { Icon: Facebook, label: 'Facebook', href: SOCIALS.facebook },
-  { Icon: Instagram, label: 'Instagram', href: SOCIALS.instagram },
   { Icon: Linkedin, label: 'LinkedIn', href: SOCIALS.linkedin },
+  { Icon: Instagram, label: 'Instagram', href: SOCIALS.instagram },
+  { Icon: ThreadsIcon, label: 'Threads', href: SOCIALS.threads },
+  { Icon: Twitter, label: 'X', href: SOCIALS.twitter },
+  { Icon: Facebook, label: 'Facebook', href: SOCIALS.facebook },
   { Icon: Youtube, label: 'YouTube', href: SOCIALS.youtube },
 ];
 

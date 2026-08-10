@@ -10,6 +10,7 @@ import ScrollToTop from './components/ScrollToTop';
 import PageBlob from './components/PageBlob';
 import About from './pages/About';
 import Blog from './pages/Blog';
+import BlogPost from './pages/BlogPost';
 import Business from './pages/Business';
 import ContactPage from './pages/ContactPage';
 import Beta from './pages/Beta';
@@ -41,6 +42,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/about" element={<About />} />
         <Route path="/blog" element={<Blog />} />
+        <Route path="/blog/:slug" element={<BlogPost />} />
         <Route path="/business" element={<Business />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/beta" element={<Beta />} />

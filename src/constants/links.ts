@@ -25,9 +25,12 @@ export const CONTACT = {
 } as const;
 
 export const SOCIALS = {
-  instagram: 'https://www.instagram.com/keplix_official',
-  twitter: 'https://x.com/keplix_official',
-  facebook: 'https://www.facebook.com/keplix_official',
-  linkedin: 'https://www.linkedin.com/company/keplix',
-  youtube: 'https://www.youtube.com/@keplix_official',
+  linkedin: 'https://www.linkedin.com/company/keplix/',
+  instagram: 'https://www.instagram.com/keplix.co.in',
+  threads: 'https://www.threads.com/@keplix.co.in',
+  // `?s=21` on the supplied link is an iOS share-attribution param — dropped.
+  twitter: 'https://x.com/keplix180865',
+  // TODO: real URLs still needed for these two.
+  facebook: 'https://www.facebook.com/keplix.co.in',
+  youtube: 'https://www.youtube.com/@keplix.co.in',
 } as const;

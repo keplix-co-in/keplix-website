@@ -67,8 +67,43 @@ export default defineConfig(({ mode }) => {
   // just VITE_* to client code, so the key never reaches the browser bundle.
   Object.assign(process.env, loadEnv(mode, process.cwd(), ''));
 
+  // Proxy public content endpoints to the backend in dev. The backend's CORS
+  // whitelist only covers localhost:5173/5174 and Vite drifts to other ports
+  // when those are taken, so proxying avoids CORS entirely.
+  const backend = process.env.VITE_API_BASE_URL || 'http://localhost:8000';
+
   return {
     plugins: [react(), apiDevServer()],
+    server: {
+      proxy: {
+        '/content': {
+          target: backend,
+          changeOrigin: true,
+          // Without this, a stopped backend surfaces as a raw ECONNREFUSED
+          // stack trace and a hung request. Turn it into a clear hint plus a
+          // JSON 503 the app can actually render an error state from.
+          configure: (proxy) => {
+            proxy.on('error', (err, _req, res) => {
+              console.error(
+                `\n[proxy] Cannot reach the API at ${backend} (${
+                  (err as NodeJS.ErrnoException).code ?? err.message
+                }).\n` +
+                  `        Start it with:  cd keplix-backend && npm start\n`,
+              );
+              const socket = res as unknown as { writableEnded?: boolean };
+              if ('writeHead' in res && !socket.writableEnded) {
+                (res as import('node:http').ServerResponse).writeHead(503, {
+                  'Content-Type': 'application/json',
+                });
+                (res as import('node:http').ServerResponse).end(
+                  JSON.stringify({ message: 'API unavailable' }),
+                );
+              }
+            });
+          },
+        },
+      },
+    },
     base: '/',
     build: {
       outDir: 'dist',

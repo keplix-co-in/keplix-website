@@ -1,70 +1,66 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { ArrowRight, Search } from 'lucide-react';
 import PageBlob from '../components/PageBlob';
-
-const blogPosts = [
-  {
-    title: 'When Should You Change Engine Oil?',
-    excerpt: 'A complete guide to engine oil change intervals.',
-    date: 'May 15, 2024',
-    readTime: '5 min read',
-    category: 'Maintenance',
-  },
-  {
-    title: 'How to Choose a Good Garage?',
-    excerpt: 'Tips to find a reliable and trusted garage.',
-    date: 'May 5, 2024',
-    readTime: '6 min read',
-    category: 'Guides',
-  },
-  {
-    title: 'Monsoon Car Care Tips',
-    excerpt: 'Essential car care tips for the rainy season.',
-    date: 'Apr 28, 2024',
-    readTime: '4 min read',
-    category: 'Seasonal',
-  },
-  {
-    title: 'EV Maintenance Guide',
-    excerpt: 'Everything you need to know about EV maintenance.',
-    date: 'Apr 20, 2024',
-    readTime: '5 min read',
-    category: 'EV',
-  },
-  {
-    title: 'Tyre Care 101',
-    excerpt: 'How to extend tyre life and stay safe on the road.',
-    date: 'Apr 15, 2024',
-    readTime: '4 min read',
-    category: 'Maintenance',
-  },
-  {
-    title: 'Summer Car Care Checklist',
-    excerpt: 'Keep your car ready for the summer heat.',
-    date: 'Apr 8, 2024',
-    readTime: '4 min read',
-    category: 'Seasonal',
-  },
-];
-
-const categories = ['All', 'Maintenance', 'Guides', 'Seasonal', 'EV'];
+import {
+  ApiUnavailableError,
+  fetchBlogPosts,
+  formatPostDate,
+  type BlogPostSummary,
+} from '../lib/api';
 
 const Blog: React.FC = () => {
+  const [posts, setPosts] = useState<BlogPostSummary[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState('');
   const [search, setSearch] = useState('');
   const [activeCategory, setActiveCategory] = useState('All');
 
+  useEffect(() => {
+    let cancelled = false;
+
+    fetchBlogPosts()
+      .then((data) => {
+        if (!cancelled) setPosts(data);
+      })
+      .catch((err) => {
+        if (cancelled) return;
+        // In dev, an unreachable API almost always means the backend isn't
+        // running — say so instead of a vague "something went wrong".
+        setLoadError(
+          err instanceof ApiUnavailableError && import.meta.env.DEV
+            ? 'Cannot reach the API. Start the backend: cd keplix-backend && npm start'
+            : "We couldn't load the articles just now.",
+        );
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  // Categories come from whatever is actually published, so a new category in
+  // the admin shows up here without a code change.
+  const categories = useMemo(
+    () => ['All', ...Array.from(new Set(posts.map((p) => p.category)))],
+    [posts],
+  );
+
   const filteredPosts = useMemo(() => {
     const query = search.trim().toLowerCase();
-    return blogPosts.filter((post) => {
+    return posts.filter((post) => {
       const matchesCategory =
         activeCategory === 'All' || post.category === activeCategory;
       const matchesSearch =
         !query ||
         post.title.toLowerCase().includes(query) ||
-        post.excerpt.toLowerCase().includes(query);
+        (post.excerpt ?? '').toLowerCase().includes(query);
       return matchesCategory && matchesSearch;
     });
-  }, [search, activeCategory]);
+  }, [posts, search, activeCategory]);
 
   return (
     <div className="relative overflow-hidden">
@@ -81,82 +77,134 @@ const Blog: React.FC = () => {
         </div>
       </section>
 
-      <section className="relative z-10 mx-auto max-w-page px-4 pt-8 sm:px-8">
-        <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-between">
-          <div className="relative w-full sm:max-w-xs">
-            <Search
-              className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-ink-faint"
-              size={18}
-            />
-            <input
-              type="text"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search articles..."
-              className="w-full rounded-btn border border-line bg-white py-2.5 pl-10 pr-4 text-sm text-ink outline-none transition-colors focus:border-ink"
-            />
+      {!loading && !loadError && posts.length > 0 && (
+        <section className="relative z-10 mx-auto max-w-page px-4 pt-8 sm:px-8">
+          <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-between">
+            <div className="relative w-full sm:max-w-xs">
+              <Search
+                className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-ink-faint"
+                size={18}
+              />
+              <input
+                type="text"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Search articles..."
+                className="w-full rounded-btn border border-line bg-white py-2.5 pl-10 pr-4 text-sm text-ink outline-none transition-colors focus:border-ink"
+              />
+            </div>
+            <div className="flex flex-wrap justify-center gap-2">
+              {categories.map((category) => (
+                <button
+                  key={category}
+                  onClick={() => setActiveCategory(category)}
+                  className={`rounded-full px-4 py-2 text-sm font-semibold transition-colors ${
+                    activeCategory === category
+                      ? 'bg-brand-red text-white'
+                      : 'border border-line bg-white text-ink-body hover:border-ink'
+                  }`}
+                >
+                  {category}
+                </button>
+              ))}
+            </div>
           </div>
-          <div className="flex flex-wrap justify-center gap-2">
-            {categories.map((category) => (
-              <button
-                key={category}
-                onClick={() => setActiveCategory(category)}
-                className={`rounded-full px-4 py-2 text-sm font-semibold transition-colors ${
-                  activeCategory === category
-                    ? 'bg-brand-red text-white'
-                    : 'border border-line bg-white text-ink-body hover:border-ink'
-                }`}
-              >
-                {category}
-              </button>
-            ))}
-          </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       <section className="relative z-10 mx-auto max-w-page px-4 py-12 sm:px-8">
-        {filteredPosts.length === 0 ? (
-          <p className="py-16 text-center text-base text-ink-muted">
-            No articles match your search. Try a different keyword or category.
-          </p>
-        ) : (
-        <div className="grid gap-6 sm:grid-cols-2">
-          {filteredPosts.map((post) => (
-            <article
-              key={post.title}
-              className="flex flex-col justify-between rounded-2xl border border-line-soft bg-white p-6 shadow-card transition-shadow hover:shadow-cardHover"
-            >
-              <div>
-                <h3 className="text-lg font-bold text-ink-heading">
-                  {post.title}
-                </h3>
-                <p className="mt-2 text-sm text-ink-muted">{post.excerpt}</p>
-              </div>
-              <div className="mt-6 flex items-center justify-between">
-                <span className="text-xs text-ink-faint">
-                  {post.date} &middot; {post.readTime}
-                </span>
-                <ArrowRight className="text-ink" size={18} />
-              </div>
-            </article>
-          ))}
-        </div>
+        {loading && (
+          <div className="grid gap-6 sm:grid-cols-2">
+            {[0, 1, 2, 3].map((i) => (
+              <div
+                key={i}
+                className="h-40 animate-pulse rounded-2xl border border-line-soft bg-white/60"
+              />
+            ))}
+          </div>
         )}
 
-        {/* This page is the full listing, so "view all" means clearing any
-            active search or category filter. */}
-        {(search !== '' || activeCategory !== 'All') && (
-          <div className="mt-10 text-center">
-            <button
-              onClick={() => {
-                setSearch('');
-                setActiveCategory('All');
-              }}
-              className="text-xl font-bold text-[#ef4444] hover:underline"
-            >
-              View All Blogs
-            </button>
-          </div>
+        {!loading && loadError && (
+          <p className="py-16 text-center text-base text-ink-muted">
+            {loadError} Please refresh, or email us at{' '}
+            <a href="mailto:support@keplix.co.in" className="text-brand-red">
+              support@keplix.co.in
+            </a>
+            .
+          </p>
+        )}
+
+        {!loading && !loadError && posts.length === 0 && (
+          <p className="py-16 text-center text-base text-ink-muted">
+            No articles published yet — check back soon.
+          </p>
+        )}
+
+        {!loading && !loadError && posts.length > 0 && (
+          <>
+            {filteredPosts.length === 0 ? (
+              <p className="py-16 text-center text-base text-ink-muted">
+                No articles match your search. Try a different keyword or
+                category.
+              </p>
+            ) : (
+              <div className="grid gap-6 sm:grid-cols-2">
+                {filteredPosts.map((post) => (
+                  <Link
+                    key={post.id}
+                    to={`/blog/${post.slug}`}
+                    className="flex flex-col justify-between overflow-hidden rounded-2xl border border-line-soft bg-white shadow-card transition-shadow hover:shadow-cardHover"
+                  >
+                    {post.coverImage && (
+                      <img
+                        src={post.coverImage}
+                        alt=""
+                        className="h-44 w-full object-cover"
+                      />
+                    )}
+                    <div className="flex flex-1 flex-col justify-between p-6">
+                      <div>
+                        <span className="text-xs font-semibold uppercase tracking-wide text-brand-red">
+                          {post.category}
+                        </span>
+                        <h3 className="mt-2 text-lg font-bold text-ink-heading">
+                          {post.title}
+                        </h3>
+                        {post.excerpt && (
+                          <p className="mt-2 text-sm text-ink-muted">
+                            {post.excerpt}
+                          </p>
+                        )}
+                      </div>
+                      <div className="mt-6 flex items-center justify-between">
+                        <span className="text-xs text-ink-faint">
+                          {formatPostDate(post.publishedAt)}
+                          {post.readTime ? ` · ${post.readTime} min read` : ''}
+                        </span>
+                        <ArrowRight className="text-ink" size={18} />
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            )}
+
+            {/* This page is the full listing, so "view all" means clearing any
+                active search or category filter. */}
+            {(search !== '' || activeCategory !== 'All') && (
+              <div className="mt-10 text-center">
+                <button
+                  onClick={() => {
+                    setSearch('');
+                    setActiveCategory('All');
+                  }}
+                  className="text-xl font-bold text-[#ef4444] hover:underline"
+                >
+                  View All Blogs
+                </button>
+              </div>
+            )}
+          </>
         )}
       </section>
     </div>
