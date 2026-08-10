@@ -1,286 +1,336 @@
-import { Building, Users, TrendingUp, Shield, Clock, Award, CheckCircle, ArrowRight } from 'lucide-react';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { ChevronRight } from 'lucide-react';
+import PageBlob, { PageBlobRight } from '../components/PageBlob';
+import StoreBadges from '../components/StoreBadges';
+import { APP_LINKS } from '../constants/links';
 
-const Business = () => {
-  const features = [
-    {
-      icon: <Building className="w-8 h-8" />,
-      title: "Fleet Management",
-      description: "Comprehensive fleet management solutions with real-time tracking, maintenance scheduling, and cost optimization."
-    },
-    {
-      icon: <Users className="w-8 h-8" />,
-      title: "Dedicated Account Manager",
-      description: "Personal account manager to handle all your business needs and ensure seamless service delivery."
-    },
-    {
-      icon: <TrendingUp className="w-8 h-8" />,
-      title: "Analytics & Reporting",
-      description: "Detailed insights and reports on fleet performance, maintenance costs, and operational efficiency."
-    },
-    {
-      icon: <Shield className="w-8 h-8" />,
-      title: "Priority Support",
-      description: "24/7 priority support with guaranteed response times and dedicated technical assistance."
-    },
-    {
-      icon: <Clock className="w-8 h-8" />,
-      title: "Flexible Scheduling",
-      description: "Bulk booking capabilities with flexible scheduling options to minimize business disruption."
-    },
-    {
-      icon: <Award className="w-8 h-8" />,
-      title: "Enterprise Pricing",
-      description: "Competitive enterprise pricing with volume discounts and customized service packages."
-    }
-  ];
+const stats = [
+  { icon: '/icons/biz-stat-free.svg', line1: '100% Free', line2: 'to Join' },
+  { icon: '/icons/biz-stat-verified.svg', line1: 'Verified', line2: 'Customers' },
+  { icon: '/icons/biz-stat-commission.svg', line1: 'No Commission', line2: 'on Bookings' },
+  { icon: '/icons/biz-stat-support.svg', line1: 'Dedicated', line2: 'Partner Support' },
+];
 
-  const benefits = [
-    "Reduce fleet maintenance costs by up to 30%",
-    "Minimize vehicle downtime with predictive maintenance",
-    "Centralized billing and expense management",
-    "Compliance tracking and documentation",
-    "Multi-location service coordination",
-    "Custom reporting and analytics dashboard"
-  ];
+const partnerBenefits = [
+  { icon: '/icons/biz-partner-more-customers.svg', line1: 'GET MORE', line2: 'CUSTOMERS' },
+  { icon: '/icons/biz-partner-increase-revenue.svg', line1: 'INCREASE', line2: 'REVENUE' },
+  { icon: '/icons/biz-partner-digital-mgmt.svg', line1: 'DIGITAL WORKSHOP', line2: 'MANAGEMENT' },
+  { icon: '/icons/biz-partner-build-trust.svg', line1: 'BUILD CUSTOMER', line2: 'TRUST' },
+];
 
-  const plans = [
-    {
-      name: "Startup",
-      price: "₹2,999",
-      period: "/month",
-      vehicles: "Up to 10 vehicles",
-      features: [
-        "Basic fleet management",
-        "Standard support",
-        "Monthly reports",
-        "Mobile app access",
-        "Basic analytics"
-      ]
-    },
-    {
-      name: "Growth",
-      price: "₹7,999",
-      period: "/month",
-      vehicles: "Up to 50 vehicles",
-      features: [
-        "Advanced fleet management",
-        "Priority support",
-        "Weekly reports",
-        "Dedicated account manager",
-        "Advanced analytics",
-        "Custom integrations"
-      ],
-      popular: true
-    },
-    {
-      name: "Enterprise",
-      price: "Custom",
-      period: "pricing",
-      vehicles: "Unlimited vehicles",
-      features: [
-        "Full enterprise solution",
-        "24/7 dedicated support",
-        "Real-time reporting",
-        "Multiple account managers",
-        "Custom analytics",
-        "API access",
-        "White-label options"
-      ]
-    }
-  ];
+const partnerBenefitsWide = [
+  { icon: '/icons/biz-partner-flexible-scheduling.svg', line1: 'FLEXIBLE', line2: 'SCHEDULING' },
+  { icon: '/icons/biz-partner-track-performance.svg', line1: 'TRACK BUSINESS', line2: 'PERFORMANCE' },
+];
+
+const howItWorks = [
+  { icon: '/icons/biz-hiw-1.svg', title: 'Register', description: 'Create your workshop profile with business details.' },
+  { icon: '/icons/biz-hiw-2.svg', title: 'List Services', description: 'Add services, pricing, facilities and operating hours.' },
+  { icon: '/icons/biz-hiw-3.svg', title: 'Receive Bookings', description: 'Nearby customers discover your workshop and book appointments.' },
+  { icon: '/icons/biz-hiw-4.svg', title: 'Complete Services', description: 'Deliver quality service and update status directly from the app.' },
+  { icon: '/icons/biz-hiw-5.svg', title: 'Grow Reputation', description: 'Receive ratings and reviews that help attract even more business.' },
+];
+
+const appFeatures = [
+  'Booking Management',
+  'Workshop Profile',
+  'Availability Management',
+  'Customer Information',
+  'Reviews & Ratings',
+  'Secure Payment Tracking',
+  'Job Tracking',
+  'Earnings Dashboard',
+];
+
+const appScreens = [
+  '/app-screen-1.png',
+  '/app-screen-2.png',
+  '/app-screen-3.png',
+  '/app-screen-4.png',
+];
+
+const whoCanJoin = [
+  { icon: '/icons/wcj-multibrand-o.svg', line1: 'MULTI-BRAND', line2: 'CAR SERVICE CENTRES' },
+  { icon: '/icons/wcj-independent-o.svg', line1: 'INDEPENDENT', line2: 'GARAGES' },
+  { icon: '/icons/wcj-denting-o.svg', line1: 'DENTING & PAINTING', line2: 'WORKSHOPS' },
+  { icon: '/icons/wcj-detailing-o.svg', line1: 'CAR DETAILING', line2: 'STUDIOS' },
+  { icon: '/icons/wcj-carwash-o.svg', line1: 'CAR WASH', line2: 'CENTRES' },
+  { icon: '/icons/wcj-wheel-alignment-o.svg', line1: 'WHEEL ALIGNMENT &', line2: 'BALANCING CENTRES' },
+  { icon: '/icons/wcj-tyre-o.svg', line1: 'TYRE SHOPS', line2: '' },
+  { icon: '/icons/wcj-battery-o.svg', line1: 'BATTERY', line2: 'DEALERS' },
+  { icon: '/icons/wcj-ac-o.svg', line1: 'CAR AC', line2: 'SPECIALISTS' },
+  { icon: '/icons/wcj-carwash-o.svg', line1: 'CAR ELECTRICAL', line2: 'WORKSHOPS' },
+  { icon: '/icons/wcj-accessory-o.svg', line1: 'CAR ACCESSORY', line2: 'STORES' },
+  { icon: '/icons/wcj-breakdown-o.svg', line1: 'BREAKDOWN ASSISTANCE', line2: 'PROVIDERS' },
+];
+
+const benefitCardClass =
+  'flex h-[164px] flex-col items-center justify-center gap-4 rounded-lg border border-[#f3f4f6] bg-[#f9fafb]/50 p-4 text-center';
+const benefitLabelClass =
+  'text-sm font-semibold uppercase leading-tight text-black';
+
+const storeBadges = (
+  <StoreBadges androidHref={APP_LINKS.vendorAndroid} className="justify-center" />
+);
+
+const Business: React.FC = () => {
+  const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-black text-white">
-      {/* Hero Section */}
-      <section className="pt-32 pb-20 bg-gradient-to-br from-gray-900 via-black to-gray-800 relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-20 left-20 w-32 h-32 bg-red-500 rounded-full blur-3xl animate-pulse"></div>
-          <div className="absolute bottom-20 right-20 w-24 h-24 bg-red-500 rounded-full blur-2xl animate-pulse delay-1000"></div>
-        </div>
+    <div className="relative overflow-hidden">
+      <PageBlob color="bg-[#4176F3]/20" />
+      <PageBlobRight />
 
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="text-center max-w-4xl mx-auto">
-            <h1 className="text-5xl md:text-7xl font-bold mb-6 animate-fade-in">
-              Keplix for <span className="text-red-500">Business</span>
-            </h1>
-            <p className="text-xl md:text-2xl text-gray-300 mb-8 animate-fade-in-delay">
-              Enterprise-grade automotive service solutions designed to scale with your business needs.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in-delay-2">
-              <button className="bg-red-500 text-white px-8 py-4 rounded-full font-semibold hover:bg-red-600 transition-all duration-300 transform hover:scale-105">
-                Get Started Today
-              </button>
-              <button className="border border-red-500 text-red-500 px-8 py-4 rounded-full font-semibold hover:bg-red-500 hover:text-white transition-all duration-300">
-                Schedule Demo
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* Large BUSINESS Text Overlay */}
-        <div className="absolute bottom-0 left-0 right-0 overflow-hidden pointer-events-none">
-          <div className="text-[20vw] md:text-[15vw] font-black text-white/5 text-center leading-none">
-            BUSINESS
-          </div>
-        </div>
-      </section>
-
-      {/* Features Section */}
-      <section className="py-20 bg-gradient-to-b from-black to-gray-900 relative overflow-hidden">
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              Enterprise <span className="text-red-500">Features</span>
-            </h2>
-            <p className="text-gray-300 text-lg max-w-2xl mx-auto">
-              Powerful tools and features designed specifically for businesses managing multiple vehicles.
-            </p>
+      {/* Hero */}
+      <section className="relative z-2">
+        <div className="mx-auto max-w-page px-4 pb-16 pt-[13px] sm:px-8">
+          <h1 className="max-w-[518px] text-4xl font-extrabold leading-tight text-ink sm:text-5xl lg:text-[56px] lg:leading-[72px]">
+            Grow Your Garage Business with{' '}
+            <span className="text-partner">Keplix</span>
+          </h1>
+          <p className="mt-9 max-w-[512px] text-lg font-medium text-ink-muted sm:text-[20px]">
+            Join  the growing automotive service marketplace. Get
+            <br />
+            discovered by nearby car owners, receive verified service bookings,
+            <br />
+            manage your workshop digitally —all from one powerful platform
+          </p>
+          <div className="mt-9 flex flex-wrap gap-4">
+            <a
+              href={APP_LINKS.vendorAndroid}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex h-[53px] w-full items-center justify-center gap-3 rounded-[8px] bg-partner text-base font-bold leading-7 text-white shadow-[0px_10px_15px_-3px_#caccfe,0px_4px_6px_-4px_#cecafe] transition-opacity hover:opacity-90 sm:w-[313px]"
+            >
+              <img src="/icons/biz-btn-download.svg" alt="" className="h-5 w-5" />
+              Download Garage Partner App
+            </a>
+            <button
+              onClick={() => navigate('/contact')}
+              className="flex h-[53px] w-full items-center justify-center rounded-[8px] border border-[#e5e7eb] bg-white text-base font-bold leading-7 text-ink transition-colors hover:border-ink sm:w-[190px]"
+            >
+              Become a partner
+            </button>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {features.map((feature, index) => (
-              <div 
-                key={index}
-                className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-xl p-6 hover:bg-gray-800/80 transition-all duration-300 transform hover:scale-105 hover:border-red-500/50 group"
-              >
-                <div className="text-red-500 mb-4 group-hover:scale-110 transition-transform duration-300">
-                  {feature.icon}
+          <div className="mt-8 grid grid-cols-1 gap-6 py-6 sm:grid-cols-2 lg:grid-cols-4">
+            {stats.map(({ icon, line1, line2 }) => (
+              <div key={line1} className="flex items-center gap-3">
+                <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-[#f2f3fe]">
+                  <img src={icon} alt="" className="h-7 w-7" />
                 </div>
-                <h3 className="text-white text-xl font-semibold mb-3 group-hover:text-red-500 transition-colors">
-                  {feature.title}
-                </h3>
-                <p className="text-gray-300 leading-relaxed">
-                  {feature.description}
-                </p>
+                <span className="text-xs font-semibold text-[#1e293b]">
+                  {line1}
+                  <br />
+                  {line2}
+                </span>
               </div>
             ))}
           </div>
         </div>
-
-        {/* Large FEATURES Text Overlay */}
-        <div className="absolute bottom-0 left-0 right-0 overflow-hidden pointer-events-none">
-          <div className="text-[20vw] md:text-[15vw] font-black text-white/5 text-center leading-none">
-            FEATURES
-          </div>
-        </div>
       </section>
 
-      {/* Benefits Section */}
-      <section className="py-20 bg-gradient-to-b from-gray-900 to-black">
-        <div className="container mx-auto px-4">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <h2 className="text-4xl md:text-5xl font-bold mb-6">
-                Why Choose <span className="text-red-500">Keplix Business</span>?
+      {/* Why Partner */}
+      <section className="relative z-10 mx-auto max-w-page px-4 pb-16 sm:px-8">
+        <div className="rounded-card bg-partner-soft p-6 shadow-[0px_4px_10px_rgba(0,0,0,0.09)] sm:p-10">
+          <div className="flex flex-col items-start gap-11 lg:flex-row lg:justify-center">
+            <div className="flex w-full flex-col gap-10 lg:w-[375px] lg:shrink-0">
+              <h2 className="text-3xl font-extrabold text-black sm:text-[36px]">
+                Why Partner With{' '}
+                <span className="uppercase text-partner">Keplix?</span>
               </h2>
-              <p className="text-gray-300 text-lg mb-8 leading-relaxed">
-                Transform your fleet management with our comprehensive business solutions that deliver measurable results and operational excellence.
-              </p>
+              <div className="flex flex-col gap-4 text-base font-medium text-ink-muted">
+                <p>
+                  KEPLIX helps workshops grow by making them discoverable online
+                  and simplifying day-to-day business operations.
+                </p>
+                <p>
+                  Whether you&apos;re an independent garage, detailing studio,
+                  or multi-brand service centre, KEPLIX helps you attract more
+                  customers, improve efficiency, and build lasting trust.
+                </p>
+              </div>
+            </div>
 
-              <div className="space-y-4">
-                {benefits.map((benefit, index) => (
-                  <div key={index} className="flex items-center gap-3">
-                    <CheckCircle className="w-6 h-6 text-red-500 flex-shrink-0" />
-                    <span className="text-gray-300">{benefit}</span>
+            <div className="flex w-full flex-col gap-7 lg:w-[700px] lg:shrink-0">
+              <div className="grid grid-cols-2 gap-7 sm:grid-cols-4">
+                {partnerBenefits.map(({ icon, line1, line2 }) => (
+                  <div key={line1} className={benefitCardClass}>
+                    <img src={icon} alt="" className="h-12 w-12" />
+                    <span className={benefitLabelClass}>
+                      {line1}
+                      <br />
+                      {line2}
+                    </span>
                   </div>
                 ))}
               </div>
-
-              <button className="mt-8 bg-red-500 text-white px-8 py-4 rounded-full font-semibold hover:bg-red-600 transition-all duration-300 transform hover:scale-105 flex items-center gap-2">
-                Learn More <ArrowRight className="w-5 h-5" />
-              </button>
-            </div>
-
-            <div className="relative">
-              <div className="bg-gradient-to-br from-red-500/20 to-transparent rounded-full absolute inset-0 blur-3xl"></div>
-              <img 
-                src="https://images.pexels.com/photos/3807277/pexels-photo-3807277.jpeg?auto=compress&cs=tinysrgb&w=800"
-                alt="Business fleet management"
-                className="w-full h-auto rounded-xl shadow-2xl relative z-10 transform hover:scale-105 transition-transform duration-500"
-              />
+              <div className="grid grid-cols-1 gap-7 sm:grid-cols-2">
+                {partnerBenefitsWide.map(({ icon, line1, line2 }) => (
+                  <div key={line1} className={benefitCardClass}>
+                    <img src={icon} alt="" className="h-12 w-12" />
+                    <span className={benefitLabelClass}>
+                      {line1}
+                      <br />
+                      {line2}
+                    </span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Pricing Section */}
-      <section className="py-20 bg-gradient-to-b from-black to-gray-900">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              Choose Your <span className="text-red-500">Plan</span>
-            </h2>
-            <p className="text-gray-300 text-lg max-w-2xl mx-auto">
-              Flexible pricing options designed to grow with your business needs.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            {plans.map((plan, index) => (
-              <div 
-                key={index}
-                className={`bg-gray-800/50 backdrop-blur-sm border rounded-xl p-8 hover:bg-gray-800/80 transition-all duration-300 transform hover:scale-105 relative ${
-                  plan.popular 
-                    ? 'border-red-500 ring-2 ring-red-500/20' 
-                    : 'border-gray-700 hover:border-red-500/50'
-                }`}
-              >
-                {plan.popular && (
-                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                    <span className="bg-red-500 text-white px-4 py-2 rounded-full text-sm font-medium">
-                      Most Popular
+      {/* How It Works */}
+      <section className="relative z-10 mx-auto max-w-page px-4 pb-16 sm:px-8">
+        <div className="rounded-2xl bg-partner-deep px-6 py-16 sm:px-10">
+          <h2 className="text-center text-[36px] font-bold text-[#f3f3f4]">
+            How it Works ?
+          </h2>
+          <div className="mt-16 flex flex-col items-center gap-10 sm:flex-row sm:items-start sm:justify-between">
+            {howItWorks.map(({ icon, title, description }, i) => (
+              <React.Fragment key={title}>
+                <div className="flex max-w-[180px] flex-col items-center text-center">
+                  <div className="relative flex h-16 w-16 items-center justify-center rounded-2xl bg-[#e9e9ec]">
+                    <img src={icon} alt="" className="h-8 w-8" />
+                    <span className="absolute -right-3 -top-3 flex h-9 w-9 items-center justify-center rounded-full border-4 border-partner-deep bg-partner text-sm font-bold text-white">
+                      {i + 1}
                     </span>
                   </div>
-                )}
-
-                <div className="text-center mb-8">
-                  <h3 className="text-2xl font-bold text-white mb-2">{plan.name}</h3>
-                  <div className="text-4xl font-bold text-red-500 mb-2">
-                    {plan.price}<span className="text-lg text-gray-400">{plan.period}</span>
-                  </div>
-                  <p className="text-gray-300">{plan.vehicles}</p>
+                  <h3 className="mt-3 text-base font-bold text-white">
+                    {title}
+                  </h3>
+                  <p className="mt-2 text-sm text-[#c7cbd0]">{description}</p>
                 </div>
-
-                <ul className="space-y-4 mb-8">
-                  {plan.features.map((feature, featureIndex) => (
-                    <li key={featureIndex} className="flex items-center gap-3">
-                      <CheckCircle className="w-5 h-5 text-red-500 flex-shrink-0" />
-                      <span className="text-gray-300">{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-
-                <button className={`w-full py-3 rounded-lg font-semibold transition-colors ${
-                  plan.popular
-                    ? 'bg-red-500 text-white hover:bg-red-600'
-                    : 'border border-red-500 text-red-500 hover:bg-red-500 hover:text-white'
-                }`}>
-                  {plan.name === 'Enterprise' ? 'Contact Sales' : 'Get Started'}
-                </button>
-              </div>
+                {i < howItWorks.length - 1 && (
+                  <ChevronRight
+                    className="hidden shrink-0 text-white/40 sm:mt-10 sm:block"
+                    size={24}
+                  />
+                )}
+              </React.Fragment>
             ))}
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-b from-gray-900 to-black">
-        <div className="container mx-auto px-4">
-          <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-xl p-12 text-center max-w-4xl mx-auto">
-            <h3 className="text-4xl font-bold text-white mb-6">
-              Ready to Transform Your <span className="text-red-500">Fleet Management</span>?
-            </h3>
-            <p className="text-gray-300 text-lg mb-8 max-w-2xl mx-auto">
-              Join hundreds of businesses already using Keplix to streamline their automotive service operations and reduce costs.
+      {/* App Features */}
+      <section className="relative z-10 mx-auto max-w-page px-4 pb-16 sm:px-8">
+        <div className="grid gap-16 bg-white px-6 py-24 sm:px-10 lg:grid-cols-[598fr_270fr] lg:items-center">
+          <div className="flex flex-col gap-4">
+            <h2 className="text-2xl font-bold leading-10 text-[#0f172a] sm:text-[28px]">
+              Garage Partner App Features
+            </h2>
+            <p className="text-lg leading-6 text-[#6b7280] sm:text-[20px]">
+              All the tools you need to manage and grow your business.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="bg-red-500 text-white px-8 py-4 rounded-full font-semibold hover:bg-red-600 transition-all duration-300 transform hover:scale-105">
-                Start Free Trial
-              </button>
-              <button className="border border-red-500 text-red-500 px-8 py-4 rounded-full font-semibold hover:bg-red-500 hover:text-white transition-all duration-300">
-                Contact Sales Team
-              </button>
+            <div className="grid grid-cols-1 gap-8 pt-10 sm:grid-cols-2">
+              {appFeatures.map((feature) => (
+                <div key={feature} className="flex items-center gap-3">
+                  <img
+                    src="/icons/appfeat-check.svg"
+                    alt=""
+                    className="h-5 w-5 shrink-0"
+                  />
+                  <span className="text-[20px] font-semibold leading-5 text-[#1e293b]">
+                    {feature}
+                  </span>
+                </div>
+              ))}
             </div>
+          </div>
+          <div className="flex justify-center">
+            <img
+              src="/app-features-phone.png"
+              alt="Keplix Garage Partner app dashboard"
+              className="w-full max-w-[270px] rounded-2xl shadow-cardHover"
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* App screens + store badges */}
+      <section className="relative z-10 px-4 pb-16 sm:px-8">
+        <div className="mx-auto max-w-page">
+          <div className="grid grid-cols-2 gap-14 lg:grid-cols-4">
+            {appScreens.map((src) => (
+              <img
+                key={src}
+                src={src}
+                alt="Keplix Garage Partner app screen"
+                className="w-full"
+              />
+            ))}
+          </div>
+          <div className="mt-[76px]">{storeBadges}</div>
+        </div>
+      </section>
+
+      {/* Who Can Join */}
+      <section className="relative z-10 mx-auto max-w-page px-4 pb-16 sm:px-8">
+        <div className="flex flex-col items-center gap-4 text-center">
+          <h2 className="text-2xl font-extrabold leading-10 text-[#0f172a] sm:text-[28px]">
+            Who Can Join?
+          </h2>
+          <p className="pb-12 text-lg leading-6 text-[#515153] sm:text-[20px]">
+            We welcome a wide range of automotive service businesses.
+          </p>
+        </div>
+        <div className="grid grid-cols-2 gap-px border border-[#e5e7eb] bg-[#e5e7eb] p-px sm:grid-cols-3 lg:grid-cols-6">
+          {whoCanJoin.map(({ icon, line1, line2 }, i) => (
+            <div
+              key={`${line1}-${i}`}
+              className="flex min-h-[153px] flex-col items-center bg-white p-8 text-center"
+            >
+              <div className="flex h-16 w-12 items-center justify-center pb-4">
+                <img src={icon} alt="" className="h-10 w-10" />
+              </div>
+              <span className="text-sm font-bold uppercase text-[#1e293b]">
+                {line1}
+                {line2 && (
+                  <>
+                    <br />
+                    {line2}
+                  </>
+                )}
+              </span>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="relative z-10 mx-auto max-w-page px-4 py-16 sm:px-8">
+        <div className="rounded-[24px] bg-[#15023d] p-8 shadow-[0px_20px_25px_-5px_rgba(0,0,0,0.1),0px_8px_10px_-6px_rgba(0,0,0,0.1)] lg:px-16 lg:py-10">
+          {/* Capped to Figma's inner width (774 text + 329 art) so the two
+              blocks stay adjacent instead of spreading apart on wide screens. */}
+          <div className="mx-auto flex w-full max-w-[1103px] flex-col items-center justify-between gap-8 lg:flex-row">
+            <div className="flex flex-col items-center gap-8 sm:flex-row lg:w-[774px]">
+              <div className="shrink-0 rounded-2xl bg-partner p-5">
+                <img
+                  src="/icons/biz-cta-download.svg"
+                  alt=""
+                  className="h-10 w-10"
+                />
+              </div>
+              <div className="flex flex-col gap-3 text-center sm:text-left lg:w-[585px]">
+                <h2 className="text-2xl font-extrabold leading-9 text-[#817bcf] sm:text-[28px]">
+                  Ready to Grow Your Garage Business?
+                </h2>
+                <p className="text-lg text-white sm:text-[20px]">
+                  Download the KEPLIX Garage Partner App and start getting more
+                  customers today.
+                </p>
+              </div>
+            </div>
+            <img
+              src="/biz-cta-illustration.png"
+              alt=""
+              aria-hidden
+              className="h-[160px] w-[160px] shrink-0 object-contain lg:h-[188px] lg:w-[188px]"
+            />
           </div>
         </div>
       </section>

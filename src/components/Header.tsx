@@ -1,21 +1,33 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
+
+const navLinks = [
+  { label: 'How it Works', path: '/' },
+  { label: 'Workshops', path: '/business' },
+  { label: 'Blogs', path: '/blog' },
+  { label: 'About Us', path: '/about' },
+  { label: 'Contact', path: '/contact' },
+];
 
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
   const currentPath = location.pathname;
+  const isBusiness = currentPath === '/business';
+  const activeColor = isBusiness ? 'text-partner' : 'text-brand-accent';
 
+  // The header is transparent in the Figma design so the page background,
+  // its decorative circle and the Workshops gradient run unbroken beneath it.
+  // A tinted, blurred background only fades in once content scrolls under it.
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
   const handleNavClick = (path: string) => {
@@ -24,110 +36,79 @@ const Header: React.FC = () => {
   };
 
   return (
-    <header className={`fixed w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-black/90 backdrop-blur-lg' : 'bg-transparent' 
-      }`}>
-      <div className="container mx-auto px-4 py-4">
-        <div className="flex items-center justify-between">
-          <Link to="/" className="flex items-center cursor-pointer">
-            <img
-              src={`${import.meta.env.BASE_URL}logo.png`}
-              alt="Keplix Logo"
-              className="h-16 w-auto sm:h-20 md:h-28 transition-all duration-300 hover:scale-105"
-              onError={(e) => {
-                console.error('Logo failed to load:', e);
-                e.currentTarget.style.display = 'none';
-                e.currentTarget.nextElementSibling?.classList.remove('hidden');
-              }}
-              onLoad={() => console.log('Logo loaded successfully')}
-            />
-            <div className="text-xl sm:text-2xl md:text-3xl font-bold text-white hidden">
-              <span className="text-red-500">K</span>eplix
-            </div>
-          </Link>
+    <header
+      className={`sticky top-0 z-50 w-full transition-colors duration-300 ${
+        scrolled
+          ? `${isBusiness ? 'bg-[#f2f3f8]/90' : 'bg-blush-50/90'} shadow-sm backdrop-blur-md`
+          : 'bg-transparent'
+      }`}
+    >
+      <div className="mx-auto flex h-24 max-w-page items-center justify-between px-4 sm:px-8">
+        <Link to="/" className="flex shrink-0 items-center">
+          <img
+            src="/keplix-logo.png"
+            alt="Keplix"
+            className="h-14 w-[62px] object-contain sm:h-20 sm:w-[88px]"
+          />
+        </Link>
 
-          <nav className="hidden md:flex items-center space-x-4 lg:space-x-8">
-            <button
-              onClick={() => handleNavClick('/')}
-              className={`transition-colors text-base lg:text-lg ${currentPath === '/' ? 'text-red-500' : 'text-white hover:text-red-500'}`}
+        <nav className="hidden items-center lg:flex">
+          {navLinks.map((link) => (
+            <Link
+              key={link.path}
+              to={link.path}
+              className={`pl-10 font-nav text-base leading-6 transition-colors first:pl-0 hover:text-brand-accent ${
+                currentPath === link.path
+                  ? `font-bold ${activeColor}`
+                  : 'font-medium text-ink'
+              }`}
             >
-              Home
-            </button>
-            <button
-              onClick={() => handleNavClick('/about')}
-              className={`transition-colors text-base lg:text-lg ${currentPath === '/about' ? 'text-red-500' : 'text-white hover:text-red-500'}`}
-            >
-              About us
-            </button>
-            <button
-              onClick={() => handleNavClick('/blog')}
-              className={`transition-colors text-base lg:text-lg ${currentPath === '/blog' ? 'text-red-500' : 'text-white hover:text-red-500'}`}
-            >
-              Blog
-            </button>
-            <button
-              onClick={() => handleNavClick('/contact')}
-              className={`transition-colors text-base lg:text-lg ${currentPath === '/contact' ? 'text-red-500' : 'text-white hover:text-red-500'}`}
-            >
-              Contact
-            </button>
-          </nav>
+              {link.label}
+            </Link>
+          ))}
+        </nav>
 
-          <div className="flex items-center space-x-6 sm:space-x-8">
-            <button
-              onClick={() => handleNavClick('/beta')}
-              className="bg-red-500 text-white px-4 py-2 sm:px-6 sm:py-2 rounded-full hover:bg-red-600 transition-colors text-sm sm:text-base"
-            >
-              Join Beta
-            </button>
-            <button
-              className="md:hidden text-white"
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-            >
-              {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
-          </div>
+        <div className="flex items-center gap-4">
+          <button
+            onClick={() => handleNavClick('/beta')}
+            className={`h-[53px] w-[141px] rounded-btn text-base font-bold leading-7 text-white shadow-btn transition-colors max-sm:h-11 max-sm:w-auto max-sm:px-5 max-sm:text-sm ${
+              isBusiness
+                ? 'bg-partner hover:opacity-90'
+                : 'bg-brand-red hover:bg-brand-redHover'
+            }`}
+          >
+            Join Beta
+          </button>
+          <button
+            className="text-ink lg:hidden"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            aria-label="Toggle menu"
+          >
+            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
         </div>
-
-        {/* Mobile Menu */}
-        {isMenuOpen && (
-          <div className="absolute top-full left-0 w-full bg-gray-900 border-b border-gray-700 shadow-lg z-40 md:hidden">
-            <nav className="flex flex-col py-4 px-6 space-y-3">
-              <button
-                onClick={() => handleNavClick('/')}
-                className={`w-full text-left transition-colors text-base font-medium ${currentPath === '/' ? 'text-red-500' : 'text-white hover:text-red-500'}`}
-              >
-                Home
-              </button>
-              <button
-                onClick={() => handleNavClick('/about')}
-                className={`w-full text-left transition-colors text-base font-medium ${currentPath === '/about' ? 'text-red-500' : 'text-white hover:text-red-500'}`}
-              >
-                About us
-              </button>
-              <button
-                onClick={() => handleNavClick('/blog')}
-                className={`w-full text-left transition-colors text-base font-medium ${currentPath === '/blog' ? 'text-red-500' : 'text-white hover:text-red-500'}`}
-              >
-                Blog
-              </button>
-              <button
-                onClick={() => handleNavClick('/contact')}
-                className={`w-full text-left transition-colors text-base font-medium ${currentPath === '/contact' ? 'text-red-500' : 'text-white hover:text-red-500'}`}
-              >
-                Contact
-              </button>
-              <button
-                onClick={() => handleNavClick('/beta')}
-                className={`w-full text-left transition-colors text-base font-medium ${currentPath === '/beta' ? 'text-red-500' : 'text-white hover:text-red-500'}`}
-              >
-                Join Beta
-              </button>
-            </nav>
-          </div>
-        )}
-
-
       </div>
+
+      {/* Mobile Menu */}
+      {isMenuOpen && (
+        <div className="absolute left-0 top-full w-full border-b border-line bg-white shadow-card lg:hidden">
+          <nav className="flex flex-col px-6 py-4">
+            {navLinks.map((link) => (
+              <button
+                key={link.path}
+                onClick={() => handleNavClick(link.path)}
+                className={`py-3 text-left font-nav text-base transition-colors ${
+                  currentPath === link.path
+                    ? `font-bold ${activeColor}`
+                    : 'font-medium text-ink hover:text-brand-accent'
+                }`}
+              >
+                {link.label}
+              </button>
+            ))}
+          </nav>
+        </div>
+      )}
     </header>
   );
 };
