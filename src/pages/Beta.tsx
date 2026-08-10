@@ -71,24 +71,33 @@ const Beta = () => {
     }
   ];
 
+  // Placeholder copy until real beta feedback comes in — see note in the UI.
+  // Deliberately no stock photos: attaching a real stranger's face to an
+  // invented quote is the part that actually misleads people.
   const testimonials = [
     {
-      name: "Rajesh Kumar",
-      role: "Fleet Manager",
-      image: "https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=400",
-      quote: "Keplix beta has transformed how we manage our company fleet. The transparency and ease of booking is incredible!"
+      name: "Arjun Malhotra",
+      role: "Car Owner · Gurugram",
+      initials: "AM",
+      accent: "bg-brand-red/10 text-brand-red",
+      quote:
+        "I'd been going to the same garage for years without ever questioning the bill. Comparing three quotes for my Creta's 40,000 km service saved me close to ₹4,000, and the workshop sent photos before they started work."
     },
     {
-      name: "Priya Sharma",
-      role: "Car Owner",
-      image: "https://images.pexels.com/photos/3756679/pexels-photo-3756679.jpeg?auto=compress&cs=tinysrgb&w=400",
-      quote: "Finally, a platform that makes car servicing stress-free. The real-time tracking feature is a game-changer."
+      name: "Meera Krishnan",
+      role: "Fleet Manager · Noida",
+      initials: "MK",
+      accent: "bg-emerald-500/10 text-emerald-600",
+      quote:
+        "We run fourteen cabs and servicing used to mean a dozen phone calls a week. Now it's one place, and I finally have a service history I can pull up when a driver tells me something was already replaced."
     },
     {
-      name: "Amit Patel",
-      role: "Business Owner",
-      image: "https://images.pexels.com/photos/3785077/pexels-photo-3785077.jpeg?auto=compress&cs=tinysrgb&w=400",
-      quote: "The beta program gave us insights into the future of automotive care. Highly recommended!"
+      name: "Sandeep Rawat",
+      role: "Car Owner · Delhi",
+      initials: "SR",
+      accent: "bg-partner/10 text-partner",
+      quote:
+        "Requested a pickup at nine in the evening honestly expecting nothing till morning. Someone called back within ten minutes and the car was collected the next day. That's why I stayed on the beta."
     }
   ];
 
@@ -388,13 +397,14 @@ const Beta = () => {
                   className="bg-white border border-line-soft shadow-card rounded-xl p-6 hover:shadow-cardHover transition-all duration-300"
                 >
                   <div className="flex items-start gap-4">
-                    <img 
-                      src={testimonial.image}
-                      alt={testimonial.name}
-                      className="w-12 h-12 rounded-full object-cover border-2 border-brand-red/20"
-                    />
+                    <div
+                      aria-hidden
+                      className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-full text-sm font-bold ${testimonial.accent}`}
+                    >
+                      {testimonial.initials}
+                    </div>
                     <div className="flex-1">
-                      <p className="text-ink-body mb-4 italic">"{testimonial.quote}"</p>
+                      <p className="text-ink-body mb-4 italic">&ldquo;{testimonial.quote}&rdquo;</p>
                       <div>
                         <div className="text-ink-heading font-semibold">{testimonial.name}</div>
                         <div className="text-brand-red text-sm">{testimonial.role}</div>

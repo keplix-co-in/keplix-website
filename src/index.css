@@ -35,10 +35,16 @@ body {
 
 /* Rendered blog article body (HTML from the admin editor). Tailwind's preflight
    strips default heading/list styles, so they're restored here. */
+/* Post bodies are author-supplied HTML from the admin panel, so they can
+   contain anything: pasted tables, bare URLs, embeds. Everything below is
+   about making unpredictable content stay inside the viewport on a phone. */
 .blog-body {
   color: #374151;
   font-size: 1.0625rem;
   line-height: 1.8;
+  /* A long unbroken URL is wider than a phone screen and would otherwise
+     push the whole article sideways. */
+  overflow-wrap: break-word;
 }
 .blog-body > * + * { margin-top: 1.25rem; }
 .blog-body h1,
@@ -77,6 +83,29 @@ body {
 }
 .blog-body code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.9em; }
 .blog-body hr { border: 0; border-top: 1px solid #e5e7eb; }
+/* A table can't reflow to a narrow screen, so let it scroll inside its own
+   box rather than widening the page. display:block is what makes overflow-x
+   apply to a <table> at all. */
+.blog-body table {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+  font-size: 0.95em;
+}
+.blog-body th,
+.blog-body td {
+  border: 1px solid #e5e7eb;
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+}
+.blog-body th { background: #f9fafb; color: #111827; font-weight: 700; }
+/* Embedded players/media default to a fixed width in pasted markup. */
+.blog-body iframe,
+.blog-body video,
+.blog-body embed {
+  max-width: 100%;
+}
 
 /* Custom animations */
 @keyframes fade-in {

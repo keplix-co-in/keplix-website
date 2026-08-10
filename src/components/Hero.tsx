@@ -79,37 +79,44 @@ const Hero: React.FC = () => {
                 phone mockups are sized by height, not width: the two PNGs have
                 different aspect ratios, so a shared width renders them at
                 different heights and the cards look uneven. */}
-            <div className="flex items-center justify-between gap-6 overflow-hidden rounded-[24px] bg-[#fff1f2] p-8 shadow-[0px_1px_2px_rgba(0,0,0,0.05)]">
-              <div className="flex flex-col">
+            <div className="flex items-stretch justify-between gap-6 overflow-hidden rounded-[24px] bg-[#fff1f2] p-8 shadow-[0px_1px_2px_rgba(0,0,0,0.05)]">
+              <div className="flex min-w-0 flex-1 flex-col">
                 <div className="flex items-center gap-3">
                   <Car className="shrink-0 text-brand-red" size={32} />
                   <h3 className="text-2xl font-bold leading-[30px] text-[#111827]">
                     I&apos;m a Car Owner
                   </h3>
                 </div>
+                {/* The two blurbs wrap to different line counts, and how many
+                    depends on the card width, so reserving a fixed number of
+                    lines only aligns the buttons at some breakpoints. Pinning
+                    the divider+button block to the bottom of a stretched column
+                    keeps both cards' buttons on one baseline at every width. */}
                 <p className="mt-4 max-w-[320px] text-base font-medium leading-6 text-[#4b5563]">
                   Find trusted garages, compare prices, and book your next
                   service.
                 </p>
-                <div className="mt-6 h-1 w-8 rounded-full bg-[#fecaca]" />
-                <a
-                  href={APP_LINKS.customerAndroid}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-7 self-start rounded-[8px] bg-[#e11d48] px-8 py-3 text-base font-medium leading-6 text-white shadow-[0px_4px_6px_-1px_rgba(0,0,0,0.1),0px_2px_4px_-2px_rgba(0,0,0,0.1)] transition-opacity hover:opacity-90"
-                >
-                  Download Customer App
-                </a>
+                <div className="mt-auto pt-6">
+                  <div className="h-1 w-8 rounded-full bg-[#fecaca]" />
+                  <a
+                    href={APP_LINKS.customerAndroid}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-7 inline-block rounded-[8px] bg-[#e11d48] px-8 py-3 text-base font-medium leading-6 text-white shadow-[0px_4px_6px_-1px_rgba(0,0,0,0.1),0px_2px_4px_-2px_rgba(0,0,0,0.1)] transition-opacity hover:opacity-90"
+                  >
+                    Download Customer App
+                  </a>
+                </div>
               </div>
               <img
                 src="/hero-phone-customer.png"
                 alt="Keplix customer app"
-                className="hidden h-[280px] w-auto shrink-0 object-contain sm:block lg:h-[320px]"
+                className="hidden h-[280px] w-auto shrink-0 self-center object-contain sm:block lg:h-[320px]"
               />
             </div>
 
-            <div className="flex items-center justify-between gap-6 overflow-hidden rounded-[24px] bg-[#eff6ff] p-8 shadow-[0px_1px_2px_rgba(0,0,0,0.05)]">
-              <div className="flex flex-col">
+            <div className="flex items-stretch justify-between gap-6 overflow-hidden rounded-[24px] bg-[#eff6ff] p-8 shadow-[0px_1px_2px_rgba(0,0,0,0.05)]">
+              <div className="flex min-w-0 flex-1 flex-col">
                 <div className="flex items-center gap-3">
                   <Warehouse className="shrink-0 text-[#1f41af]" size={32} />
                   <h3 className="text-2xl font-bold leading-[30px] text-[#111827]">
@@ -120,18 +127,20 @@ const Hero: React.FC = () => {
                   Grow your business, receive verified bookings, and manage
                   everything digitally.
                 </p>
-                <div className="mt-6 h-1 w-8 rounded-full bg-[#bfdbfe]" />
-                <button
-                  onClick={() => navigate('/business')}
-                  className="mt-7 self-start rounded-[8px] bg-[#1f41af] px-8 py-3 text-base font-medium leading-6 text-white shadow-[0px_4px_6px_-1px_rgba(0,0,0,0.1),0px_2px_4px_-2px_rgba(0,0,0,0.1)] transition-opacity hover:opacity-90"
-                >
-                  Become a Garage Partner
-                </button>
+                <div className="mt-auto pt-6">
+                  <div className="h-1 w-8 rounded-full bg-[#bfdbfe]" />
+                  <button
+                    onClick={() => navigate('/business')}
+                    className="mt-7 inline-block rounded-[8px] bg-[#1f41af] px-8 py-3 text-base font-medium leading-6 text-white shadow-[0px_4px_6px_-1px_rgba(0,0,0,0.1),0px_2px_4px_-2px_rgba(0,0,0,0.1)] transition-opacity hover:opacity-90"
+                  >
+                    Become a Garage Partner
+                  </button>
+                </div>
               </div>
               <img
                 src="/hero-phone-garage.png"
                 alt="Keplix garage partner app"
-                className="hidden h-[280px] w-auto shrink-0 object-contain sm:block lg:h-[320px]"
+                className="hidden h-[280px] w-auto shrink-0 self-center object-contain sm:block lg:h-[320px]"
               />
             </div>
           </div>
