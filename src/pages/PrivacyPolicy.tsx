@@ -1,17 +1,18 @@
 import React from 'react';
 import { Shield, ChevronRight } from 'lucide-react';
+import PageBlob from '../components/PageBlob';
 
 const Section: React.FC<{ id?: string; title: string; children: React.ReactNode }> = ({ id, title, children }) => (
   <div id={id} className="mb-10">
-    <h2 className="text-xl font-bold text-white mb-4 border-b border-gray-700 pb-2">{title}</h2>
-    <div className="text-gray-300 space-y-4 leading-relaxed">{children}</div>
+    <h2 className="text-xl font-bold text-ink-heading mb-4 border-b border-line-soft pb-2">{title}</h2>
+    <div className="text-ink-body space-y-4 leading-relaxed">{children}</div>
   </div>
 );
 
 const SubSection: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
   <div className="mt-6 mb-4">
-    <h3 className="text-lg font-semibold text-white mb-3">{title}</h3>
-    <div className="text-gray-300 space-y-3 leading-relaxed">{children}</div>
+    <h3 className="text-lg font-semibold text-ink-heading mb-3">{title}</h3>
+    <div className="text-ink-body space-y-3 leading-relaxed">{children}</div>
   </div>
 );
 
@@ -39,67 +40,70 @@ const PrivacyPolicy: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="relative overflow-hidden">
+      <PageBlob />
+
       {/* Hero Banner */}
-      <div className="bg-gradient-to-b from-gray-900 to-black pt-32 pb-12 px-4">
+      <div className="relative z-10 px-4 pb-8 pt-[69px]">
         <div className="max-w-4xl mx-auto text-center">
           <div className="flex justify-center mb-4">
-            <Shield className="w-14 h-14 text-red-500" />
+            <Shield className="w-14 h-14 text-brand-red" />
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">Privacy Policy</h1>
-          <p className="text-gray-400 text-lg">Last updated: <span className="text-red-400 font-semibold">March 07, 2026</span></p>
+          <h1 className="text-4xl md:text-5xl font-bold mb-4 text-ink">Privacy Policy</h1>
+          <p className="text-ink-muted text-lg">Last updated: <span className="text-brand-red font-semibold">March 07, 2026</span></p>
         </div>
       </div>
 
       {/* Content */}
-      <div className="max-w-4xl mx-auto px-4 py-12">
+      <div className="relative z-10 max-w-4xl mx-auto px-4 py-12">
+        <div className="rounded-2xl bg-white shadow-card p-6 sm:p-10">
 
         {/* Intro */}
-        <div className="mb-10 text-gray-300 leading-relaxed space-y-4">
+        <div className="mb-10 text-ink-body leading-relaxed space-y-4">
           <p>
-            This Privacy Notice for <strong className="text-white">Keplix Private Limited</strong> ("we," "us," or "our") describes how and why we might access,
+            This Privacy Notice for <strong className="text-ink-heading">Keplix Private Limited</strong> ("we," "us," or "our") describes how and why we might access,
             collect, store, use, and/or share ("process") your personal information when you use our services ("Services"), including when you:
           </p>
           <ul className="list-disc list-inside space-y-2 ml-4">
-            <li>Visit our website at <a href="http://www.keplix.co.in" target="_blank" rel="noopener noreferrer" className="text-red-400 hover:underline">http://www.keplix.co.in</a> or any website of ours that links to this Privacy Notice</li>
+            <li>Visit our website at <a href="http://www.keplix.co.in" target="_blank" rel="noopener noreferrer" className="text-brand-red hover:underline">http://www.keplix.co.in</a> or any website of ours that links to this Privacy Notice</li>
             <li>Download and use our mobile application (<strong>keplix</strong>), or any other application of ours that links to this Privacy Notice</li>
             <li>Use <strong>Keplix</strong> — a marketplace platform that helps car owners find nearby local mechanics, garages, or any kind of automotive services and book a time slot with them with the easy convenience of comparing prices, reviews, and everything</li>
             <li>Engage with us in other related ways, including any marketing or events</li>
           </ul>
           <p>
-            <strong className="text-white">Questions or concerns?</strong> Reading this Privacy Notice will help you understand your privacy rights and choices.
+            <strong className="text-ink-heading">Questions or concerns?</strong> Reading this Privacy Notice will help you understand your privacy rights and choices.
             We are responsible for making decisions about how your personal information is processed. If you do not agree with our policies and practices,
             please do not use our Services. If you still have any questions or concerns, please contact us at{' '}
-            <a href="mailto:privacy@keplix.co.in" className="text-red-400 hover:underline">privacy@keplix.co.in</a>.
+            <a href="mailto:privacy@keplix.co.in" className="text-brand-red hover:underline">privacy@keplix.co.in</a>.
           </p>
         </div>
 
         {/* Summary */}
-        <div className="mb-10 bg-gray-900 border border-gray-700 rounded-xl p-6">
-          <h2 className="text-xl font-bold text-white mb-4">SUMMARY OF KEY POINTS</h2>
-          <div className="space-y-3 text-gray-300 text-sm leading-relaxed">
-            <p><strong className="text-white">What personal information do we process?</strong> When you visit, use, or navigate our Services, we may process personal information depending on how you interact with us and the Services, the choices you make, and the products and features you use.</p>
-            <p><strong className="text-white">Do we process any sensitive personal information?</strong> We do not process sensitive personal information.</p>
-            <p><strong className="text-white">Do we collect any information from third parties?</strong> We do not collect any information from third parties.</p>
-            <p><strong className="text-white">How do we process your information?</strong> We process your information to provide, improve, and administer our Services, communicate with you, for security and fraud prevention, and to comply with law.</p>
-            <p><strong className="text-white">In what situations and with which parties do we share personal information?</strong> We may share information in specific situations and with specific third parties.</p>
-            <p><strong className="text-white">How do we keep your information safe?</strong> We have adequate organizational and technical processes and procedures in place to protect your personal information.</p>
-            <p><strong className="text-white">What are your rights?</strong> Depending on where you are located geographically, the applicable privacy law may mean you have certain rights regarding your personal information.</p>
-            <p><strong className="text-white">How do you exercise your rights?</strong> The easiest way to exercise your rights is by submitting a{' '}
-              <a href="https://app.termly.io/dsar/d598263f-0e48-417d-98da-4692433180a0" target="_blank" rel="noopener noreferrer" className="text-red-400 hover:underline">data subject access request</a>, or by contacting us.
+        <div className="mb-10 bg-gray-50 border border-line-soft rounded-xl p-6">
+          <h2 className="text-xl font-bold text-ink-heading mb-4">SUMMARY OF KEY POINTS</h2>
+          <div className="space-y-3 text-ink-body text-sm leading-relaxed">
+            <p><strong className="text-ink-heading">What personal information do we process?</strong> When you visit, use, or navigate our Services, we may process personal information depending on how you interact with us and the Services, the choices you make, and the products and features you use.</p>
+            <p><strong className="text-ink-heading">Do we process any sensitive personal information?</strong> We do not process sensitive personal information.</p>
+            <p><strong className="text-ink-heading">Do we collect any information from third parties?</strong> We do not collect any information from third parties.</p>
+            <p><strong className="text-ink-heading">How do we process your information?</strong> We process your information to provide, improve, and administer our Services, communicate with you, for security and fraud prevention, and to comply with law.</p>
+            <p><strong className="text-ink-heading">In what situations and with which parties do we share personal information?</strong> We may share information in specific situations and with specific third parties.</p>
+            <p><strong className="text-ink-heading">How do we keep your information safe?</strong> We have adequate organizational and technical processes and procedures in place to protect your personal information.</p>
+            <p><strong className="text-ink-heading">What are your rights?</strong> Depending on where you are located geographically, the applicable privacy law may mean you have certain rights regarding your personal information.</p>
+            <p><strong className="text-ink-heading">How do you exercise your rights?</strong> The easiest way to exercise your rights is by submitting a{' '}
+              <a href="https://app.termly.io/dsar/d598263f-0e48-417d-98da-4692433180a0" target="_blank" rel="noopener noreferrer" className="text-brand-red hover:underline">data subject access request</a>, or by contacting us.
             </p>
           </div>
         </div>
 
         {/* Table of Contents */}
-        <div id="toc" className="mb-10 bg-gray-900 border border-gray-700 rounded-xl p-6">
-          <h2 className="text-xl font-bold text-white mb-4">TABLE OF CONTENTS</h2>
+        <div id="toc" className="mb-10 bg-gray-50 border border-line-soft rounded-xl p-6">
+          <h2 className="text-xl font-bold text-ink-heading mb-4">TABLE OF CONTENTS</h2>
           <ul className="space-y-2">
             {tocItems.map((item) => (
               <li key={item.id}>
                 <button
                   onClick={() => scrollTo(item.id)}
-                  className="flex items-center gap-2 text-red-400 hover:text-red-300 transition-colors text-left text-sm"
+                  className="flex items-center gap-2 text-brand-red hover:text-red-300 transition-colors text-left text-sm"
                 >
                   <ChevronRight size={14} className="flex-shrink-0" />
                   {item.label}
@@ -118,7 +122,7 @@ const PrivacyPolicy: React.FC = () => {
               in obtaining information about us or our products and Services, when you participate in activities on the Services, or
               otherwise when you contact us.
             </p>
-            <p><strong className="text-white">Personal Information Provided by You.</strong> The personal information we collect may include:</p>
+            <p><strong className="text-ink-heading">Personal Information Provided by You.</strong> The personal information we collect may include:</p>
             <ul className="list-disc list-inside ml-4 space-y-1">
               <li>Names</li>
               <li>Phone numbers</li>
@@ -131,20 +135,20 @@ const PrivacyPolicy: React.FC = () => {
               <li>Contact preferences</li>
               <li>Contact or authentication data</li>
             </ul>
-            <p><strong className="text-white">Sensitive Information.</strong> We do not process sensitive information.</p>
+            <p><strong className="text-ink-heading">Sensitive Information.</strong> We do not process sensitive information.</p>
             <p>
-              <strong className="text-white">Payment Data.</strong> We may collect data necessary to process your payment if you choose to
+              <strong className="text-ink-heading">Payment Data.</strong> We may collect data necessary to process your payment if you choose to
               make purchases, such as your payment instrument number, and the security code associated with your payment instrument. All
               payment data is handled and stored by our payment processors. You may find their privacy notice link(s) on their respective websites.
             </p>
             <p>
-              <strong className="text-white">Social Media Login Data.</strong> We may provide you with the option to register with us using your
+              <strong className="text-ink-heading">Social Media Login Data.</strong> We may provide you with the option to register with us using your
               existing social media account details, like your Facebook, X, or other social media account. If you choose to register in this way,
               we will collect certain profile information about you from the social media provider, as described in the section "HOW DO WE HANDLE
               YOUR SOCIAL LOGINS?" below.
             </p>
             <p>
-              <strong className="text-white">Application Data.</strong> If you use our application(s), we also may collect the following information
+              <strong className="text-ink-heading">Application Data.</strong> If you use our application(s), we also may collect the following information
               if you choose to provide us with access or permission:
             </p>
             <ul className="list-disc list-inside ml-4 space-y-1">
@@ -198,11 +202,11 @@ const PrivacyPolicy: React.FC = () => {
           <p><em><strong>In Short:</strong> We may share information in specific situations described in this section and/or with the following third parties.</em></p>
           <p>We may need to share your personal information in the following situations:</p>
           <ul className="list-disc list-inside ml-4 space-y-2">
-            <li><strong className="text-white">Business Transfers.</strong> We may share or transfer your information in connection with, or during negotiations of, any merger, sale of company assets, financing, or acquisition of all or a portion of our business to another company.</li>
-            <li><strong className="text-white">When we use Google Maps Platform APIs.</strong> We may share your information with certain Google Maps Platform APIs to provide location-based services.</li>
-            <li><strong className="text-white">Affiliates.</strong> We may share your information with our affiliates, in which case we will require those affiliates to honor this Privacy Notice.</li>
-            <li><strong className="text-white">Business Partners.</strong> We may share your information with our business partners to offer you certain products, services or promotions.</li>
-            <li><strong className="text-white">Other Users.</strong> When you share personal information or otherwise interact in the public areas with other users, such information may be viewed by all users and may be publicly distributed.</li>
+            <li><strong className="text-ink-heading">Business Transfers.</strong> We may share or transfer your information in connection with, or during negotiations of, any merger, sale of company assets, financing, or acquisition of all or a portion of our business to another company.</li>
+            <li><strong className="text-ink-heading">When we use Google Maps Platform APIs.</strong> We may share your information with certain Google Maps Platform APIs to provide location-based services.</li>
+            <li><strong className="text-ink-heading">Affiliates.</strong> We may share your information with our affiliates, in which case we will require those affiliates to honor this Privacy Notice.</li>
+            <li><strong className="text-ink-heading">Business Partners.</strong> We may share your information with our business partners to offer you certain products, services or promotions.</li>
+            <li><strong className="text-ink-heading">Other Users.</strong> When you share personal information or otherwise interact in the public areas with other users, such information may be viewed by all users and may be publicly distributed.</li>
           </ul>
         </Section>
 
@@ -233,7 +237,7 @@ const PrivacyPolicy: React.FC = () => {
           </p>
           <p>
             Specific information about how we use such technologies and how you can refuse certain cookies is set out in our{' '}
-            <a href="https://keplix.co.in/cookie-policy" target="_blank" rel="noopener noreferrer" className="text-red-400 hover:underline">Cookie Notice</a>.
+            <a href="https://keplix.co.in/cookie-policy" target="_blank" rel="noopener noreferrer" className="text-brand-red hover:underline">Cookie Notice</a>.
           </p>
         </Section>
 
@@ -294,7 +298,7 @@ const PrivacyPolicy: React.FC = () => {
             consent to such minor dependent's use of the Services. If we learn that personal information from users less than 18 years of age has
             been collected, we will deactivate the account and take reasonable measures to promptly delete such data from our records. If you become
             aware of any data we may have collected from children under age 18, please contact us at{' '}
-            <a href="mailto:privacy@keplix.co.in" className="text-red-400 hover:underline">privacy@keplix.co.in</a>.
+            <a href="mailto:privacy@keplix.co.in" className="text-brand-red hover:underline">privacy@keplix.co.in</a>.
           </p>
         </Section>
 
@@ -302,13 +306,13 @@ const PrivacyPolicy: React.FC = () => {
         <Section id="privacyrights" title="10. WHAT ARE YOUR PRIVACY RIGHTS?">
           <p><em><strong>In Short:</strong> You may review, change, or terminate your account at any time, depending on your country, province, or state of residence.</em></p>
           <p>
-            <strong className="text-white">Withdrawing your consent:</strong> If we are relying on your consent to process your personal information,
+            <strong className="text-ink-heading">Withdrawing your consent:</strong> If we are relying on your consent to process your personal information,
             which may be express and/or implied consent depending on the applicable law, you have the right to withdraw your consent at any time.
             You can withdraw your consent at any time by contacting us by using the contact details provided in the section{' '}
-            <button onClick={() => scrollTo('contact')} className="text-red-400 hover:underline">"HOW CAN YOU CONTACT US ABOUT THIS NOTICE?"</button> below.
+            <button onClick={() => scrollTo('contact')} className="text-brand-red hover:underline">"HOW CAN YOU CONTACT US ABOUT THIS NOTICE?"</button> below.
           </p>
           <p>
-            <strong className="text-white">Account Information:</strong> If you would at any time like to review or change the information in your account or terminate your account, you can:
+            <strong className="text-ink-heading">Account Information:</strong> If you would at any time like to review or change the information in your account or terminate your account, you can:
           </p>
           <ul className="list-disc list-inside ml-4 space-y-1">
             <li>Log in to your account settings and update your user account</li>
@@ -320,13 +324,13 @@ const PrivacyPolicy: React.FC = () => {
             enforce our legal terms and/or comply with applicable legal requirements.
           </p>
           <p>
-            <strong className="text-white">Cookies and similar technologies:</strong> Most Web browsers are set to accept cookies by default.
+            <strong className="text-ink-heading">Cookies and similar technologies:</strong> Most Web browsers are set to accept cookies by default.
             If you prefer, you can usually choose to set your browser to remove cookies and to reject cookies. If you choose to remove cookies
             or reject cookies, this could affect certain features or services of our Services.
           </p>
           <p>
             If you have questions or comments about your privacy rights, you may email us at{' '}
-            <a href="mailto:privacy@keplix.co.in" className="text-red-400 hover:underline">privacy@keplix.co.in</a>.
+            <a href="mailto:privacy@keplix.co.in" className="text-brand-red hover:underline">privacy@keplix.co.in</a>.
           </p>
         </Section>
 
@@ -356,18 +360,18 @@ const PrivacyPolicy: React.FC = () => {
         {/* Section 13 */}
         <Section id="contact" title="13. HOW CAN YOU CONTACT US ABOUT THIS NOTICE?">
           <p>If you have questions or comments about this notice, you may contact us by post at:</p>
-          <div className="bg-gray-900 border border-gray-700 rounded-xl p-5 mt-4 space-y-1">
-            <p className="font-semibold text-white">Keplix Private Limited</p>
+          <div className="bg-gray-50 border border-line-soft rounded-xl p-5 mt-4 space-y-1">
+            <p className="font-semibold text-ink-heading">Keplix Private Limited</p>
             <p>9/2659, Kailash Nagar, Gandhi Nagar</p>
             <p>Delhi, 110031</p>
             <p>India</p>
             <p className="mt-2">
               Email:{' '}
-              <a href="mailto:privacy@keplix.co.in" className="text-red-400 hover:underline">privacy@keplix.co.in</a>
+              <a href="mailto:privacy@keplix.co.in" className="text-brand-red hover:underline">privacy@keplix.co.in</a>
             </p>
             <p>
               Phone:{' '}
-              <a href="tel:+919818915720" className="text-red-400 hover:underline">+91 98189 15720</a>
+              <a href="tel:+919818915720" className="text-brand-red hover:underline">+91 98189 15720</a>
             </p>
           </div>
         </Section>
@@ -383,13 +387,14 @@ const PrivacyPolicy: React.FC = () => {
               href="https://app.termly.io/dsar/d598263f-0e48-417d-98da-4692433180a0"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-red-400 hover:underline"
+              className="text-brand-red hover:underline"
             >
               data subject access request
             </a>.
           </p>
         </Section>
 
+        </div>
       </div>
     </div>
   );

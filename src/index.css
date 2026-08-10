@@ -13,11 +13,98 @@ html {
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont,
+    'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+  color: #0b1521;
+  background-color: #fdf8f8;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Page background: soft blush wash that deepens toward the footer */
+.page-wash {
+  background: linear-gradient(180deg, #fdf8f8 0%, #f9f3f3 45%, #f4e2e1 100%);
+  background-attachment: fixed;
+}
+
+/* Workshops page background: holds a near-flat lilac for the top third, then
+   deepens toward the footer. Stops sampled from the Figma frame (431:4758). */
+.business-wash {
+  background: linear-gradient(180deg, #f3f4f9 0%, #f2f3f8 36%, #a1b1e6 100%);
+}
+
+/* Rendered blog article body (HTML from the admin editor). Tailwind's preflight
+   strips default heading/list styles, so they're restored here. */
+/* Post bodies are author-supplied HTML from the admin panel, so they can
+   contain anything: pasted tables, bare URLs, embeds. Everything below is
+   about making unpredictable content stay inside the viewport on a phone. */
+.blog-body {
+  color: #374151;
+  font-size: 1.0625rem;
+  line-height: 1.8;
+  /* A long unbroken URL is wider than a phone screen and would otherwise
+     push the whole article sideways. */
+  overflow-wrap: break-word;
+}
+.blog-body > * + * { margin-top: 1.25rem; }
+.blog-body h1,
+.blog-body h2,
+.blog-body h3,
+.blog-body h4 {
+  color: #111827;
+  font-weight: 700;
+  line-height: 1.3;
+  margin-top: 2.5rem;
+}
+.blog-body h1 { font-size: 2rem; }
+.blog-body h2 { font-size: 1.625rem; }
+.blog-body h3 { font-size: 1.3125rem; }
+.blog-body h4 { font-size: 1.125rem; }
+.blog-body a { color: #d9040d; text-decoration: underline; }
+.blog-body strong { color: #111827; font-weight: 700; }
+.blog-body ul,
+.blog-body ol { padding-left: 1.5rem; }
+.blog-body ul { list-style: disc; }
+.blog-body ol { list-style: decimal; }
+.blog-body li + li { margin-top: 0.5rem; }
+.blog-body blockquote {
+  border-left: 3px solid #f4b5b5;
+  padding-left: 1rem;
+  color: #6b7280;
+  font-style: italic;
+}
+.blog-body img { border-radius: 12px; max-width: 100%; height: auto; }
+.blog-body pre {
+  background: #0b1521;
+  color: #f9fafb;
+  padding: 1rem;
+  border-radius: 12px;
+  overflow-x: auto;
+}
+.blog-body code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.9em; }
+.blog-body hr { border: 0; border-top: 1px solid #e5e7eb; }
+/* A table can't reflow to a narrow screen, so let it scroll inside its own
+   box rather than widening the page. display:block is what makes overflow-x
+   apply to a <table> at all. */
+.blog-body table {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+  font-size: 0.95em;
+}
+.blog-body th,
+.blog-body td {
+  border: 1px solid #e5e7eb;
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+}
+.blog-body th { background: #f9fafb; color: #111827; font-weight: 700; }
+/* Embedded players/media default to a fixed width in pasted markup. */
+.blog-body iframe,
+.blog-body video,
+.blog-body embed {
+  max-width: 100%;
 }
 
 /* Custom animations */
@@ -44,104 +131,20 @@ body {
   animation: fade-in 0.8s ease-out 0.6s both;
 }
 
-/* Gradient text */
-.gradient-text {
-  background: linear-gradient(135deg, #ff4444, #ff6b6b);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #1a1a1a;
+  background: #f4e2e1;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #ff4444;
+  background: #d9040d;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #ff6b6b;
-}
-
-/* Shooting Stars Animation */
-@keyframes shooting-star {
-  0% {
-    transform: translateX(-50px) translateY(-100px) rotate(45deg);
-    opacity: 0;
-  }
-  10% {
-    opacity: 1;
-  }
-  90% {
-    opacity: 1;
-  }
-  100% {
-    transform: translateX(calc(100vw + 50px)) translateY(calc(100vh + 100px)) rotate(45deg);
-    opacity: 0;
-  }
-}
-
-.shooting-star {
-  position: absolute;
-  width: 2px;
-  height: 2px;
-  background: linear-gradient(45deg, #ff4444, #ffffff);
-  border-radius: 50%;
-  box-shadow: 
-    0 0 6px #ff4444,
-    0 0 12px #ff4444,
-    0 0 18px #ff4444;
-}
-
-.shooting-star::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  right: 0;
-  width: 50px;
-  height: 1px;
-  background: linear-gradient(90deg, rgba(255, 68, 68, 0) 0%, rgba(255, 68, 68, 0.8) 100%);
-  transform: translateY(-50%);
-}
-
-.shooting-star-1 {
-  top: 10%;
-  left: -50px;
-  animation: shooting-star 3s linear infinite;
-  animation-delay: 0s;
-}
-
-.shooting-star-2 {
-  top: 20%;
-  left: -50px;
-  animation: shooting-star 2.5s linear infinite;
-  animation-delay: 1s;
-}
-
-.shooting-star-3 {
-  top: 30%;
-  left: -50px;
-  animation: shooting-star 3.5s linear infinite;
-  animation-delay: 2s;
-}
-
-.shooting-star-4 {
-  top: 70%;
-  left: -50px;
-  animation: shooting-star 2.8s linear infinite;
-  animation-delay: 3s;
-}
-
-.shooting-star-5 {
-  top: 80%;
-  left: -50px;
-  animation: shooting-star 3.2s linear infinite;
-  animation-delay: 4s;
+  background: #b8040b;
 }

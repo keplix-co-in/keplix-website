@@ -1,0 +1,24 @@
+# Vercel CLI falls back to .gitignore when this file is absent, so this is
+# belt-and-braces — but it makes "never upload secrets or source" explicit.
+
+# Secrets — must never leave this machine
+.env*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+id_rsa
+id_ed25519
+
+# Build output is produced on Vercel, not uploaded
+dist
+*.map
+
+# Local noise
+node_modules
+.git
+.github
+graphify-out
+*.log
+.DS_Store

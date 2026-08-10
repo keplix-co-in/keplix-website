@@ -1,176 +1,214 @@
 import React, { useState } from 'react';
-import { Mail, Phone, MapPin, ChevronDown } from 'lucide-react';
+import { submitForm } from '../lib/submitForm';
 
-const Contact = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    message: ''
-  });
+const RADIO_ACCENT = '#2563eb';
 
-  const [activeQuestion, setActiveQuestion] = useState<number | null>(null);
+const futureFeatures = [
+  {
+    icon: '/icons/future-ai-chip.svg',
+    title: 'AI-Powered Diagnostics',
+    description: 'Detect issues early with smart AI technology.',
+  },
+  {
+    icon: '/icons/future-bell.svg',
+    title: 'Electric Vehicle Services',
+    description: 'Specialized EV service and battery care solutions.',
+  },
+  {
+    icon: '/icons/future-location-pin.svg',
+    title: 'Expanding to 50+ Cities',
+    description: 'Bringing trusted car care to your city soon.',
+  },
+];
 
-  const faqs = [
-    {
-      question: "When does the app launch?",
-      answer: "The Keplix app is currently in beta testing and will be launched publicly in Q2 2024. Join our beta program to get early access!"
-    },
-    {
-      question: "How do I join the beta?",
-      answer: "You can join our beta program by clicking the 'Join Beta' button and filling out the application form. We'll review your application and send you access within 48 hours."
-    },
-    {
-      question: "What services are available?",
-      answer: "Our platform offers comprehensive automotive services including regular maintenance, repairs, diagnostics, oil changes, tire services, and more from certified professionals."
-    },
-    {
-      question: "Are there any discounts available today?",
-      answer: "Yes! Beta users get exclusive discounts up to 30% off on all services. We also offer special packages for first-time users and loyalty rewards."
-    }
-  ];
+type Role = 'Car Owner' | 'Workshop Owner' | 'Partner / Other';
 
-  const handleSubmit = (e: React.FormEvent) => {
+const Contact: React.FC = () => {
+  const [role, setRole] = useState<Role>('Car Owner');
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [help, setHelp] = useState('');
+  const [message, setMessage] = useState('');
+  const [honeypot, setHoneypot] = useState('');
+  const [status, setStatus] = useState<'idle' | 'sending' | 'done' | 'error'>(
+    'idle',
+  );
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Submit to Web3Forms
-    fetch('https://api.web3forms.com/submit', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        access_key: '89c66a6e-3aee-4cab-9363-2050f20fa5ec',
-        subject: 'New Contact Form Submission - Keplix',
-        from_name: formData.name,
-        ...formData
-      }),
-    })
-    .then(response => response.json())
-    .then(data => {
-      if (data.success) {
-        alert('Thank you for your message! We\'ll get back to you soon.');
-        setFormData({ name: '', email: '', message: '' });
-      } else {
-        alert('There was an error sending your message. Please try again.');
-      }
-    })
-    .catch(error => {
-      console.error('Error:', error);
-      alert('There was an error sending your message. Please try again.');
-    });
-  };
+    setStatus('sending');
+    setErrorMessage('');
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+    const result = await submitForm(
+      'quick',
+      { name, email, role, help, message },
+      honeypot,
+    );
+
+    if (result.ok) {
+      setStatus('done');
+      setName('');
+      setEmail('');
+      setHelp('');
+      setMessage('');
+    } else {
+      setStatus('error');
+      setErrorMessage(result.error);
+    }
   };
 
   return (
-    <section id="contact" className="py-20 bg-gradient-to-b from-gray-900 to-black">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-            Let's <span className="text-red-500">Connect</span>
-          </h2>
-          <p className="text-gray-300 text-lg max-w-2xl mx-auto">
-            Have questions about Keplix? Want to join our beta program? We'd love to hear from you!
-          </p>
-        </div>
-
-        <div className="grid lg:grid-cols-2 gap-12">
-          {/* Contact Form */}
-          <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-xl p-8">
-            <h3 className="text-2xl font-bold text-white mb-6">Any questions? Contact us</h3>
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div>
-                <input
-                  type="text"
-                  name="name"
-                  placeholder="Name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-red-500 transition-colors"
-                  required
-                />
-              </div>
-              <div>
-                <input
-                  type="email"
-                  name="email"
-                  placeholder="Email address"
-                  value={formData.email}
-                  onChange={handleChange}
-                  className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-red-500 transition-colors"
-                  required
-                />
-              </div>
-              <div>
-                <textarea
-                  name="message"
-                  placeholder="How can we help you?"
-                  value={formData.message}
-                  onChange={handleChange}
-                  rows={4}
-                  className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-red-500 transition-colors resize-none"
-                  required
-                />
-              </div>
-              <button
-                type="submit"
-                className="w-full bg-red-500 text-white py-3 rounded-lg font-semibold hover:bg-red-600 transition-colors"
-              >
-                Send a message
-              </button>
-            </form>
+    <section className="relative z-10 bg-black px-4 py-16 sm:px-8">
+      <div className="mx-auto max-w-page">
+        <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
+          <div className="aspect-square w-full max-w-md overflow-hidden rounded-3xl bg-black">
+            <video
+              src="/mapani.mp4"
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="h-full w-full object-cover"
+            >
+              Your browser does not support the video tag.
+            </video>
           </div>
 
-          {/* FAQ */}
           <div>
-            <h3 className="text-2xl font-bold text-white mb-6">Frequently Asked Questions</h3>
-            <div className="space-y-4">
-              {faqs.map((faq, index) => (
-                <div key={index} className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-lg overflow-hidden">
-                  <button
-                    onClick={() => setActiveQuestion(activeQuestion === index ? null : index)}
-                    className="w-full px-6 py-4 text-left flex items-center justify-between text-white hover:bg-gray-700/50 transition-colors"
-                  >
-                    <span className="font-semibold">{faq.question}</span>
-                    <ChevronDown 
-                      className={`w-5 h-5 transition-transform ${
-                        activeQuestion === index ? 'rotate-180' : ''
-                      }`}
-                    />
-                  </button>
-                  {activeQuestion === index && (
-                    <div className="px-6 pb-4 text-gray-300">
-                      {faq.answer}
-                    </div>
-                  )}
+            <h2 className="text-3xl font-bold text-white sm:text-4xl">
+              The Future of Car Care
+            </h2>
+            <p className="mt-4 text-lg text-gray-400">
+              We&apos;re building the most advanced automotive ecosystem for
+              today and tomorrow.
+            </p>
+
+            <div className="mt-8 grid gap-4 sm:grid-cols-3">
+              {futureFeatures.map(({ icon, title, description }) => (
+                <div
+                  key={title}
+                  className="rounded-xl border border-[#434e64] p-5 text-center"
+                >
+                  <img src={icon} alt="" className="mx-auto h-10 w-10" />
+                  <h3 className="mt-4 text-base font-bold text-white">
+                    {title}
+                  </h3>
+                  <p className="mt-2 text-sm text-gray-500">{description}</p>
                 </div>
               ))}
             </div>
 
-            {/* Contact Info */}
-            <div className="mt-8 bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-lg p-6">
-              <h4 className="text-xl font-bold text-white mb-4">Contact Information</h4>
-              <div className="space-y-3">
-                <div className="flex items-center gap-3 text-gray-300">
-                  <Mail className="w-5 h-5 text-red-500" />
-                  <span>support@keplix.co.in</span>
-                </div>
-                <div className="flex items-center gap-3 text-gray-300">
-                  <Phone className="w-5 h-5 text-red-500" />
-                  <span>+91 98189 15720</span>
-                </div>
-                <div className="flex items-center gap-3 text-gray-300">
-                  <MapPin className="w-5 h-5 text-red-500" />
-                  <span>Delhi, India</span>
-                </div>
+            <button className="mt-8 flex h-[53px] w-[180px] items-center justify-center rounded-btn bg-brand-red text-base font-bold text-white transition-colors hover:bg-brand-redHover">
+              Explore our vision
+            </button>
+          </div>
+        </div>
+
+        <div className="mt-20">
+          <h2 className="text-2xl font-bold text-white sm:text-3xl">
+            Get in Touch
+          </h2>
+
+          <form onSubmit={handleSubmit} className="mt-6 flex flex-col gap-4">
+            <div>
+              <p className="mb-3 text-sm text-gray-400">I am a</p>
+              <div className="flex flex-wrap gap-6">
+                {(['Car Owner', 'Workshop Owner', 'Partner / Other'] as Role[]).map(
+                  (option) => (
+                    <label
+                      key={option}
+                      className="flex items-center gap-2 text-sm text-gray-300"
+                    >
+                      <input
+                        type="radio"
+                        name="role"
+                        checked={role === option}
+                        onChange={() => setRole(option)}
+                        className="h-4 w-4"
+                        style={{ accentColor: RADIO_ACCENT }}
+                      />
+                      {option}
+                    </label>
+                  ),
+                )}
               </div>
             </div>
-          </div>
+
+            {/* Name and email are required — without them a submission can't
+                be replied to. */}
+            <div className="grid gap-4 sm:grid-cols-2">
+              <input
+                type="text"
+                name="name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Your name"
+                required
+                className="rounded-btn border border-gray-700 bg-white px-4 py-3 text-ink placeholder:text-ink-muted focus:outline-none"
+              />
+              <input
+                type="email"
+                name="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Your email"
+                required
+                className="rounded-btn border border-gray-700 bg-white px-4 py-3 text-ink placeholder:text-ink-muted focus:outline-none"
+              />
+            </div>
+
+            <select
+              value={help}
+              onChange={(e) => setHelp(e.target.value)}
+              className="rounded-btn border border-gray-700 bg-white px-4 py-3 text-ink-muted focus:outline-none"
+            >
+              <option value="">How can we help?</option>
+              <option value="general">General inquiry</option>
+              <option value="support">Support</option>
+              <option value="partnership">Partnership</option>
+            </select>
+
+            <textarea
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              placeholder="Message"
+              rows={5}
+              required
+              className="resize-none rounded-btn border border-gray-700 bg-white px-4 py-3 text-ink placeholder:text-ink-muted focus:outline-none"
+            />
+
+            {/* Honeypot — hidden from people, irresistible to bots. */}
+            <input
+              type="text"
+              name="company"
+              tabIndex={-1}
+              autoComplete="off"
+              aria-hidden="true"
+              value={honeypot}
+              onChange={(e) => setHoneypot(e.target.value)}
+              className="hidden"
+            />
+
+            <button
+              type="submit"
+              disabled={status === 'sending'}
+              className="rounded-btn bg-brand-red py-4 text-base font-bold text-white transition-colors hover:bg-brand-redHover disabled:opacity-60"
+            >
+              {status === 'sending' ? 'Sending…' : 'Send a message'}
+            </button>
+
+            {status === 'done' && (
+              <p className="rounded-btn bg-emerald-500/15 px-4 py-3 text-sm font-medium text-emerald-300">
+                Thanks — your message is on its way. We&apos;ll be in touch soon.
+              </p>
+            )}
+            {status === 'error' && (
+              <p className="rounded-btn bg-red-500/15 px-4 py-3 text-sm font-medium text-red-300">
+                {errorMessage}
+              </p>
+            )}
+          </form>
         </div>
       </div>
     </section>

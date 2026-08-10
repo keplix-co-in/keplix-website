@@ -1,144 +1,152 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Play, Calendar, Clock } from 'lucide-react';
+import { Car, Warehouse, PlayCircle } from 'lucide-react';
+import HeroVideoPanel from './HeroVideoPanel';
+import { APP_LINKS } from '../constants/links';
 
-const CountdownTimer = () => {
-  const [timeLeft, setTimeLeft] = React.useState({
-    days: 0,
-    hours: 0,
-    minutes: 0,
-    seconds: 0
-  });
+const avatars = [
+  '/avatars/avatar-1.jpg',
+  '/avatars/avatar-2.jpg',
+  '/avatars/avatar-3.jpg',
+  '/avatars/avatar-4.jpg',
+];
 
-  React.useEffect(() => {
-    // Set beta testing launch date to September 15, 2025 at 12:00 PM UTC
-    const launchDate = new Date('2025-09-15T12:00:00Z');
-
-    const updateCountdown = () => {
-      const now = new Date();
-      const distance = launchDate.getTime() - now.getTime();
-
-      if (distance > 0) {
-        setTimeLeft({
-          days: Math.floor(distance / (1000 * 60 * 60 * 24)),
-          hours: Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
-          minutes: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
-          seconds: Math.floor((distance % (1000 * 60)) / 1000)
-        });
-      } else {
-        // Beta launch date has passed
-        setTimeLeft({
-          days: 0,
-          hours: 0,
-          minutes: 0,
-          seconds: 0
-        });
-      }
-    };
-
-    // Update immediately
-    updateCountdown();
-
-    const timer = setInterval(updateCountdown, 1000);
-
-    return () => clearInterval(timer);
-  }, []);
-
-  return (
-    <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-xl p-6 max-w-lg mx-auto mb-8 animate-fade-in-delay-2">
-      <div className="flex items-center justify-center gap-2 mb-4">
-        <Clock className="w-5 h-5 text-red-500" />
-        <span className="text-lg font-semibold text-white">Beta Testing Launch Countdown</span>
-      </div>
-      <div className="grid grid-cols-4 gap-4 text-center">
-        <div className="bg-gray-700/50 rounded-lg p-3">
-          <div className="text-2xl md:text-3xl font-bold text-red-500">{timeLeft.days}</div>
-          <div className="text-sm text-gray-400">Days</div>
-        </div>
-        <div className="bg-gray-700/50 rounded-lg p-3">
-          <div className="text-2xl md:text-3xl font-bold text-red-500">{timeLeft.hours}</div>
-          <div className="text-sm text-gray-400">Hours</div>
-        </div>
-        <div className="bg-gray-700/50 rounded-lg p-3">
-          <div className="text-2xl md:text-3xl font-bold text-red-500">{timeLeft.minutes}</div>
-          <div className="text-sm text-gray-400">Minutes</div>
-        </div>
-        <div className="bg-gray-700/50 rounded-lg p-3">
-          <div className="text-2xl md:text-3xl font-bold text-red-500">{timeLeft.seconds}</div>
-          <div className="text-sm text-gray-400">Seconds</div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-// const Hero = () => {
 const Hero: React.FC = () => {
   const navigate = useNavigate();
 
-  const handleNavClick = (path: string) => {
-    navigate(path);
-  };
-
   return (
-    <section id="home" className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 relative overflow-hidden flex items-center">
-      {/* Shooting Stars */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="shooting-star shooting-star-1"></div>
-        <div className="shooting-star shooting-star-2"></div>
-        <div className="shooting-star shooting-star-3"></div>
-        <div className="shooting-star shooting-star-4"></div>
-        <div className="shooting-star shooting-star-5"></div>
-      </div>
+    <>
+      {/* Hero row: text */}
+      <section className="relative z-10">
+        <div className="grid items-start lg:grid-cols-2">
+          {/* Text content. Figma puts the heading 87px below the header and the
+              video 33px below it, so the video sits slightly higher. */}
+          <div className="flex flex-col items-start gap-8 px-4 pb-16 pt-10 sm:px-8 sm:pt-[87px] lg:pl-[max(2rem,calc((100vw-1728px)/2+2rem))] lg:pr-12">
+            <h1 className="text-4xl font-extrabold leading-tight text-ink sm:text-5xl lg:text-[56px] lg:leading-[72px]">
+              Find Trusted
+              <br />
+              <span className="text-brand-red">Car Services</span>
+              <br />
+              in Minutes
+            </h1>
+            <p className="max-w-md text-lg font-medium leading-relaxed text-ink-muted sm:text-xl">
+              Compare prices from verified workshops, book appointments
+              instantly and track your vehicle service journey
+            </p>
+            <div className="flex flex-wrap items-center gap-4 pt-2">
+              <button
+                onClick={() => navigate('/beta')}
+                className="flex h-[53px] w-[141px] items-center justify-center rounded-btn bg-brand-red text-base font-bold text-white shadow-btn transition-colors hover:bg-brand-redHover"
+              >
+                Join Beta
+              </button>
+              <button className="flex h-[53px] items-center justify-center gap-3 rounded-btn border border-line bg-white px-9 text-base font-bold text-ink transition-colors hover:border-ink">
+                <PlayCircle size={24} />
+                Watch Demo
+              </button>
+            </div>
+            <div className="flex items-center gap-3 pt-2">
+              <div className="flex items-center">
+                {avatars.map((src) => (
+                  <img
+                    key={src}
+                    src={src}
+                    alt=""
+                    className="-ml-2 h-10 w-10 rounded-full border-2 border-white object-cover first:ml-0"
+                  />
+                ))}
+              </div>
+              <span className="text-sm font-medium text-ink-muted">
+                Trusted by 10,000+ car owners
+              </span>
+            </div>
+          </div>
 
-      {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute top-20 left-20 w-32 h-32 bg-red-500 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-20 right-20 w-24 h-24 bg-red-500 rounded-full blur-2xl animate-pulse delay-1000"></div>
-      </div>
+          <HeroVideoPanel />
+        </div>
+      </section>
 
-      <div className="container mx-auto px-4 py-16 pt-24 md:pt-32 relative z-10 w-full">
-        <div className="text-center max-w-4xl mx-auto">
-          <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 animate-fade-in">
-            "Drive Smarter. Book Faster.<br />
-            Trust <span className="text-red-500">Keplix</span>."
-          </h1>
+      {/* Who Are You? role selection band */}
+      <section className="relative z-10 bg-white px-4 pb-16 pt-16 sm:px-8">
+        <div className="relative mx-auto max-w-page">
+          <div className="absolute left-1/2 top-0 z-10 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white px-6 py-3 shadow-card">
+            <span className="whitespace-nowrap text-lg font-bold text-ink">
+              Who Are You?
+            </span>
+          </div>
+          <div className="grid gap-6 lg:grid-cols-2">
+            {/* Card sizes/colours measured from Figma 400:620 and 400:733. The
+                phone mockups are sized by height, not width: the two PNGs have
+                different aspect ratios, so a shared width renders them at
+                different heights and the cards look uneven. */}
+            <div className="flex items-stretch justify-between gap-6 overflow-hidden rounded-[24px] bg-[#fff1f2] p-8 shadow-[0px_1px_2px_rgba(0,0,0,0.05)]">
+              <div className="flex min-w-0 flex-1 flex-col">
+                <div className="flex items-center gap-3">
+                  <Car className="shrink-0 text-brand-red" size={32} />
+                  <h3 className="text-2xl font-bold leading-[30px] text-[#111827]">
+                    I&apos;m a Car Owner
+                  </h3>
+                </div>
+                {/* The two blurbs wrap to different line counts, and how many
+                    depends on the card width, so reserving a fixed number of
+                    lines only aligns the buttons at some breakpoints. Pinning
+                    the divider+button block to the bottom of a stretched column
+                    keeps both cards' buttons on one baseline at every width. */}
+                <p className="mt-4 max-w-[320px] text-base font-medium leading-6 text-[#4b5563]">
+                  Find trusted garages, compare prices, and book your next
+                  service.
+                </p>
+                <div className="mt-auto pt-6">
+                  <div className="h-1 w-8 rounded-full bg-[#fecaca]" />
+                  <a
+                    href={APP_LINKS.customerAndroid}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-7 inline-block rounded-[8px] bg-[#e11d48] px-8 py-3 text-base font-medium leading-6 text-white shadow-[0px_4px_6px_-1px_rgba(0,0,0,0.1),0px_2px_4px_-2px_rgba(0,0,0,0.1)] transition-opacity hover:opacity-90"
+                  >
+                    Download Customer App
+                  </a>
+                </div>
+              </div>
+              <img
+                src="/hero-phone-customer.png"
+                alt="Keplix customer app"
+                className="hidden h-[280px] w-auto shrink-0 self-center object-contain sm:block lg:h-[320px]"
+              />
+            </div>
 
-          <p className="text-xl md:text-2xl text-gray-300 mb-8 animate-fade-in-delay">
-            "Find, compare, book and track auto services at your fingertips."
-          </p>
-
-          <CountdownTimer />
-
-          <div className="flex flex-col sm:flex-row gap-8 sm:gap-4 justify-center items-center animate-fade-in-delay-2">
-            <button
-              onClick={() => handleNavClick('/beta')}
-              className="bg-red-500 text-white px-8 py-4 rounded-full font-semibold hover:bg-red-600 transition-all duration-300 transform hover:scale-105 flex items-center gap-2"
-            >
-              <Play size={20} />
-              Watch the Beta Now
-            </button>
-
-            <div className="flex items-center gap-2 text-gray-300">
-              <Calendar size={20} />
-              <span>Quick service within 24 hours</span>
+            <div className="flex items-stretch justify-between gap-6 overflow-hidden rounded-[24px] bg-[#eff6ff] p-8 shadow-[0px_1px_2px_rgba(0,0,0,0.05)]">
+              <div className="flex min-w-0 flex-1 flex-col">
+                <div className="flex items-center gap-3">
+                  <Warehouse className="shrink-0 text-[#1f41af]" size={32} />
+                  <h3 className="text-2xl font-bold leading-[30px] text-[#111827]">
+                    I Own a Garage
+                  </h3>
+                </div>
+                <p className="mt-4 max-w-[320px] text-base font-medium leading-6 text-[#4b5563]">
+                  Grow your business, receive verified bookings, and manage
+                  everything digitally.
+                </p>
+                <div className="mt-auto pt-6">
+                  <div className="h-1 w-8 rounded-full bg-[#bfdbfe]" />
+                  <button
+                    onClick={() => navigate('/business')}
+                    className="mt-7 inline-block rounded-[8px] bg-[#1f41af] px-8 py-3 text-base font-medium leading-6 text-white shadow-[0px_4px_6px_-1px_rgba(0,0,0,0.1),0px_2px_4px_-2px_rgba(0,0,0,0.1)] transition-opacity hover:opacity-90"
+                  >
+                    Become a Garage Partner
+                  </button>
+                </div>
+              </div>
+              <img
+                src="/hero-phone-garage.png"
+                alt="Keplix garage partner app"
+                className="hidden h-[280px] w-auto shrink-0 self-center object-contain sm:block lg:h-[320px]"
+              />
             </div>
           </div>
         </div>
-
-        {/* Large KEPLIX Text Overlay */}
-        <div className="absolute bottom-0 left-0 right-0 overflow-hidden pointer-events-none">
-          <div className="text-[20vw] md:text-[15vw] font-black text-white/5 text-center leading-none">
-            KEPLIX
-          </div>
-        </div>
-      </div>
-
-      {/* Animated Circles */}
-      <div className="absolute top-1/4 left-10 w-4 h-4 bg-red-500 rounded-full animate-bounce"></div>
-      <div className="absolute top-1/3 right-10 w-6 h-6 bg-red-500 rounded-full animate-bounce delay-500"></div>
-      <div className="absolute bottom-1/4 left-1/4 w-3 h-3 bg-red-500 rounded-full animate-bounce delay-1000"></div>
-    </section>
+      </section>
+    </>
   );
 };
 

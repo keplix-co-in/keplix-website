@@ -1,0 +1,58 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="32" height="32" fill="#323030"/>
+<g id="MacBook Air - 8">
+<rect width="1280" height="5217" transform="translate(-461 -3324.5)" fill="url(#paint0_linear_19_1320)"/>
+<g id="Frame 1000007779">
+<g id="Frame 1000007778">
+<g id="Frame 1000007676">
+<g id="Frame 57">
+<g id="Frame 1000007772">
+<g id="Container">
+<g id="Section - Right Column - Marketing Content">
+<g id="App Store Buttons:margin">
+<g id="App Store Buttons">
+<g id="Link - Google Play Button" filter="url(#filter0_d_19_1320)">
+<rect x="-21" y="-12.5" width="204" height="57" rx="12" fill="white" shape-rendering="crispEdges"/>
+<rect x="-20.5" y="-12" width="203" height="56" rx="11.5" stroke="#E5E7EB" shape-rendering="crispEdges"/>
+<g id="SVG:margin">
+<g id="SVG" clip-path="url(#clip0_19_1320)">
+<g id="SVG_2">
+<path id="Vector" d="M4 27.5202C4 28.5202 4.72 29.0936 5.57333 29.0936C5.86667 29.0936 6.17333 29.0136 6.45333 28.8669L21.9733 20.0269L25.28 16.7202L6.45333 4.4669C6.17333 4.32023 5.86667 4.24023 5.57333 4.24023C4.72 4.24023 4 4.81357 4 5.81357V27.5202Z" fill="#4E46B4"/>
+<path id="Vector_2" d="M25.2798 16.72L21.9731 20.0267L27.2931 16.96C28.2398 16.4134 28.2398 15.5867 27.2931 15.04L25.2798 16.72Z" fill="#FBBC04"/>
+<path id="Vector_3" d="M6.45333 4.4669L25.28 16.7202L21.9733 13.4136L6.45333 4.4669C6.17333 4.32023 5.86667 4.24023 5.57333 4.24023C4.72 4.24023 4 4.81357 4 5.81357V5.9469C4 4.9469 4.72 4.37357 5.57333 4.37357C5.86667 4.37357 6.17333 4.45357 6.45333 4.60023L25.28 16.8536L25.4133 16.7202L6.45333 4.4669Z" fill="white" fill-opacity="0.2"/>
+<path id="Vector_4" d="M4 27.3866V27.5199C4 28.5199 4.72 29.0933 5.57333 29.0933C5.86667 29.0933 6.17333 29.0133 6.45333 28.8666L25.28 18.0533L25.1467 17.9199L6.45333 28.7333C6.17333 28.8799 5.86667 28.9599 5.57333 28.9599C4.72 28.9599 4 28.3866 4 27.3866Z" fill="#263238" fill-opacity="0.2"/>
+<path id="Vector_5" d="M21.9733 20.0269L6.45333 28.8669C6.17333 29.0136 5.86667 29.0936 5.57333 29.0936C4.72 29.0936 4 28.5202 4 27.5202V27.3869C4 28.3869 4.72 28.9602 5.57333 28.9602C5.86667 28.9602 6.17333 28.8802 6.45333 28.7336L21.9733 19.8936V20.0269Z" fill="black" fill-opacity="0.1"/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<defs>
+<filter id="filter0_d_19_1320" x="-23" y="-13.5" width="208" height="61" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="1"/>
+<feGaussianBlur stdDeviation="1"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.05 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_19_1320"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_19_1320" result="shape"/>
+</filter>
+<linearGradient id="paint0_linear_19_1320" x1="640" y1="0" x2="640" y2="5217" gradientUnits="userSpaceOnUse">
+<stop offset="0.379808" stop-color="#F3F5F9"/>
+<stop offset="1" stop-color="#A1B1E6"/>
+</linearGradient>
+<clipPath id="clip0_19_1320">
+<rect width="32" height="32" fill="white"/>
+</clipPath>
+</defs>
+</svg>
