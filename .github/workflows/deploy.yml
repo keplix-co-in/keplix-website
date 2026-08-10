@@ -20,11 +20,16 @@ jobs:
     - name: Install Vercel CLI
       run: npm install --global vercel@latest
 
+    # The CLI authenticates from --token, not from a VERCEL_TOKEN environment
+    # variable, so the flag has to be passed explicitly. It is written as
+    # "$VERCEL_TOKEN" rather than ${{ secrets.VERCEL_TOKEN }} so the secret is
+    # read from the job env at runtime instead of being interpolated into the
+    # generated shell script.
     - name: Pull Vercel Environment
-      run: vercel pull --yes --environment=production
+      run: vercel pull --yes --environment=production --token="$VERCEL_TOKEN"
 
     - name: Build Project Artifacts
-      run: vercel build --prod
+      run: vercel build --prod --token="$VERCEL_TOKEN"
 
     - name: Deploy Project Artifacts to Vercel
-      run: vercel deploy --prebuilt --prod
+      run: vercel deploy --prebuilt --prod --token="$VERCEL_TOKEN"
