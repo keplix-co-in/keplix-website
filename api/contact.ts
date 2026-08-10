@@ -17,15 +17,18 @@ const MAX_FIELDS = 20;
 
 type FormType = 'contact' | 'beta' | 'quick' | 'newsletter';
 
-const FORM_LABELS: Record<FormType, string> = {
+// Null-prototype: a plain object literal would resolve inherited keys, so
+// {"formType":"constructor"} (or toString/valueOf/hasOwnProperty) would sail
+// past the allowlist check below and hand a function to escapeHtml.
+const FORM_LABELS: Record<string, string> = Object.assign(Object.create(null), {
   contact: 'Contact form',
   beta: 'Beta application',
   quick: 'Get in Touch (home page)',
   newsletter: 'Newsletter signup',
-};
+});
 
 // Human-friendly labels so the email reads well regardless of field naming.
-const FIELD_LABELS: Record<string, string> = {
+const FIELD_LABELS: Record<string, string> = Object.assign(Object.create(null), {
   name: 'Name',
   email: 'Email',
   phone: 'Phone',
@@ -38,7 +41,7 @@ const FIELD_LABELS: Record<string, string> = {
   feedback: 'Feedback',
   role: 'Role',
   help: 'Looking for',
-};
+});
 
 const escapeHtml = (value: string): string =>
   value
@@ -51,9 +54,39 @@ const escapeHtml = (value: string): string =>
 const isEmail = (value: string): boolean => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 
 /**
+ * Only accept submissions that originated from our own pages. Without this,
+ * any third party can POST here and send mail on our Resend quota.
+ *
+ * `*.vercel.app` is allowed ONLY on preview deployments. vercel.app is free,
+ * open-registration hosting, so trusting it on the production deployment would
+ * let anyone spin up an allowed origin in about a minute.
+ */
+const isAllowedOrigin = (origin: string | undefined): boolean => {
+  if (!origin) return false; // browsers always send Origin on a cross-origin POST
+
+  if (origin === 'https://keplix.co.in' || origin === 'https://www.keplix.co.in') {
+    return true;
+  }
+
+  const vercelEnv = process.env.VERCEL_ENV; // 'production' | 'preview' | 'development'
+  if (vercelEnv !== 'production') {
+    if (/^https:\/\/[a-z0-9-]+\.vercel\.app$/.test(origin)) return true;
+    if (/^http:\/\/localhost(:\d+)?$/.test(origin)) return true;
+    if (/^http:\/\/127\.0\.0\.1(:\d+)?$/.test(origin)) return true;
+  }
+
+  return false;
+};
+
+/** Strip CR/LF so control characters never reach the mail provider. */
+const singleLine = (value: string): string => value.replace(/[\r\n]+/g, ' ').trim();
+
+/**
  * Best-effort throttle. Serverless instances don't share memory, so this slows
  * a single hot instance rather than enforcing a global limit — it raises the
- * cost of casual abuse, not a determined attacker.
+ * cost of casual abuse, not a determined attacker. Real protection needs shared
+ * state (Vercel WAF / KV) or a CAPTCHA; the origin check above is what actually
+ * keeps other sites from driving this endpoint.
  */
 const RATE_LIMIT_WINDOW_MS = 60_000;
 const RATE_LIMIT_MAX = 5;
@@ -72,6 +105,23 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
     return res.status(405).json({ error: 'Method not allowed' });
+  }
+
+  const origin =
+    (req.headers.origin as string | undefined) ??
+    // Fall back to Referer's origin for the rare client that omits Origin.
+    (req.headers.referer
+      ? (() => {
+          try {
+            return new URL(req.headers.referer as string).origin;
+          } catch {
+            return undefined;
+          }
+        })()
+      : undefined);
+
+  if (!isAllowedOrigin(origin)) {
+    return res.status(403).json({ error: 'Forbidden' });
   }
 
   const body = (req.body ?? {}) as Record<string, unknown>;
@@ -121,7 +171,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   const label = FORM_LABELS[formType];
   const subjectField = entries.find(([k]) => k === 'subject')?.[1];
-  const subject = subjectField ? `[${label}] ${subjectField}` : `[${label}] New submission`;
+  const subject = subjectField
+    ? singleLine(`[${label}] ${subjectField}`)
+    : `[${label}] New submission`;
 
   const rows = entries
     .map(
