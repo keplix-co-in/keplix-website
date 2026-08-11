@@ -79,10 +79,14 @@ const Header: React.FC = () => {
           >
             Join Beta
           </button>
+          {/* The primary mobile nav control was a bare 24px icon — well under
+              the ~44px minimum touch target. -mr-2 keeps the icon visually
+              where it was while the padding grows the hit area. */}
           <button
-            className="text-ink lg:hidden"
+            className="-mr-2 flex h-11 w-11 items-center justify-center text-ink lg:hidden"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             aria-label="Toggle menu"
+            aria-expanded={isMenuOpen}
           >
             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>

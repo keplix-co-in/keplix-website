@@ -3,6 +3,7 @@ import { ChevronDown } from 'lucide-react';
 import PageBlob from '../components/PageBlob';
 import { CONTACT, SOCIALS } from '../constants/links';
 import { submitForm } from '../lib/submitForm';
+import { sectionSubtitleClass, cardTitleClass } from '../constants/typography';
 
 const contactMethods = [
   {
@@ -68,7 +69,7 @@ const fieldClass =
 const labelClass = 'block text-[14px] font-medium leading-[20px] text-[#363636]';
 const cardClass =
   'rounded-[12px] bg-white p-6 drop-shadow-[0px_4px_2px_rgba(0,0,0,0.25)]';
-const cardHeadingClass = 'text-[16px] font-semibold leading-[28px] text-black';
+const cardHeadingClass = `${cardTitleClass} leading-[28px] text-black`;
 
 const ContactPage: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -130,17 +131,17 @@ const ContactPage: React.FC = () => {
               <h1 className="text-4xl font-bold leading-tight text-ink sm:text-[56px] sm:leading-[72px]">
                 Contact Keplix
               </h1>
-              <p className="max-w-[512px] text-lg font-medium text-ink-muted sm:text-[20px]">
+              <p className={`${sectionSubtitleClass} max-w-[512px] text-ink-muted`}>
                 We&apos;re here to help. Reach out to us through any of the
                 channels below..
               </p>
             </div>
 
             {/* Get in Touch */}
-            <h2 className="pt-[19px] text-[28px] font-bold text-black">
+            <h2 className="pt-[19px] text-2xl font-bold text-black sm:text-[28px]">
               Get in <span className="text-[#f84a4a]">Touch</span>
             </h2>
-            <p className="mt-4 text-[20px] text-[#636363]">
+            <p className={`${sectionSubtitleClass} mt-4 text-[#636363]`}>
               Choose the method that works best for you. We&apos;re available
               24/7 to assist you.
             </p>

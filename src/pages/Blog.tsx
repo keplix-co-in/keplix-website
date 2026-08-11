@@ -8,6 +8,8 @@ import {
   formatPostDate,
   type BlogPostSummary,
 } from '../lib/api';
+import { sectionSubtitleClass, cardTitleClass } from '../constants/typography';
+import AdSlot from '../components/AdSlot';
 
 const Blog: React.FC = () => {
   const [posts, setPosts] = useState<BlogPostSummary[]>([]);
@@ -68,10 +70,12 @@ const Blog: React.FC = () => {
 
       <section className="relative z-10">
         <div className="mx-auto max-w-page px-4 pb-4 pt-8 text-center sm:px-8">
-          <h1 className="text-4xl font-bold text-[#0f172a] sm:text-[56px] sm:leading-[48px]">
+          {/* leading was 48px against a 56px font, so a title that wrapped to
+              two lines overlapped itself and clipped descenders at >=640px. */}
+          <h1 className="text-4xl font-bold leading-tight text-[#0f172a] sm:text-[56px] sm:leading-[64px]">
             Blogs &amp; Resources
           </h1>
-          <p className="mt-5 text-xl text-ink-muted">
+          <p className={`${sectionSubtitleClass} mt-5 text-ink-muted`}>
             Tips, guides and expert advice for your car care.
           </p>
         </div>
@@ -149,9 +153,16 @@ const Blog: React.FC = () => {
               </p>
             ) : (
               <div className="grid gap-6 sm:grid-cols-2">
-                {filteredPosts.map((post) => (
+                {filteredPosts.map((post, i) => (
+                  <React.Fragment key={post.id}>
+                  {/* Full-width so it never shifts a card into the opposite
+                      column. Placed after the 4th post rather than at the top
+                      so the page leads with content. Only rendered once there
+                      are enough posts for it not to dominate the page. */}
+                  {i === 4 && filteredPosts.length > 5 && (
+                    <AdSlot slot="blogGrid" className="sm:col-span-2" />
+                  )}
                   <Link
-                    key={post.id}
                     to={`/blog/${post.slug}`}
                     className="flex flex-col justify-between overflow-hidden rounded-2xl border border-line-soft bg-white shadow-card transition-shadow hover:shadow-cardHover"
                   >
@@ -160,6 +171,8 @@ const Blog: React.FC = () => {
                         src={post.coverImage}
                         alt=""
                         className="h-44 w-full object-cover"
+                        loading="lazy"
+                        decoding="async"
                       />
                     )}
                     <div className="flex flex-1 flex-col justify-between p-6">
@@ -167,7 +180,7 @@ const Blog: React.FC = () => {
                         <span className="text-xs font-semibold uppercase tracking-wide text-brand-red">
                           {post.category}
                         </span>
-                        <h3 className="mt-2 text-lg font-bold text-ink-heading">
+                        <h3 className={`${cardTitleClass} mt-2 text-ink-heading`}>
                           {post.title}
                         </h3>
                         {post.excerpt && (
@@ -185,6 +198,7 @@ const Blog: React.FC = () => {
                       </div>
                     </div>
                   </Link>
+                  </React.Fragment>
                 ))}
               </div>
             )}

@@ -4,6 +4,7 @@ import { Facebook, Instagram, Linkedin, Twitter, Youtube } from 'lucide-react';
 import ThreadsIcon from './ThreadsIcon';
 import { APP_LINKS, SOCIALS } from '../constants/links';
 import { submitForm } from '../lib/submitForm';
+import { cardTitleClass } from '../constants/typography';
 
 const columns = [
   {
@@ -29,10 +30,12 @@ const columns = [
     heading: 'Support',
     links: [
       { label: 'Help Center', path: '/contact' },
-      { label: 'FAQ', path: '/contact' },
+      { label: 'FAQ', path: '/faq' },
+      // TODO: Terms of Service has no page of its own yet and still points at
+      // the privacy notice. Same in the bottom bar below.
       { label: 'Terms of Service', path: '/privacy-policy' },
       { label: 'Privacy Policy', path: '/privacy-policy' },
-      { label: 'Refund Policy', path: '/privacy-policy' },
+      { label: 'Refund Policy', path: '/refund-policy' },
     ],
   },
   {
@@ -99,7 +102,9 @@ const Footer: React.FC = () => {
               India&apos;s most trusted platform for car services. Compare, book
               and track with confidence.
             </p>
-            <div className="mt-6 flex gap-4">
+            {/* Icons stay 32px visually; the touch target is grown to 44px on
+                mobile so six adjacent links aren't a coin-flip to tap. */}
+            <div className="mt-6 flex gap-2 sm:gap-4">
               {socials.map(({ Icon, label, href }) => (
                 <a
                   key={label}
@@ -107,9 +112,11 @@ const Footer: React.FC = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={label}
-                  className="flex h-8 w-8 items-center justify-center rounded-full bg-line-soft text-ink-muted transition-colors hover:bg-brand-red hover:text-white"
+                  className="group flex h-11 w-11 items-center justify-center sm:h-8 sm:w-8"
                 >
-                  <Icon size={14} />
+                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-line-soft text-ink-muted transition-colors group-hover:bg-brand-red group-hover:text-white">
+                    <Icon size={14} />
+                  </span>
                 </a>
               ))}
             </div>
@@ -118,7 +125,7 @@ const Footer: React.FC = () => {
           <div className="grid flex-1 grid-cols-2 gap-8 sm:grid-cols-4 lg:gap-12">
             {columns.map((column) => (
               <div key={column.heading}>
-                <h4 className="text-base font-semibold leading-6 text-ink-heading">
+                <h4 className={`${cardTitleClass} leading-6 text-ink-heading`}>
                   {column.heading}
                 </h4>
                 <ul className="mt-6 flex flex-col gap-4">

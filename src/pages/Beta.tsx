@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Users, Clock, CheckCircle, Star, Zap, Shield, Award } from 'lucide-react';
+import { Users, CheckCircle, Star, Zap, Shield, Award } from 'lucide-react';
 import PageBlob from '../components/PageBlob';
 import { submitForm } from '../lib/submitForm';
+import { sectionSubtitleClass } from '../constants/typography';
 
 const Beta = () => {
   const [seatsRemaining, setSeatsRemaining] = useState(() => {
@@ -161,21 +162,6 @@ const Beta = () => {
               Be part of the automotive revolution. Limited seats available for early adopters.
             </p>
 
-            {/* Seats Counter */}
-            <div className="bg-white border border-line-soft shadow-card rounded-xl p-6 mb-8 max-w-md mx-auto animate-fade-in-delay-2">
-              <div className="flex items-center justify-center gap-3 mb-3">
-                <Clock className="w-6 h-6 text-brand-red" />
-                <span className="text-lg font-semibold">Seats Remaining</span>
-              </div>
-              <div className="text-4xl font-bold text-brand-red mb-2">{seatsRemaining}</div>
-              <div className="w-full bg-gray-200 rounded-full h-2">
-                <div 
-                  className="bg-red-500 h-2 rounded-full transition-all duration-500"
-                  style={{ width: `${(seatsRemaining / 100) * 100}%` }}
-                ></div>
-              </div>
-              <p className="text-sm text-ink-muted mt-2">out of 100 beta spots</p>
-            </div>
           </div>
         </div>
 
@@ -194,7 +180,7 @@ const Beta = () => {
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
               Beta Program <span className="text-brand-red">Benefits</span>
             </h2>
-            <p className="text-ink-body text-lg max-w-2xl mx-auto">
+            <p className={`${sectionSubtitleClass} text-ink-body max-w-2xl mx-auto`}>
               Exclusive advantages for our beta testers who help shape the future of automotive care.
             </p>
           </div>
@@ -425,7 +411,7 @@ const Beta = () => {
             <h3 className="text-4xl font-bold text-ink-heading mb-6">
               Don't Miss Out on the <span className="text-brand-red">Future</span>
             </h3>
-            <p className="text-ink-body text-lg mb-8 max-w-2xl mx-auto">
+            <p className={`${sectionSubtitleClass} text-ink-body mb-8 max-w-2xl mx-auto`}>
               Join the exclusive group of early adopters who will shape the future of automotive care. Limited spots available.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">

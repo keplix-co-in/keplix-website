@@ -7,8 +7,8 @@ import {
   ChevronLeft,
   ChevronRight,
   Star,
-  UserCircle2,
 } from 'lucide-react';
+import { cardTitleClass } from '../constants/typography';
 
 const steps = [
   { icon: Search, title: 'Search Service', description: 'Tell us what your car needs.' },
@@ -25,11 +25,58 @@ const trustItems = [
   { icon: '/icons/trust-secure.svg', value: 'Secure', label: 'Payments' },
 ];
 
+// PLACEHOLDER CONTENT — these are illustrative reviews written in-house, not
+// real customer feedback. Replace every entry with genuine, attributed
+// testimonials before launch. The avatars are stock images reused from the
+// hero and do not depict the named people.
 const testimonials = [
   {
     quote:
       'Keplix saved me so much time! Found the best service center near me with transparent pricing. Highly recommended.',
-    name: 'Rohan Mehta, Delhi',
+    name: 'Rohan Mehta',
+    location: 'Delhi',
+    rating: 5,
+    avatar: '/avatars/avatar-1.jpg',
+  },
+  {
+    quote:
+      'Booked a full service in under two minutes. The garage sent photo updates while they worked, so I never had to chase anyone for a status.',
+    name: 'Priya Nair',
+    location: 'Bengaluru',
+    rating: 5,
+    avatar: '/avatars/avatar-2.jpg',
+  },
+  {
+    quote:
+      'I compared four workshops before picking one. Seeing the price breakdown up front meant no surprise charges at pickup.',
+    name: 'Arjun Deshmukh',
+    location: 'Pune',
+    rating: 5,
+    avatar: '/avatars/avatar-3.jpg',
+  },
+  {
+    quote:
+      'My AC stopped cooling right before a road trip. Got a same-day slot at a verified centre nearby and was back on the road that evening.',
+    name: 'Sneha Iyer',
+    location: 'Chennai',
+    rating: 4,
+    avatar: '/avatars/avatar-4.jpg',
+  },
+  {
+    quote:
+      'Having the whole service history in one place is the part I did not expect to love. Made selling my old car much easier.',
+    name: 'Vikram Singh',
+    location: 'Jaipur',
+    rating: 5,
+    avatar: '/avatars/avatar-1.jpg',
+  },
+  {
+    quote:
+      'Genuine parts, an itemised bill and a proper warranty note. It finally feels like servicing a car without being taken for a ride.',
+    name: 'Ananya Bose',
+    location: 'Kolkata',
+    rating: 4,
+    avatar: '/avatars/avatar-2.jpg',
   },
 ];
 
@@ -37,11 +84,15 @@ const Future: React.FC = () => {
   const [active, setActive] = useState(0);
 
   return (
-    <section className="relative z-10 mx-auto max-w-page px-4 py-16 sm:px-8">
+    /* lg:px-16 matches the inset used on the Workshops page, so the section
+       does not sit hard against the viewport edge on wide screens. */
+    <section className="relative z-10 mx-auto max-w-page px-4 py-16 sm:px-8 lg:px-16">
       <h2 className="text-center text-2xl font-bold text-ink-heading sm:text-[28px]">
         How Keplix Works
       </h2>
-      <div className="mt-12 grid grid-cols-2 gap-8 sm:grid-cols-4">
+      {/* Capped and centred: across the full 1728px container the four steps
+          drifted far apart and read as unrelated items rather than a sequence. */}
+      <div className="mx-auto mt-12 grid max-w-[1100px] grid-cols-2 gap-8 sm:grid-cols-4">
         {steps.map(({ icon: Icon, title, description }, i) => (
           <div key={title} className="flex flex-col items-center text-center">
             <div className="relative mb-5 flex h-16 w-16 items-center justify-center">
@@ -53,7 +104,7 @@ const Future: React.FC = () => {
                 {i + 1}
               </span>
             </div>
-            <h3 className="text-lg font-bold text-ink-heading">{title}</h3>
+            <h3 className={`${cardTitleClass} text-ink-heading`}>{title}</h3>
             <p className="mt-1 text-sm text-ink-muted">{description}</p>
           </div>
         ))}
@@ -77,6 +128,8 @@ const Future: React.FC = () => {
             src="/trust-illustration.png"
             alt="Customer reviews illustration"
             className="w-full max-w-[355px] shrink-0 rounded-2xl"
+            loading="lazy"
+            decoding="async"
           />
 
           <div className="flex flex-col items-center gap-8">
@@ -87,7 +140,7 @@ const Future: React.FC = () => {
                   className="flex h-[185px] w-[174px] flex-col items-center justify-center gap-4 rounded-[20px] border border-[#e9ebef] text-center"
                 >
                   <div className="flex h-[54px] w-[54px] items-center justify-center rounded-full bg-[#f8faff]">
-                    <img src={icon} alt="" className="h-6 w-6" />
+                    <img src={icon} alt="" className="h-6 w-6" loading="lazy" decoding="async" />
                   </div>
                   <div>
                     <div className="text-xl font-bold text-[#1e293b]">{value}</div>
@@ -103,7 +156,7 @@ const Future: React.FC = () => {
                   className="flex h-[185px] w-[174px] flex-col items-center justify-center gap-4 rounded-[20px] border border-[#e9ebef] text-center"
                 >
                   <div className="flex h-[54px] w-[54px] items-center justify-center rounded-full bg-[#f8faff]">
-                    <img src={icon} alt="" className="h-6 w-6" />
+                    <img src={icon} alt="" className="h-6 w-6" loading="lazy" decoding="async" />
                   </div>
                   <div>
                     <div className="text-xl font-bold text-[#1e293b]">{value}</div>
@@ -116,19 +169,28 @@ const Future: React.FC = () => {
         </div>
 
         <div className="relative mt-10 flex items-center gap-4 rounded-2xl border border-line-soft p-6 sm:p-8">
+          {/* -m-2 keeps the 44px tap target from adding visual bulk: the
+              padding grows the hit area outward while the negative margin
+              pulls the layout back to where the bare icon sat. */}
           <button
             onClick={() => setActive((a) => (a - 1 + testimonials.length) % testimonials.length)}
-            className="shrink-0 text-ink-faint transition-colors hover:text-ink"
+            className="-m-2 flex h-11 w-11 shrink-0 items-center justify-center text-ink-faint transition-colors hover:text-ink"
             aria-label="Previous testimonial"
           >
             <ChevronLeft size={22} />
           </button>
 
-          <UserCircle2 className="shrink-0 text-gray-300" size={56} strokeWidth={1} />
+          <img
+            src={testimonials[active].avatar}
+            alt=""
+            className="h-14 w-14 shrink-0 rounded-full object-cover"
+            loading="lazy"
+            decoding="async"
+          />
 
-          <div className="flex-1">
-            <div className="flex gap-1 text-yellow-400">
-              {[...Array(5)].map((_, i) => (
+          <div className="min-w-0 flex-1">
+            <div className="flex gap-1 text-yellow-400" aria-label={`${testimonials[active].rating} out of 5 stars`}>
+              {[...Array(testimonials[active].rating)].map((_, i) => (
                 <Star key={i} size={16} fill="currentColor" strokeWidth={0} />
               ))}
             </div>
@@ -136,13 +198,13 @@ const Future: React.FC = () => {
               &quot;{testimonials[active].quote}&quot;
             </p>
             <p className="mt-2 text-sm text-ink-faint">
-              — {testimonials[active].name}
+              — {testimonials[active].name}, {testimonials[active].location}
             </p>
           </div>
 
           <button
             onClick={() => setActive((a) => (a + 1) % testimonials.length)}
-            className="shrink-0 text-ink-faint transition-colors hover:text-ink"
+            className="-m-2 flex h-11 w-11 shrink-0 items-center justify-center text-ink-faint transition-colors hover:text-ink"
             aria-label="Next testimonial"
           >
             <ChevronRight size={22} />

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Car, Warehouse, PlayCircle } from 'lucide-react';
 import HeroVideoPanel from './HeroVideoPanel';
 import { APP_LINKS } from '../constants/links';
+import { sectionSubtitleClass } from '../constants/typography';
 
 const avatars = [
   '/avatars/avatar-1.jpg',
@@ -20,8 +21,14 @@ const Hero: React.FC = () => {
       <section className="relative z-10">
         <div className="grid items-start lg:grid-cols-2">
           {/* Text content. Figma puts the heading 87px below the header and the
-              video 33px below it, so the video sits slightly higher. */}
-          <div className="flex flex-col items-start gap-8 px-4 pb-16 pt-10 sm:px-8 sm:pt-[87px] lg:pl-[max(2rem,calc((100vw-1728px)/2+2rem))] lg:pr-12">
+              video 33px below it, so the video sits slightly higher.
+
+              The left padding is a max() rather than a plain lg:px-16 because
+              this column is edge-to-edge, not inside a max-w-page container:
+              the calc keeps the text lined up with the rest of the site once
+              the viewport passes 1728px, and the 4rem floor (64px) is the
+              same inset used on the Workshops and How-it-Works sections. */}
+          <div className="flex flex-col items-start gap-8 px-4 pb-16 pt-10 sm:px-8 sm:pt-[87px] lg:pl-[max(4rem,calc((100vw-1728px)/2+4rem))] lg:pr-12">
             <h1 className="text-4xl font-extrabold leading-tight text-ink sm:text-5xl lg:text-[56px] lg:leading-[72px]">
               Find Trusted
               <br />
@@ -29,7 +36,7 @@ const Hero: React.FC = () => {
               <br />
               in Minutes
             </h1>
-            <p className="max-w-md text-lg font-medium leading-relaxed text-ink-muted sm:text-xl">
+            <p className={`${sectionSubtitleClass} max-w-md leading-relaxed text-ink-muted`}>
               Compare prices from verified workshops, book appointments
               instantly and track your vehicle service journey
             </p>
@@ -66,8 +73,10 @@ const Hero: React.FC = () => {
         </div>
       </section>
 
-      {/* Who Are You? role selection band */}
-      <section className="relative z-10 bg-white px-4 pb-16 pt-16 sm:px-8">
+      {/* Who Are You? role selection band. Same lg:px-16 inset as the hero
+          above it, so the two cards line up with the headline rather than
+          starting 32px further out. */}
+      <section className="relative z-10 bg-white px-4 pb-16 pt-16 sm:px-8 lg:px-16">
         <div className="relative mx-auto max-w-page">
           <div className="absolute left-1/2 top-0 z-10 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white px-6 py-3 shadow-card">
             <span className="whitespace-nowrap text-lg font-bold text-ink">

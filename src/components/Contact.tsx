@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { submitForm } from '../lib/submitForm';
+import { sectionSubtitleClass, cardTitleClass } from '../constants/typography';
 
 const RADIO_ACCENT = '#2563eb';
 
@@ -69,6 +70,9 @@ const Contact: React.FC = () => {
               loop
               muted
               playsInline
+              // Below the fold — don't spend a phone's data on it until the
+              // browser actually gets round to playing it.
+              preload="none"
               className="h-full w-full object-cover"
             >
               Your browser does not support the video tag.
@@ -79,7 +83,7 @@ const Contact: React.FC = () => {
             <h2 className="text-3xl font-bold text-white sm:text-4xl">
               The Future of Car Care
             </h2>
-            <p className="mt-4 text-lg text-gray-400">
+            <p className={`${sectionSubtitleClass} mt-4 text-gray-400`}>
               We&apos;re building the most advanced automotive ecosystem for
               today and tomorrow.
             </p>
@@ -91,7 +95,7 @@ const Contact: React.FC = () => {
                   className="rounded-xl border border-[#434e64] p-5 text-center"
                 >
                   <img src={icon} alt="" className="mx-auto h-10 w-10" />
-                  <h3 className="mt-4 text-base font-bold text-white">
+                  <h3 className={`${cardTitleClass} mt-4 text-white`}>
                     {title}
                   </h3>
                   <p className="mt-2 text-sm text-gray-500">{description}</p>
@@ -116,9 +120,12 @@ const Contact: React.FC = () => {
               <div className="flex flex-wrap gap-6">
                 {(['Car Owner', 'Workshop Owner', 'Partner / Other'] as Role[]).map(
                   (option) => (
+                    /* py-2 lifts the row to a ~40px target; the label wraps
+                       the text so the whole thing is tappable, not just the
+                       16px radio itself. */
                     <label
                       key={option}
-                      className="flex items-center gap-2 text-sm text-gray-300"
+                      className="flex cursor-pointer items-center gap-2 py-2 text-sm text-gray-300"
                     >
                       <input
                         type="radio"

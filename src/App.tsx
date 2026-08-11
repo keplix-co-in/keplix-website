@@ -7,6 +7,7 @@ import Future from './components/Future';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
+import CookieConsent from './components/CookieConsent';
 import PageBlob from './components/PageBlob';
 import About from './pages/About';
 import Blog from './pages/Blog';
@@ -16,6 +17,8 @@ import ContactPage from './pages/ContactPage';
 import Beta from './pages/Beta';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import CookiePolicy from './pages/CookiePolicy';
+import RefundPolicy from './pages/RefundPolicy';
+import FAQ from './pages/FAQ';
 
 const HomePage = () => (
   <div className="relative overflow-hidden">
@@ -37,6 +40,7 @@ function App() {
   return (
     <div className={`min-h-screen ${isBusiness ? 'business-wash' : 'page-wash'}`}>
       <ScrollToTop />
+      <CookieConsent />
       <Header />
       <Routes>
         <Route path="/" element={<HomePage />} />
@@ -48,6 +52,8 @@ function App() {
         <Route path="/beta" element={<Beta />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/cookie-policy" element={<CookiePolicy />} />
+        <Route path="/refund-policy" element={<RefundPolicy />} />
+        <Route path="/faq" element={<FAQ />} />
       </Routes>
       <Footer />
     </div>

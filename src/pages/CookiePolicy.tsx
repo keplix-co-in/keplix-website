@@ -1,6 +1,9 @@
 import React from 'react';
 import { Cookie } from 'lucide-react';
 import PageBlob from '../components/PageBlob';
+import { sectionSubtitleClass } from '../constants/typography';
+import AdSlot from '../components/AdSlot';
+import { reopenConsentBanner } from '../lib/consent';
 
 const Section: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
   <div className="mb-10">
@@ -21,7 +24,7 @@ const CookiePolicy: React.FC = () => {
             <Cookie className="w-14 h-14 text-brand-red" />
           </div>
           <h1 className="text-4xl md:text-5xl font-bold mb-4 text-ink">Cookie Policy</h1>
-          <p className="text-ink-muted text-lg">
+          <p className={`${sectionSubtitleClass} text-ink-muted`}>
             Last updated: <span className="text-brand-red font-semibold">March 07, 2026</span>
           </p>
         </div>
@@ -87,6 +90,17 @@ const CookiePolicy: React.FC = () => {
             reject cookies, you may still use our Website though your access to some functionality and areas of our
             Website may be restricted. You may also set or amend your web browser controls to accept or refuse cookies.
           </p>
+
+          {/* Makes the paragraph above literally true — the banner is
+              dismissed permanently once answered, so without this there was no
+              way back to it. */}
+          <button
+            type="button"
+            onClick={reopenConsentBanner}
+            className="mt-2 inline-flex h-11 items-center rounded-btn bg-brand-red px-6 text-sm font-bold text-white transition-colors hover:bg-brand-redHover"
+          >
+            Change your cookie preferences
+          </button>
           <p>
             The specific types of first- and third-party cookies served through our Website and the purposes they perform
             are described below.
@@ -114,6 +128,26 @@ const CookiePolicy: React.FC = () => {
                     <td className="px-4 py-2 text-ink-muted">.upload.wikimedia.org</td>
                     <td className="px-4 py-2 text-ink-muted">server_cookie</td>
                     <td className="px-4 py-2 text-ink-muted">31492011 seconds</td>
+                  </tr>
+                  {/* Google's advertising cookies. Only set if you accept
+                      advertising cookies in the banner. */}
+                  <tr className="border-t border-line-soft">
+                    <td className="px-4 py-2 text-ink-muted">__gads</td>
+                    <td className="px-4 py-2 text-ink-muted">Google (AdSense)</td>
+                    <td className="px-4 py-2 text-ink-muted">advertising</td>
+                    <td className="px-4 py-2 text-ink-muted">13 months</td>
+                  </tr>
+                  <tr className="border-t border-line-soft">
+                    <td className="px-4 py-2 text-ink-muted">__gpi</td>
+                    <td className="px-4 py-2 text-ink-muted">Google (AdSense)</td>
+                    <td className="px-4 py-2 text-ink-muted">advertising</td>
+                    <td className="px-4 py-2 text-ink-muted">13 months</td>
+                  </tr>
+                  <tr className="border-t border-line-soft">
+                    <td className="px-4 py-2 text-ink-muted">IDE</td>
+                    <td className="px-4 py-2 text-ink-muted">.doubleclick.net</td>
+                    <td className="px-4 py-2 text-ink-muted">advertising</td>
+                    <td className="px-4 py-2 text-ink-muted">13 months</td>
                   </tr>
                 </tbody>
               </table>
@@ -278,6 +312,11 @@ const CookiePolicy: React.FC = () => {
         </Section>
 
         </div>
+
+        {/* Sits outside the white content card, inside the same
+            max-w-4xl wrapper, so it reads as separate from the page's
+            own content rather than part of it. */}
+        <AdSlot slot="pageFooter" className="mt-10" />
       </div>
     </div>
   );

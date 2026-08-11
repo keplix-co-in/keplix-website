@@ -1,5 +1,6 @@
 import React from 'react';
 import PageBlob from '../components/PageBlob';
+import { sectionSubtitleClass, cardTitleClass } from '../constants/typography';
 
 const pillars = [
   {
@@ -62,11 +63,11 @@ const About: React.FC = () => {
               <h1 className="text-4xl font-bold leading-tight text-ink sm:text-[56px] sm:leading-[72px]">
                 About Keplix
               </h1>
-              <p className="max-w-[512px] text-lg font-medium text-ink-muted sm:text-[20px]">
+              <p className={`${sectionSubtitleClass} max-w-[512px] text-ink-muted`}>
                 We&apos;re on a mission to make car care simple, transparent and
                 trustworthy for every car owner.
               </p>
-              <p className="max-w-[456px] text-lg font-medium text-ink-muted sm:text-[20px]">
+              <p className={`${sectionSubtitleClass} max-w-[456px] text-ink-muted`}>
                 KEPLIX connects car owners with verified garages, bringing
                 transparency, convenience and reliability to car care.
               </p>
@@ -76,6 +77,8 @@ const About: React.FC = () => {
                 src="/about-hero-illustration.png"
                 alt="Illustration of a person working at a laptop"
                 className="w-full max-w-[520px]"
+                loading="lazy"
+                decoding="async"
               />
             </div>
           </div>
@@ -88,11 +91,13 @@ const About: React.FC = () => {
             and scales with the page instead of bunching in the middle. */}
         <div className="grid grid-cols-2 gap-8 lg:grid-cols-4">
           {pillars.map(({ icon, title, description }) => (
+            /* px-8 in a two-column grid left ~91px of text width at 375px,
+               turning short values like "Customer First" into a 6-line sliver. */
             <div
               key={title}
-              className="flex flex-col items-center rounded-[12px] bg-[#fbf0f0] px-8 pb-[34px] pt-8 text-center drop-shadow-[0px_1px_1px_rgba(0,0,0,0.05)] sm:min-h-[234px]"
+              className="flex flex-col items-center rounded-[12px] bg-[#fbf0f0] px-4 pb-[34px] pt-8 text-center drop-shadow-[0px_1px_1px_rgba(0,0,0,0.05)] sm:min-h-[234px] sm:px-8"
             >
-              <img src={icon} alt="" className="h-10 w-10" />
+              <img src={icon} alt="" className="h-10 w-10" loading="lazy" decoding="async" />
               <h3 className="mt-4 text-[20px] font-bold text-[#111827]">
                 {title}
               </h3>
@@ -122,7 +127,7 @@ const About: React.FC = () => {
                 <span className="pt-[8.6px] text-[20px] font-semibold leading-7 text-[#e31e24]">
                   {year}
                 </span>
-                <h3 className="text-[16px] font-semibold leading-6 text-[#111827]">
+                <h3 className={`${cardTitleClass} leading-6 text-[#111827]`}>
                   {title}
                 </h3>
                 <p className="text-[16px] text-[#6b7280]">{description}</p>
@@ -147,6 +152,8 @@ const About: React.FC = () => {
                 loop
                 muted
                 playsInline
+                // Well below the fold on mobile.
+                preload="none"
                 className="aspect-[620/353] w-full rounded-2xl object-cover shadow-[0px_16px_32px_-12px_rgba(11,21,33,0.25)]"
               >
                 Your browser does not support the video tag.
@@ -185,6 +192,8 @@ const About: React.FC = () => {
                   src="/ceo-vardan.jpg"
                   alt="Vardan Chaturvedi, CEO &amp; Founder"
                   className="h-32 w-32 rounded-full object-cover"
+                  loading="lazy"
+                  decoding="async"
                 />
               </div>
               <p className="pt-[23px] text-[24px] font-medium leading-7 text-[#111827]">
