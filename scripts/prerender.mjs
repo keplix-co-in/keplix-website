@@ -12,10 +12,23 @@
  *
  * Output shape is `dist/<route>/index.html`, not `dist/<route>.html`. Vercel
  * checks the filesystem *before* applying rewrites and resolves directory
- * index files, so these files are served directly. vercel.json keeps a rewrite
- * for /blog/* only, so a post published since the last deploy still falls back
- * to the client-rendered shell; everything else is either a real file here or a
- * genuine 404.
+ * index files, so these files are served directly.
+ *
+ * WHY vercel.json ONLY REWRITES /blog/* (documented here because vercel.json
+ * is strict JSON — it rejects both comments and unknown keys):
+ *
+ *   It used to rewrite "/(.*)" to /index.html. That meant every unmatched URL
+ *   returned HTTP 200 with the full homepage — unlimited distinct URLs serving
+ *   duplicate content, and never a real 404 for a crawler to drop.
+ *
+ *   Now every static route is a real file above, so it needs no rewrite at
+ *   all. Only /blog/* keeps one: a post published since the last deploy has no
+ *   prerendered file yet and must fall back to the client-rendered shell.
+ *   Anything else with no matching file gets dist/404.html with a genuine 404.
+ *
+ *   The catch: a route in App.tsx that is missing from STATIC_ROUTES will now
+ *   404 in production instead of silently working. assertRoutesMatch() below
+ *   fails the build on that mismatch so it can never reach a deploy.
  */
 import { writeFile, mkdir, readFile } from 'node:fs/promises';
 import { resolve, dirname } from 'node:path';
