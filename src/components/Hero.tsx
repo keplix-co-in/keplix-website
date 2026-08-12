@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Car, Warehouse, PlayCircle } from 'lucide-react';
 import HeroVideoPanel from './HeroVideoPanel';
 import { APP_LINKS } from '../constants/links';
+import { sectionSubtitleClass } from '../constants/typography';
 
 const avatars = [
   '/avatars/avatar-1.jpg',
@@ -17,11 +18,21 @@ const Hero: React.FC = () => {
   return (
     <>
       {/* Hero row: text */}
-      <section className="relative z-10">
+      <section className="relative z-10 bg-white pt-1 sm:pt-1 lg:pt-[0px]">
         <div className="grid items-start lg:grid-cols-2">
-          {/* Text content. Figma puts the heading 87px below the header and the
-              video 33px below it, so the video sits slightly higher. */}
-          <div className="flex flex-col items-start gap-8 px-4 pb-16 pt-10 sm:px-8 sm:pt-[87px] lg:pl-[max(2rem,calc((100vw-1728px)/2+2rem))] lg:pr-12">
+          {/* Text content. Figma's 87px/33px top offsets were measured from the
+              top of the page, but the header is `sticky` and therefore still
+              takes its full 96px in normal flow — so those values stacked on
+              top of it and left a visible gap under the header. Both are cut by
+              33px, which keeps the 54px offset that makes the video sit higher
+              than the heading while closing the gap.
+
+              The left padding is a max() rather than a plain lg:px-16 because
+              this column is edge-to-edge, not inside a max-w-page container:
+              the calc keeps the text lined up with the rest of the site once
+              the viewport passes 1728px, and the 4rem floor (64px) is the
+              same inset used on the Workshops and How-it-Works sections. */}
+          <div className="flex flex-col items-start gap-8 px-4 pb-16 pt-4 sm:px-8 sm:pt-[54px] lg:pl-[max(4rem,calc((100vw-1728px)/2+4rem))] lg:pr-12">
             <h1 className="text-4xl font-extrabold leading-tight text-ink sm:text-5xl lg:text-[56px] lg:leading-[72px]">
               Find Trusted
               <br />
@@ -29,7 +40,7 @@ const Hero: React.FC = () => {
               <br />
               in Minutes
             </h1>
-            <p className="max-w-md text-lg font-medium leading-relaxed text-ink-muted sm:text-xl">
+            <p className={`${sectionSubtitleClass} max-w-md leading-relaxed text-ink-muted`}>
               Compare prices from verified workshops, book appointments
               instantly and track your vehicle service journey
             </p>
@@ -66,8 +77,10 @@ const Hero: React.FC = () => {
         </div>
       </section>
 
-      {/* Who Are You? role selection band */}
-      <section className="relative z-10 bg-white px-4 pb-16 pt-16 sm:px-8">
+      {/* Who Are You? role selection band. Same lg:px-16 inset as the hero
+          above it, so the two cards line up with the headline rather than
+          starting 32px further out. */}
+      <section className="relative z-10 bg-white px-4 pb-16 pt-16 sm:px-8 lg:px-16">
         <div className="relative mx-auto max-w-page">
           <div className="absolute left-1/2 top-0 z-10 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white px-6 py-3 shadow-card">
             <span className="whitespace-nowrap text-lg font-bold text-ink">
@@ -83,9 +96,9 @@ const Hero: React.FC = () => {
               <div className="flex min-w-0 flex-1 flex-col">
                 <div className="flex items-center gap-3">
                   <Car className="shrink-0 text-brand-red" size={32} />
-                  <h3 className="text-2xl font-bold leading-[30px] text-[#111827]">
+                  <h2 className="text-2xl font-bold leading-[30px] text-[#111827]">
                     I&apos;m a Car Owner
-                  </h3>
+                  </h2>
                 </div>
                 {/* The two blurbs wrap to different line counts, and how many
                     depends on the card width, so reserving a fixed number of
@@ -111,17 +124,16 @@ const Hero: React.FC = () => {
               <img
                 src="/hero-phone-customer.png"
                 alt="Keplix customer app"
-                className="hidden h-[280px] w-auto shrink-0 self-center object-contain sm:block lg:h-[320px]"
-              />
+                className="hidden h-[280px] w-auto shrink-0 self-center object-contain sm:block lg:h-[320px]" width={549} height={1106} />
             </div>
 
             <div className="flex items-stretch justify-between gap-6 overflow-hidden rounded-[24px] bg-[#eff6ff] p-8 shadow-[0px_1px_2px_rgba(0,0,0,0.05)]">
               <div className="flex min-w-0 flex-1 flex-col">
                 <div className="flex items-center gap-3">
                   <Warehouse className="shrink-0 text-[#1f41af]" size={32} />
-                  <h3 className="text-2xl font-bold leading-[30px] text-[#111827]">
+                  <h2 className="text-2xl font-bold leading-[30px] text-[#111827]">
                     I Own a Garage
-                  </h3>
+                  </h2>
                 </div>
                 <p className="mt-4 max-w-[320px] text-base font-medium leading-6 text-[#4b5563]">
                   Grow your business, receive verified bookings, and manage
@@ -140,8 +152,7 @@ const Hero: React.FC = () => {
               <img
                 src="/hero-phone-garage.png"
                 alt="Keplix garage partner app"
-                className="hidden h-[280px] w-auto shrink-0 self-center object-contain sm:block lg:h-[320px]"
-              />
+                className="hidden h-[280px] w-auto shrink-0 self-center object-contain sm:block lg:h-[320px]" width={547} height={1106} />
             </div>
           </div>
         </div>

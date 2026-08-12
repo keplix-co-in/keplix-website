@@ -131,13 +131,19 @@ const Services: React.FC = () => {
                   <p className="mt-3 text-base text-ink-muted">{description}</p>
                 </div>
               </div>
-              <div className="flex gap-4">
+              {/* On mobile these two cards previously sat in a non-wrapping
+                  row of two `shrink-0 w-[180px]` items (376px) inside ~247px
+                  of space. Because the page root is overflow-hidden the second
+                  card was silently cut off rather than scrollable, so a whole
+                  feature was invisible on every phone. Wrap, and let each card
+                  take the full width until there is room for the fixed size. */}
+              <div className="flex flex-wrap gap-4">
                 {subCards.map((card) => (
                   <div
                     key={card.label}
-                    className="flex h-[100px] w-[180px] shrink-0 flex-col items-center justify-center gap-2 rounded-xl border border-line-soft px-4 py-4 text-center"
+                    className="flex h-[100px] w-full flex-col items-center justify-center gap-2 rounded-xl border border-line-soft px-4 py-4 text-center sm:w-[180px] sm:shrink-0"
                   >
-                    <img src={card.icon} alt="" className="h-6 w-6" />
+                    <img src={card.icon} alt="" className="h-6 w-6" loading="lazy" decoding="async" />
                     <span className="text-base font-semibold text-ink-body">
                       {card.label}
                     </span>

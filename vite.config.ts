@@ -106,6 +106,20 @@ export default defineConfig(({ mode }) => {
     },
     base: '/',
     build: {
+    rollupOptions: {
+      output: {
+        // Route-level splitting is off (see App.tsx), but the vendor half of
+        // the bundle changes far less often than our code, so giving it its
+        // own chunk lets returning visitors reuse it across deploys.
+        // Function form, not an object map: the SSR build treats react as an
+        // external, and naming it in an object map makes that build fail.
+        manualChunks(id) {
+          if (!id.includes('node_modules')) return;
+          if (/node_modules\/(react|react-dom|react-router|react-router-dom|scheduler)\//.test(id)) return 'react';
+          if (id.includes('node_modules/lucide-react/')) return 'icons';
+        },
+      },
+    },
       outDir: 'dist',
       assetsDir: 'assets',
     },

@@ -2,6 +2,7 @@ import React from 'react';
 import { Star } from 'lucide-react';
 import StoreBadges from './StoreBadges';
 import { APP_LINKS } from '../constants/links';
+import { sectionSubtitleClass } from '../constants/typography';
 
 const Process: React.FC = () => {
   return (
@@ -17,6 +18,8 @@ const Process: React.FC = () => {
             key={src}
             src={src}
             alt="Keplix app showcase"
+            loading="lazy"
+            decoding="async"
             className="w-full rounded-2xl bg-[#f7e6e6]"
           />
         ))}
@@ -26,7 +29,7 @@ const Process: React.FC = () => {
         <h2 className="text-3xl font-extrabold text-ink sm:text-4xl">
           Smart Carcare in Your Pocket
         </h2>
-        <p className="mt-4 text-lg text-ink-muted">
+        <p className={`${sectionSubtitleClass} mt-4 text-ink-muted`}>
           Find trusted workshops, compare prices, book instantly and track
           your car service — all in one app.
         </p>

@@ -1,5 +1,6 @@
 {
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }],
+  "_comment_rewrites": "Only /blog/* falls back to the SPA shell: posts published between deploys have no prerendered file yet, and the client fetches them at runtime. Every other route is prerendered to dist/<route>/index.html, which Vercel resolves from the filesystem before rewrites run. The previous blanket catch-all sent *every* unmatched URL to /index.html, so any typo returned HTTP 200 with the full homepage — unlimited URLs serving duplicate content and never a real 404. With no matching rewrite, Vercel now serves dist/404.html with a genuine 404 status.",
+  "rewrites": [{ "source": "/blog/(.*)", "destination": "/index.html" }],
   "headers": [
     {
       "source": "/(.*)",
@@ -17,7 +18,7 @@
         },
         {
           "key": "Content-Security-Policy-Report-Only",
-          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https://res.cloudinary.com https://images.pexels.com; media-src 'self'; connect-src 'self' https://*.keplix.co.in https://va.vercel-scripts.com; frame-src https://www.google.com https://maps.google.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'"
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https://res.cloudinary.com https://images.pexels.com https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com https://*.gstatic.com; media-src 'self'; connect-src 'self' https://*.keplix.co.in https://va.vercel-scripts.com https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com; frame-src https://www.google.com https://maps.google.com https://*.googlesyndication.com https://tpc.googlesyndication.com https://*.doubleclick.net; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'"
         }
       ]
     }

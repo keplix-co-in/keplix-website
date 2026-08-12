@@ -4,6 +4,7 @@ import { Facebook, Instagram, Linkedin, Twitter, Youtube } from 'lucide-react';
 import ThreadsIcon from './ThreadsIcon';
 import { APP_LINKS, SOCIALS } from '../constants/links';
 import { submitForm } from '../lib/submitForm';
+import { cardTitleClass } from '../constants/typography';
 
 const columns = [
   {
@@ -18,21 +19,28 @@ const columns = [
   {
     heading: 'Services',
     links: [
-      { label: 'Car Service', path: '/' },
-      { label: 'Maintenance', path: '/' },
-      { label: 'Repairs', path: '/' },
-      { label: 'Accessories', path: '/' },
-      { label: 'Fleet Solutions', path: '/business' },
+      // Four different anchor texts all pointing at the homepage told search
+      // engines nothing except that / is about everything. Until per-service
+      // landing pages exist, point them at pages that answer the query.
+      // Real destinations with distinct anchor text, one per service, so each
+      // landing page has an internal link pointing at it from every page.
+      { label: 'Car Service', path: '/services/car-service' },
+      { label: 'AC Repair', path: '/services/car-ac-repair' },
+      { label: 'Battery Replacement', path: '/services/car-battery-replacement' },
+      { label: 'Denting & Painting', path: '/services/denting-painting' },
+      { label: 'All Services', path: '/services' },
     ],
   },
   {
     heading: 'Support',
     links: [
       { label: 'Help Center', path: '/contact' },
-      { label: 'FAQ', path: '/contact' },
-      { label: 'Terms of Service', path: '/privacy-policy' },
+      { label: 'FAQ', path: '/faq' },
+      // Now a real page. This used to point at /privacy-policy, which is a
+      // the privacy notice. Same in the bottom bar below.
+      { label: 'Terms of Service', path: '/terms' },
       { label: 'Privacy Policy', path: '/privacy-policy' },
-      { label: 'Refund Policy', path: '/privacy-policy' },
+      { label: 'Refund Policy', path: '/refund-policy' },
     ],
   },
   {
@@ -93,13 +101,14 @@ const Footer: React.FC = () => {
             <img
               src="/keplix-logo.png"
               alt="Keplix"
-              className="h-[63px] w-[69px] object-contain"
-            />
+              className="h-[63px] w-[69px] object-contain" width={261} height={237} />
             <p className="mt-6 max-w-xs text-base leading-[22.75px] text-ink-muted">
               India&apos;s most trusted platform for car services. Compare, book
               and track with confidence.
             </p>
-            <div className="mt-6 flex gap-4">
+            {/* Icons stay 32px visually; the touch target is grown to 44px on
+                mobile so six adjacent links aren't a coin-flip to tap. */}
+            <div className="mt-6 flex gap-2 sm:gap-4">
               {socials.map(({ Icon, label, href }) => (
                 <a
                   key={label}
@@ -107,9 +116,11 @@ const Footer: React.FC = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={label}
-                  className="flex h-8 w-8 items-center justify-center rounded-full bg-line-soft text-ink-muted transition-colors hover:bg-brand-red hover:text-white"
+                  className="group flex h-11 w-11 items-center justify-center sm:h-8 sm:w-8"
                 >
-                  <Icon size={14} />
+                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-line-soft text-ink-muted transition-colors group-hover:bg-brand-red group-hover:text-white">
+                    <Icon size={14} />
+                  </span>
                 </a>
               ))}
             </div>
@@ -118,7 +129,7 @@ const Footer: React.FC = () => {
           <div className="grid flex-1 grid-cols-2 gap-8 sm:grid-cols-4 lg:gap-12">
             {columns.map((column) => (
               <div key={column.heading}>
-                <h4 className="text-base font-semibold leading-6 text-ink-heading">
+                <h4 className={`${cardTitleClass} leading-6 text-ink-heading`}>
                   {column.heading}
                 </h4>
                 <ul className="mt-6 flex flex-col gap-4">
@@ -210,7 +221,7 @@ const Footer: React.FC = () => {
               Privacy Policy
             </Link>
             <span className="text-line">|</span>
-            <Link to="/privacy-policy" className="hover:text-brand-red">
+            <Link to="/terms" className="hover:text-brand-red">
               Terms of Service
             </Link>
             <span className="text-line">|</span>

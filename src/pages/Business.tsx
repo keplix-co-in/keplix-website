@@ -4,6 +4,9 @@ import { ChevronRight } from 'lucide-react';
 import PageBlob, { PageBlobRight } from '../components/PageBlob';
 import StoreBadges from '../components/StoreBadges';
 import { APP_LINKS } from '../constants/links';
+import { sectionSubtitleClass, cardTitleClass } from '../constants/typography';
+import Seo from '../components/Seo';
+import { breadcrumbSchema, mobileAppSchemas } from '../constants/schema';
 
 const stats = [
   { icon: '/icons/biz-stat-free.svg', line1: '100% Free', line2: 'to Join' },
@@ -65,8 +68,11 @@ const whoCanJoin = [
   { icon: '/icons/wcj-breakdown-o.svg', line1: 'BREAKDOWN ASSISTANCE', line2: 'PROVIDERS' },
 ];
 
+// min-h rather than a hard h-[164px]: at 375px the two-column grid leaves only
+// ~100px of text width, so these uppercase labels wrap to 3-4 lines and used to
+// bleed straight through the bottom of a fixed-height card.
 const benefitCardClass =
-  'flex h-[164px] flex-col items-center justify-center gap-4 rounded-lg border border-[#f3f4f6] bg-[#f9fafb]/50 p-4 text-center';
+  'flex min-h-[164px] flex-col items-center justify-center gap-4 rounded-lg border border-[#f3f4f6] bg-[#f9fafb]/50 p-4 text-center';
 const benefitLabelClass =
   'text-sm font-semibold uppercase leading-tight text-black';
 
@@ -78,23 +84,34 @@ const Business: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="relative overflow-hidden">
+    <main className="relative overflow-hidden">
       <PageBlob color="bg-[#4176F3]/20" />
       <PageBlobRight />
 
+      <Seo
+        title="Partner With Us — Grow Your Garage Business"
+        description="Join Keplix free with no commission on bookings. Get discovered by nearby car owners, receive verified service bookings and manage your workshop digitally."
+        jsonLd={[breadcrumbSchema([{ name: 'Workshops', path: '/business' }]), ...mobileAppSchemas()]}
+      />
+
       {/* Hero */}
       <section className="relative z-2">
-        <div className="mx-auto max-w-page px-4 pb-16 pt-[13px] sm:px-8">
+        {/* lg:px-16 (64px) sits just outside Figma's effective left inset of
+            55px (27px page margin + 28px content frame on the 1280 artboard).
+            The shared max-w-page container is 1728px by design, so without the
+            extra padding the hero copy sits hard against the viewport edge. */}
+        <div className="mx-auto max-w-page px-4 pb-16 pt-[13px] sm:px-8 lg:px-16">
           <h1 className="max-w-[518px] text-4xl font-extrabold leading-tight text-ink sm:text-5xl lg:text-[56px] lg:leading-[72px]">
             Grow Your Garage Business with{' '}
             <span className="text-partner">Keplix</span>
           </h1>
-          <p className="mt-9 max-w-[512px] text-lg font-medium text-ink-muted sm:text-[20px]">
-            Join  the growing automotive service marketplace. Get
-            <br />
-            discovered by nearby car owners, receive verified service bookings,
-            <br />
-            manage your workshop digitally —all from one powerful platform
+          <p className={`${sectionSubtitleClass} mt-9 max-w-[512px] text-ink-muted`}>
+            {/* The hard line breaks that used to be here were tuned for the
+                desktop width and produced a ragged, orphan-heavy block on a
+                phone. Let the text wrap to its container instead. */}
+            Join the growing automotive service marketplace. Get discovered by
+            nearby car owners, receive verified service bookings, and manage
+            your workshop digitally — all from one powerful platform.
           </p>
           <div className="mt-9 flex flex-wrap gap-4">
             <a
@@ -103,7 +120,7 @@ const Business: React.FC = () => {
               rel="noopener noreferrer"
               className="flex h-[53px] w-full items-center justify-center gap-3 rounded-[8px] bg-partner text-base font-bold leading-7 text-white shadow-[0px_10px_15px_-3px_#caccfe,0px_4px_6px_-4px_#cecafe] transition-opacity hover:opacity-90 sm:w-[313px]"
             >
-              <img src="/icons/biz-btn-download.svg" alt="" className="h-5 w-5" />
+              <img src="/icons/biz-btn-download.svg" alt="" className="h-5 w-5" loading="lazy" decoding="async" />
               Download Garage Partner App
             </a>
             <button
@@ -114,11 +131,15 @@ const Business: React.FC = () => {
             </button>
           </div>
 
-          <div className="mt-8 grid grid-cols-1 gap-6 py-6 sm:grid-cols-2 lg:grid-cols-4">
+          {/* max-w-[829px] is the Figma width of this row (node 431:4795), where
+              the four items are 185.25px each with 24px gaps. The gaps below
+              already match Figma exactly — without the cap the grid stretches
+              across the full 1728px page container and the items drift apart. */}
+          <div className="mt-8 grid max-w-[829px] grid-cols-1 gap-6 py-6 sm:grid-cols-2 lg:grid-cols-4">
             {stats.map(({ icon, line1, line2 }) => (
               <div key={line1} className="flex items-center gap-3">
                 <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-[#f2f3fe]">
-                  <img src={icon} alt="" className="h-7 w-7" />
+                  <img src={icon} alt="" className="h-7 w-7" loading="lazy" decoding="async" />
                 </div>
                 <span className="text-xs font-semibold text-[#1e293b]">
                   {line1}
@@ -154,10 +175,10 @@ const Business: React.FC = () => {
             </div>
 
             <div className="flex w-full flex-col gap-7 lg:w-[700px] lg:shrink-0">
-              <div className="grid grid-cols-2 gap-7 sm:grid-cols-4">
+              <div className="grid grid-cols-2 gap-4 sm:grid-cols-4 sm:gap-7">
                 {partnerBenefits.map(({ icon, line1, line2 }) => (
                   <div key={line1} className={benefitCardClass}>
-                    <img src={icon} alt="" className="h-12 w-12" />
+                    <img src={icon} alt="" className="h-12 w-12" loading="lazy" decoding="async" />
                     <span className={benefitLabelClass}>
                       {line1}
                       <br />
@@ -169,7 +190,7 @@ const Business: React.FC = () => {
               <div className="grid grid-cols-1 gap-7 sm:grid-cols-2">
                 {partnerBenefitsWide.map(({ icon, line1, line2 }) => (
                   <div key={line1} className={benefitCardClass}>
-                    <img src={icon} alt="" className="h-12 w-12" />
+                    <img src={icon} alt="" className="h-12 w-12" loading="lazy" decoding="async" />
                     <span className={benefitLabelClass}>
                       {line1}
                       <br />
@@ -184,22 +205,25 @@ const Business: React.FC = () => {
       </section>
 
       {/* How It Works */}
-      <section className="relative z-10 mx-auto max-w-page px-4 pb-16 sm:px-8">
+      <section className="relative z-10 mx-auto max-w-page px-4 pb-16 sm:px-8 lg:px-16">
         <div className="rounded-2xl bg-partner-deep px-6 py-16 sm:px-10">
-          <h2 className="text-center text-[36px] font-bold text-[#f3f3f4]">
+          <h2 className="text-center text-2xl font-bold text-[#f3f3f4] sm:text-[36px]">
             How it Works ?
           </h2>
-          <div className="mt-16 flex flex-col items-center gap-10 sm:flex-row sm:items-start sm:justify-between">
+          {/* Capped and centred: with justify-between across the full page
+              width the first and last steps hugged the card edges and the
+              gaps between them yawned open on large screens. */}
+          <div className="mx-auto mt-16 flex max-w-[1100px] flex-col items-center gap-10 sm:flex-row sm:items-start sm:justify-between">
             {howItWorks.map(({ icon, title, description }, i) => (
               <React.Fragment key={title}>
                 <div className="flex max-w-[180px] flex-col items-center text-center">
                   <div className="relative flex h-16 w-16 items-center justify-center rounded-2xl bg-[#e9e9ec]">
-                    <img src={icon} alt="" className="h-8 w-8" />
+                    <img src={icon} alt="" className="h-8 w-8" loading="lazy" decoding="async" />
                     <span className="absolute -right-3 -top-3 flex h-9 w-9 items-center justify-center rounded-full border-4 border-partner-deep bg-partner text-sm font-bold text-white">
                       {i + 1}
                     </span>
                   </div>
-                  <h3 className="mt-3 text-base font-bold text-white">
+                  <h3 className={`${cardTitleClass} mt-3 text-white`}>
                     {title}
                   </h3>
                   <p className="mt-2 text-sm text-[#c7cbd0]">{description}</p>
@@ -223,7 +247,7 @@ const Business: React.FC = () => {
             <h2 className="text-2xl font-bold leading-10 text-[#0f172a] sm:text-[28px]">
               Garage Partner App Features
             </h2>
-            <p className="text-lg leading-6 text-[#6b7280] sm:text-[20px]">
+            <p className={`${sectionSubtitleClass} leading-6 text-[#6b7280]`}>
               All the tools you need to manage and grow your business.
             </p>
             <div className="grid grid-cols-1 gap-8 pt-10 sm:grid-cols-2">
@@ -233,8 +257,12 @@ const Business: React.FC = () => {
                     src="/icons/appfeat-check.svg"
                     alt=""
                     className="h-5 w-5 shrink-0"
+                    loading="lazy"
+                    decoding="async"
                   />
-                  <span className="text-[20px] font-semibold leading-5 text-[#1e293b]">
+                  {/* leading-5 (20px) equalled the font size, so wrapped
+                      feature names had their lines touching on mobile. */}
+                  <span className="text-base font-semibold leading-6 text-[#1e293b] sm:text-[20px] sm:leading-7">
                     {feature}
                   </span>
                 </div>
@@ -246,7 +274,8 @@ const Business: React.FC = () => {
               src="/app-features-phone.png"
               alt="Keplix Garage Partner app dashboard"
               className="w-full max-w-[270px] rounded-2xl shadow-cardHover"
-            />
+              loading="lazy"
+              decoding="async" width={1038} height={1890} />
           </div>
         </div>
       </section>
@@ -254,13 +283,17 @@ const Business: React.FC = () => {
       {/* App screens + store badges */}
       <section className="relative z-10 px-4 pb-16 sm:px-8">
         <div className="mx-auto max-w-page">
-          <div className="grid grid-cols-2 gap-14 lg:grid-cols-4">
+          {/* gap-14 (56px) between two columns on a 375px screen left the
+              screenshots at ~40% of the row. */}
+          <div className="grid grid-cols-2 gap-6 sm:gap-14 lg:grid-cols-4">
             {appScreens.map((src) => (
               <img
                 key={src}
                 src={src}
                 alt="Keplix Garage Partner app screen"
                 className="w-full"
+                loading="lazy"
+                decoding="async"
               />
             ))}
           </div>
@@ -274,20 +307,23 @@ const Business: React.FC = () => {
           <h2 className="text-2xl font-extrabold leading-10 text-[#0f172a] sm:text-[28px]">
             Who Can Join?
           </h2>
-          <p className="pb-12 text-lg leading-6 text-[#515153] sm:text-[20px]">
+          <p className={`${sectionSubtitleClass} pb-12 leading-6 text-[#515153]`}>
             We welcome a wide range of automotive service businesses.
           </p>
         </div>
         <div className="grid grid-cols-2 gap-px border border-[#e5e7eb] bg-[#e5e7eb] p-px sm:grid-cols-3 lg:grid-cols-6">
           {whoCanJoin.map(({ icon, line1, line2 }, i) => (
+            /* p-4 on mobile: with p-8 the two-column cell left ~105px for
+               long unbreakable labels like "BREAKDOWN ASSISTANCE", which
+               spilled over the grid lines. break-words is the backstop. */
             <div
               key={`${line1}-${i}`}
-              className="flex min-h-[153px] flex-col items-center bg-white p-8 text-center"
+              className="flex min-h-[153px] flex-col items-center bg-white p-4 text-center sm:p-8"
             >
               <div className="flex h-16 w-12 items-center justify-center pb-4">
-                <img src={icon} alt="" className="h-10 w-10" />
+                <img src={icon} alt="" className="h-10 w-10" loading="lazy" decoding="async" />
               </div>
-              <span className="text-sm font-bold uppercase text-[#1e293b]">
+              <span className="break-words text-sm font-bold uppercase text-[#1e293b]">
                 {line1}
                 {line2 && (
                   <>
@@ -313,13 +349,15 @@ const Business: React.FC = () => {
                   src="/icons/biz-cta-download.svg"
                   alt=""
                   className="h-10 w-10"
+                  loading="lazy"
+                  decoding="async"
                 />
               </div>
               <div className="flex flex-col gap-3 text-center sm:text-left lg:w-[585px]">
                 <h2 className="text-2xl font-extrabold leading-9 text-[#817bcf] sm:text-[28px]">
                   Ready to Grow Your Garage Business?
                 </h2>
-                <p className="text-lg text-white sm:text-[20px]">
+                <p className={`${sectionSubtitleClass} text-white`}>
                   Download the KEPLIX Garage Partner App and start getting more
                   customers today.
                 </p>
@@ -330,11 +368,12 @@ const Business: React.FC = () => {
               alt=""
               aria-hidden
               className="h-[160px] w-[160px] shrink-0 object-contain lg:h-[188px] lg:w-[188px]"
-            />
+              loading="lazy"
+              decoding="async" width={1600} height={1600} />
           </div>
         </div>
       </section>
-    </div>
+    </main>
   );
 };
 

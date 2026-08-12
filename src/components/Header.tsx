@@ -48,11 +48,10 @@ const Header: React.FC = () => {
           <img
             src="/keplix-logo.png"
             alt="Keplix"
-            className="h-14 w-[62px] object-contain sm:h-20 sm:w-[88px]"
-          />
+            className="h-14 w-[62px] object-contain sm:h-20 sm:w-[88px]" width={261} height={237} />
         </Link>
 
-        <nav className="hidden items-center lg:flex">
+        <nav aria-label="Main" className="hidden items-center lg:flex">
           {navLinks.map((link) => (
             <Link
               key={link.path}
@@ -79,10 +78,14 @@ const Header: React.FC = () => {
           >
             Join Beta
           </button>
+          {/* The primary mobile nav control was a bare 24px icon — well under
+              the ~44px minimum touch target. -mr-2 keeps the icon visually
+              where it was while the padding grows the hit area. */}
           <button
-            className="text-ink lg:hidden"
+            className="-mr-2 flex h-11 w-11 items-center justify-center text-ink lg:hidden"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             aria-label="Toggle menu"
+            aria-expanded={isMenuOpen}
           >
             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
@@ -92,11 +95,15 @@ const Header: React.FC = () => {
       {/* Mobile Menu */}
       {isMenuOpen && (
         <div className="absolute left-0 top-full w-full border-b border-line bg-white shadow-card lg:hidden">
-          <nav className="flex flex-col px-6 py-4">
+          <nav aria-label="Mobile" className="flex flex-col px-6 py-4">
+            {/* Links, not buttons: as <button onClick={navigate}> these had no
+                href, so crawlers found no navigable URLs in the mobile markup
+                and users lost middle-click and open-in-new-tab. */}
             {navLinks.map((link) => (
-              <button
+              <Link
                 key={link.path}
-                onClick={() => handleNavClick(link.path)}
+                to={link.path}
+                onClick={() => setIsMenuOpen(false)}
                 className={`py-3 text-left font-nav text-base transition-colors ${
                   currentPath === link.path
                     ? `font-bold ${activeColor}`
@@ -104,7 +111,7 @@ const Header: React.FC = () => {
                 }`}
               >
                 {link.label}
-              </button>
+              </Link>
             ))}
           </nav>
         </div>
