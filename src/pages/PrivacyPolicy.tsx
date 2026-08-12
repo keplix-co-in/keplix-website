@@ -1,6 +1,10 @@
 import React from 'react';
 import { Shield, ChevronRight } from 'lucide-react';
 import PageBlob from '../components/PageBlob';
+import { sectionSubtitleClass } from '../constants/typography';
+import AdSlot from '../components/AdSlot';
+import Seo from '../components/Seo';
+import { breadcrumbSchema } from '../constants/schema';
 
 const Section: React.FC<{ id?: string; title: string; children: React.ReactNode }> = ({ id, title, children }) => (
   <div id={id} className="mb-10">
@@ -40,8 +44,14 @@ const PrivacyPolicy: React.FC = () => {
   };
 
   return (
-    <div className="relative overflow-hidden">
+    <main className="relative overflow-hidden">
       <PageBlob />
+
+      <Seo
+        title="Privacy Policy"
+        description="How Keplix collects, uses and protects your personal information, and the choices and rights you have over your data."
+        jsonLd={[breadcrumbSchema([{ name: 'Privacy Policy', path: '/privacy-policy' }])]}
+      />
 
       {/* Hero Banner */}
       <div className="relative z-10 px-4 pb-8 pt-[69px]">
@@ -50,7 +60,7 @@ const PrivacyPolicy: React.FC = () => {
             <Shield className="w-14 h-14 text-brand-red" />
           </div>
           <h1 className="text-4xl md:text-5xl font-bold mb-4 text-ink">Privacy Policy</h1>
-          <p className="text-ink-muted text-lg">Last updated: <span className="text-brand-red font-semibold">March 07, 2026</span></p>
+          <p className={`${sectionSubtitleClass} text-ink-muted`}>Last updated: <span className="text-brand-red font-semibold">March 07, 2026</span></p>
         </div>
       </div>
 
@@ -239,6 +249,36 @@ const PrivacyPolicy: React.FC = () => {
             Specific information about how we use such technologies and how you can refuse certain cookies is set out in our{' '}
             <a href="https://keplix.co.in/cookie-policy" target="_blank" rel="noopener noreferrer" className="text-brand-red hover:underline">Cookie Notice</a>.
           </p>
+
+          {/* Naming Google as a third-party ad vendor, and linking to its ads
+              settings, is required by the AdSense program policies. */}
+          <SubSection title="Google AdSense">
+            <p>
+              We use <strong className="text-ink-heading">Google AdSense</strong> to display
+              advertising on parts of our website. Google is a third-party vendor that uses cookies
+              (including the DoubleClick cookie) to serve ads based on your prior visits to this and
+              other websites.
+            </p>
+            <p>
+              You can opt out of personalised advertising by visiting{' '}
+              <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener noreferrer" className="text-brand-red hover:underline">
+                Google Ads Settings
+              </a>
+              , or opt out of third-party vendors' use of cookies for personalised advertising at{' '}
+              <a href="https://optout.aboutads.info/" target="_blank" rel="noopener noreferrer" className="text-brand-red hover:underline">
+                aboutads.info
+              </a>
+              . You can also withdraw consent at any time from our{' '}
+              <a href="https://keplix.co.in/cookie-policy" target="_blank" rel="noopener noreferrer" className="text-brand-red hover:underline">
+                Cookie Policy
+              </a>{' '}
+              page.
+            </p>
+            <p>
+              Advertising cookies are only set after you accept them in our cookie banner. If you
+              decline, no advertising cookies are placed and no ads are shown.
+            </p>
+          </SubSection>
         </Section>
 
         {/* Section 6 */}
@@ -395,8 +435,13 @@ const PrivacyPolicy: React.FC = () => {
         </Section>
 
         </div>
+
+        {/* Sits outside the white content card, inside the same
+            max-w-4xl wrapper, so it reads as separate from the page's
+            own content rather than part of it. */}
+        <AdSlot slot="pageFooter" className="mt-10" />
       </div>
-    </div>
+    </main>
   );
 };
 
