@@ -129,8 +129,7 @@ const Future: React.FC = () => {
             alt="Customer reviews illustration"
             className="w-full max-w-[355px] shrink-0 rounded-2xl"
             loading="lazy"
-            decoding="async"
-          />
+            decoding="async" width={710} height={804} />
 
           <div className="flex flex-col items-center gap-8">
             <div className="flex flex-wrap justify-center gap-6 sm:gap-[62px]">

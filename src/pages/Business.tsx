@@ -5,6 +5,8 @@ import PageBlob, { PageBlobRight } from '../components/PageBlob';
 import StoreBadges from '../components/StoreBadges';
 import { APP_LINKS } from '../constants/links';
 import { sectionSubtitleClass, cardTitleClass } from '../constants/typography';
+import Seo from '../components/Seo';
+import { breadcrumbSchema, mobileAppSchemas } from '../constants/schema';
 
 const stats = [
   { icon: '/icons/biz-stat-free.svg', line1: '100% Free', line2: 'to Join' },
@@ -82,9 +84,15 @@ const Business: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="relative overflow-hidden">
+    <main className="relative overflow-hidden">
       <PageBlob color="bg-[#4176F3]/20" />
       <PageBlobRight />
+
+      <Seo
+        title="Partner With Us — Grow Your Garage Business"
+        description="Join Keplix free with no commission on bookings. Get discovered by nearby car owners, receive verified service bookings and manage your workshop digitally."
+        jsonLd={[breadcrumbSchema([{ name: 'Workshops', path: '/business' }]), ...mobileAppSchemas()]}
+      />
 
       {/* Hero */}
       <section className="relative z-2">
@@ -267,8 +275,7 @@ const Business: React.FC = () => {
               alt="Keplix Garage Partner app dashboard"
               className="w-full max-w-[270px] rounded-2xl shadow-cardHover"
               loading="lazy"
-              decoding="async"
-            />
+              decoding="async" width={1038} height={1890} />
           </div>
         </div>
       </section>
@@ -362,12 +369,11 @@ const Business: React.FC = () => {
               aria-hidden
               className="h-[160px] w-[160px] shrink-0 object-contain lg:h-[188px] lg:w-[188px]"
               loading="lazy"
-              decoding="async"
-            />
+              decoding="async" width={1600} height={1600} />
           </div>
         </div>
       </section>
-    </div>
+    </main>
   );
 };
 

@@ -3,12 +3,18 @@ import { Users, CheckCircle, Star, Zap, Shield, Award } from 'lucide-react';
 import PageBlob from '../components/PageBlob';
 import { submitForm } from '../lib/submitForm';
 import { sectionSubtitleClass } from '../constants/typography';
+import Seo from '../components/Seo';
+import { breadcrumbSchema } from '../constants/schema';
 
 const Beta = () => {
   const [seatsRemaining, setSeatsRemaining] = useState(() => {
-    // Load from localStorage or default to 100
+    // Guarded: this initializer runs during render, which now also happens
+    // in Node during the static prerender where localStorage doesn't exist.
+    // The NaN fallback covers a corrupted stored value too.
+    if (typeof window === 'undefined') return 100;
     const saved = localStorage.getItem('keplix-beta-seats');
-    return saved ? parseInt(saved, 10) : 100;
+    const parsed = saved ? parseInt(saved, 10) : NaN;
+    return Number.isFinite(parsed) ? parsed : 100;
   });
   const [formData, setFormData] = useState({
     name: '',
@@ -141,8 +147,14 @@ const Beta = () => {
   };
 
   return (
-    <div className="relative overflow-hidden">
+    <main className="relative overflow-hidden">
       <PageBlob />
+
+      <Seo
+        title="Join the Beta — Early Access"
+        description="Be among the first to use Keplix. Beta testers get early access, exclusive discounts on services and direct input into how the platform develops."
+        jsonLd={[breadcrumbSchema([{ name: 'Join Beta', path: '/beta' }])]}
+      />
 
       {/* Hero Section */}
       <section className="relative z-10 pb-16 pt-[69px]">
@@ -428,7 +440,7 @@ const Beta = () => {
           </div>
         </div>
       </section>
-    </div>
+    </main>
   );
 };
 

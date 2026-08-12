@@ -1,5 +1,6 @@
 {
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }],
+  "_comment_rewrites": "Only /blog/* falls back to the SPA shell: posts published between deploys have no prerendered file yet, and the client fetches them at runtime. Every other route is prerendered to dist/<route>/index.html, which Vercel resolves from the filesystem before rewrites run. The previous blanket catch-all sent *every* unmatched URL to /index.html, so any typo returned HTTP 200 with the full homepage — unlimited URLs serving duplicate content and never a real 404. With no matching rewrite, Vercel now serves dist/404.html with a genuine 404 status.",
+  "rewrites": [{ "source": "/blog/(.*)", "destination": "/index.html" }],
   "headers": [
     {
       "source": "/(.*)",

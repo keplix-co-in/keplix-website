@@ -4,6 +4,8 @@ import PageBlob from '../components/PageBlob';
 import { CONTACT, SOCIALS } from '../constants/links';
 import { submitForm } from '../lib/submitForm';
 import { sectionSubtitleClass, cardTitleClass } from '../constants/typography';
+import Seo from '../components/Seo';
+import { breadcrumbSchema, organizationSchema } from '../constants/schema';
 
 const contactMethods = [
   {
@@ -117,8 +119,14 @@ const ContactPage: React.FC = () => {
   };
 
   return (
-    <div className="relative overflow-hidden">
+    <main className="relative overflow-hidden">
       <PageBlob />
+
+      <Seo
+        title="Contact Us — Support and Enquiries"
+        description="Get in touch with the Keplix team by email, phone, WhatsApp or social. We are available to help with bookings, refunds and partnership enquiries."
+        jsonLd={[breadcrumbSchema([{ name: 'Contact', path: '/contact' }]), organizationSchema()]}
+      />
 
       {/* Hero + Get in Touch */}
       <section className="relative z-10">
@@ -378,7 +386,7 @@ const ContactPage: React.FC = () => {
           </div>
         </div>
       </section>
-    </div>
+    </main>
   );
 };
 

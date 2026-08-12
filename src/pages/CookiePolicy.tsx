@@ -4,6 +4,8 @@ import PageBlob from '../components/PageBlob';
 import { sectionSubtitleClass } from '../constants/typography';
 import AdSlot from '../components/AdSlot';
 import { reopenConsentBanner } from '../lib/consent';
+import Seo from '../components/Seo';
+import { breadcrumbSchema } from '../constants/schema';
 
 const Section: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
   <div className="mb-10">
@@ -14,8 +16,14 @@ const Section: React.FC<{ title: string; children: React.ReactNode }> = ({ title
 
 const CookiePolicy: React.FC = () => {
   return (
-    <div className="relative overflow-hidden">
+    <main className="relative overflow-hidden">
       <PageBlob />
+
+      <Seo
+        title="Cookie Policy"
+        description="Which cookies Keplix and its partners use, what each is for, and how to accept or reject them."
+        jsonLd={[breadcrumbSchema([{ name: 'Cookie Policy', path: '/cookie-policy' }])]}
+      />
 
       {/* Hero Banner */}
       <div className="relative z-10 px-4 pb-8 pt-[69px]">
@@ -318,7 +326,7 @@ const CookiePolicy: React.FC = () => {
             own content rather than part of it. */}
         <AdSlot slot="pageFooter" className="mt-10" />
       </div>
-    </div>
+    </main>
   );
 };
 

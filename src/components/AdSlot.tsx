@@ -49,10 +49,16 @@ const AdSlot: React.FC<AdSlotProps> = ({
   labelled = true,
 }) => {
   const [consented, setConsented] = useState(hasConsent);
+  // Consent comes from localStorage, so the prerendered HTML and the browser
+  // can disagree. Rendering nothing until mounted keeps hydration clean.
+  const [mounted, setMounted] = useState(false);
   const insRef = useRef<HTMLModElement>(null);
   const pushedRef = useRef(false);
 
-  useEffect(() => subscribeToConsent(() => setConsented(hasConsent())), []);
+  useEffect(() => {
+    setMounted(true);
+    return subscribeToConsent(() => setConsented(hasConsent()));
+  }, []);
 
   useEffect(() => {
     if (!consented || pushedRef.current || !insRef.current) return;
@@ -68,7 +74,7 @@ const AdSlot: React.FC<AdSlotProps> = ({
   }, [consented]);
 
   const slotId = AD_SLOTS[slot];
-  if (!ADS_ENABLED || !slotId || !consented) return null;
+  if (!mounted || !ADS_ENABLED || !slotId || !consented) return null;
 
   return (
     <aside

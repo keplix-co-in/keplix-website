@@ -10,10 +10,17 @@ import {
 } from '../lib/api';
 import { sectionSubtitleClass, cardTitleClass } from '../constants/typography';
 import AdSlot from '../components/AdSlot';
+import { getInitialData } from '../lib/initialData';
+import Seo from '../components/Seo';
+import { breadcrumbSchema } from '../constants/schema';
 
 const Blog: React.FC = () => {
-  const [posts, setPosts] = useState<BlogPostSummary[]>([]);
-  const [loading, setLoading] = useState(true);
+  // Seeded from the build-time payload so the prerendered HTML actually lists
+  // the articles. Without it this page shipped a heading and no links at all.
+  // The client re-fetches below to pick up anything published since the deploy.
+  const initialPosts = getInitialData().posts;
+  const [posts, setPosts] = useState<BlogPostSummary[]>(initialPosts ?? []);
+  const [loading, setLoading] = useState(!initialPosts);
   const [loadError, setLoadError] = useState('');
   const [search, setSearch] = useState('');
   const [activeCategory, setActiveCategory] = useState('All');
@@ -27,6 +34,9 @@ const Blog: React.FC = () => {
       })
       .catch((err) => {
         if (cancelled) return;
+        // A background refresh that fails must not wipe out the posts already
+        // on screen from the build-time payload.
+        if (initialPosts?.length) return;
         // In dev, an unreachable API almost always means the backend isn't
         // running — say so instead of a vague "something went wrong".
         setLoadError(
@@ -42,7 +52,7 @@ const Blog: React.FC = () => {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [initialPosts]);
 
   // Categories come from whatever is actually published, so a new category in
   // the admin shows up here without a code change.
@@ -65,8 +75,14 @@ const Blog: React.FC = () => {
   }, [posts, search, activeCategory]);
 
   return (
-    <div className="relative overflow-hidden">
+    <main className="relative overflow-hidden">
       <PageBlob />
+
+      <Seo
+        title="Car Care Blog — Tips, Guides and Advice"
+        description="Practical car maintenance guides, servicing advice and cost breakdowns from the Keplix team. Learn what your car actually needs and what it should cost."
+        jsonLd={[breadcrumbSchema([{ name: 'Blog', path: '/blog' }])]}
+      />
 
       <section className="relative z-10">
         <div className="mx-auto max-w-page px-4 pb-4 pt-8 text-center sm:px-8">
@@ -169,7 +185,7 @@ const Blog: React.FC = () => {
                     {post.coverImage && (
                       <img
                         src={post.coverImage}
-                        alt=""
+                        alt={post.title}
                         className="h-44 w-full object-cover"
                         loading="lazy"
                         decoding="async"
@@ -221,7 +237,7 @@ const Blog: React.FC = () => {
           </>
         )}
       </section>
-    </div>
+    </main>
   );
 };
 

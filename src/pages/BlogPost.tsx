@@ -2,10 +2,13 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Link, useParams } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
-import DOMPurify from 'dompurify';
 import PageBlob from '../components/PageBlob';
 import AdSlot from '../components/AdSlot';
+import Seo from '../components/Seo';
+import { blogPostingSchema, breadcrumbSchema } from '../constants/schema';
 import { fetchBlogPost, formatPostDate, type BlogPostFull } from '../lib/api';
+import { getInitialData } from '../lib/initialData';
+import { sanitizeHtml } from '../lib/sanitize';
 
 /**
  * Only inject a mid-article ad once the piece is long enough that it isn't
@@ -17,8 +20,12 @@ const MID_AD_AFTER_BLOCK = 3;
 
 const BlogPost: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
-  const [post, setPost] = useState<BlogPostFull | null>(null);
-  const [loading, setLoading] = useState(true);
+  // The build-time payload is only valid for the slug it was rendered for —
+  // client-side navigation to a different article must ignore it and fetch.
+  const seeded = getInitialData().post;
+  const initialPost = seeded && seeded.slug === slug ? seeded : undefined;
+  const [post, setPost] = useState<BlogPostFull | null>(initialPost ?? null);
+  const [loading, setLoading] = useState(!initialPost);
   const [notFound, setNotFound] = useState(false);
 
   const bodyRef = useRef<HTMLDivElement>(null);
@@ -26,6 +33,11 @@ const BlogPost: React.FC = () => {
 
   useEffect(() => {
     if (!slug) return;
+    // Already have this article from the build-time payload. Re-fetching would
+    // flip loading back on and blank out content that is correct and on
+    // screen — a visible flash straight after hydration.
+    if (post?.slug === slug) return;
+
     let cancelled = false;
     setLoading(true);
     setNotFound(false);
@@ -50,7 +62,7 @@ const BlogPost: React.FC = () => {
   // write; sanitising again here means a bad row in the DB still can't run
   // script in a visitor's browser.
   const safeHtml = useMemo(
-    () => (post ? DOMPurify.sanitize(post.content) : ''),
+    () => (post ? sanitizeHtml(post.content) : ''),
     [post],
   );
 
@@ -88,7 +100,7 @@ const BlogPost: React.FC = () => {
   }, [safeHtml]);
 
   return (
-    <div className="relative overflow-hidden">
+    <main className="relative overflow-hidden">
       <PageBlob />
 
       <article className="relative z-10 mx-auto max-w-[860px] px-4 py-12 sm:px-8">
@@ -126,6 +138,23 @@ const BlogPost: React.FC = () => {
 
         {!loading && post && (
           <>
+            <Seo
+              title={post.title}
+              description={post.excerpt ?? undefined}
+              image={post.coverImage ?? undefined}
+              canonical={`/blog/${post.slug}`}
+              type="article"
+              publishedTime={post.publishedAt}
+              author={post.author?.name}
+              jsonLd={[
+                blogPostingSchema(post),
+                breadcrumbSchema([
+                  { name: 'Blog', path: '/blog' },
+                  { name: post.title, path: `/blog/${post.slug}` },
+                ]),
+              ]}
+            />
+
             {/* Above the header rather than between the header and the cover
                 image: the cover has no intrinsic size and already shifts as it
                 loads, so an ad there would compound the movement.
@@ -156,7 +185,7 @@ const BlogPost: React.FC = () => {
             {post.coverImage && (
               <img
                 src={post.coverImage}
-                alt=""
+                alt={post.title}
                 className="mt-8 w-full rounded-2xl object-cover"
                 loading="lazy"
                 decoding="async"
@@ -179,7 +208,7 @@ const BlogPost: React.FC = () => {
           </>
         )}
       </article>
-    </div>
+    </main>
   );
 };
 

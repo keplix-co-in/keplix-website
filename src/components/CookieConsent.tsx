@@ -16,15 +16,20 @@ import { getConsent, initConsent, setConsent, subscribeToConsent } from '../lib/
  */
 const CookieConsent: React.FC = () => {
   const [state, setState] = useState(getConsent);
+  // Consent lives in localStorage, so the prerendered HTML always says
+  // "unset" while a returning visitor's browser may say "accepted". Rendering
+  // nothing until after mount avoids that hydration mismatch.
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     // A returning visitor who already accepted needs the script loaded again
     // on this fresh page load.
     initConsent();
     return subscribeToConsent(setState);
   }, []);
 
-  if (!ADS_ENABLED || state !== 'unset') return null;
+  if (!mounted || !ADS_ENABLED || state !== 'unset') return null;
 
   return (
     <div

@@ -1,6 +1,8 @@
 import React from 'react';
 import PageBlob from '../components/PageBlob';
 import { sectionSubtitleClass, cardTitleClass } from '../constants/typography';
+import Seo from '../components/Seo';
+import { breadcrumbSchema } from '../constants/schema';
 
 const pillars = [
   {
@@ -50,8 +52,14 @@ const sectionHeadingClass =
 
 const About: React.FC = () => {
   return (
-    <div className="relative overflow-hidden">
+    <main className="relative overflow-hidden">
       <PageBlob />
+
+      <Seo
+        title="About Us — Our Story and Mission"
+        description="Keplix was born from a breakdown on the Delhi-Dehradun highway. We connect car owners with verified garages so servicing is transparent, fair and close to home."
+        jsonLd={[breadcrumbSchema([{ name: 'About', path: '/about' }])]}
+      />
 
       {/* Hero */}
       <section className="relative z-10">
@@ -78,8 +86,7 @@ const About: React.FC = () => {
                 alt="Illustration of a person working at a laptop"
                 className="w-full max-w-[520px]"
                 loading="lazy"
-                decoding="async"
-              />
+                decoding="async" width={520} height={498} />
             </div>
           </div>
         </div>
@@ -193,8 +200,7 @@ const About: React.FC = () => {
                   alt="Vardan Chaturvedi, CEO &amp; Founder"
                   className="h-32 w-32 rounded-full object-cover"
                   loading="lazy"
-                  decoding="async"
-                />
+                  decoding="async" width={512} height={512} />
               </div>
               <p className="pt-[23px] text-[24px] font-medium leading-7 text-[#111827]">
                 Vardan Chaturvedi
@@ -221,7 +227,7 @@ const About: React.FC = () => {
           </div>
         </div>
       </section>
-    </div>
+    </main>
   );
 };
 

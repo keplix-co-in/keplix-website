@@ -19,11 +19,16 @@ const columns = [
   {
     heading: 'Services',
     links: [
-      { label: 'Car Service', path: '/' },
-      { label: 'Maintenance', path: '/' },
-      { label: 'Repairs', path: '/' },
-      { label: 'Accessories', path: '/' },
-      { label: 'Fleet Solutions', path: '/business' },
+      // Four different anchor texts all pointing at the homepage told search
+      // engines nothing except that / is about everything. Until per-service
+      // landing pages exist, point them at pages that answer the query.
+      // Real destinations with distinct anchor text, one per service, so each
+      // landing page has an internal link pointing at it from every page.
+      { label: 'Car Service', path: '/services/car-service' },
+      { label: 'AC Repair', path: '/services/car-ac-repair' },
+      { label: 'Battery Replacement', path: '/services/car-battery-replacement' },
+      { label: 'Denting & Painting', path: '/services/denting-painting' },
+      { label: 'All Services', path: '/services' },
     ],
   },
   {
@@ -31,9 +36,9 @@ const columns = [
     links: [
       { label: 'Help Center', path: '/contact' },
       { label: 'FAQ', path: '/faq' },
-      // TODO: Terms of Service has no page of its own yet and still points at
+      // Now a real page. This used to point at /privacy-policy, which is a
       // the privacy notice. Same in the bottom bar below.
-      { label: 'Terms of Service', path: '/privacy-policy' },
+      { label: 'Terms of Service', path: '/terms' },
       { label: 'Privacy Policy', path: '/privacy-policy' },
       { label: 'Refund Policy', path: '/refund-policy' },
     ],
@@ -96,8 +101,7 @@ const Footer: React.FC = () => {
             <img
               src="/keplix-logo.png"
               alt="Keplix"
-              className="h-[63px] w-[69px] object-contain"
-            />
+              className="h-[63px] w-[69px] object-contain" width={261} height={237} />
             <p className="mt-6 max-w-xs text-base leading-[22.75px] text-ink-muted">
               India&apos;s most trusted platform for car services. Compare, book
               and track with confidence.
@@ -217,7 +221,7 @@ const Footer: React.FC = () => {
               Privacy Policy
             </Link>
             <span className="text-line">|</span>
-            <Link to="/privacy-policy" className="hover:text-brand-red">
+            <Link to="/terms" className="hover:text-brand-red">
               Terms of Service
             </Link>
             <span className="text-line">|</span>

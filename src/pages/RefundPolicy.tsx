@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import PageBlob from '../components/PageBlob';
 import { CONTACT } from '../constants/links';
 import AdSlot from '../components/AdSlot';
+import Seo from '../components/Seo';
+import { breadcrumbSchema } from '../constants/schema';
 
 /**
  * ⚠️ DRAFT POLICY — NOT YET APPROVED
@@ -27,8 +29,14 @@ const Section: React.FC<{ title: string; children: React.ReactNode }> = ({ title
 
 const RefundPolicy: React.FC = () => {
   return (
-    <div className="relative overflow-hidden">
+    <main className="relative overflow-hidden">
       <PageBlob />
+
+      <Seo
+        title="Refund &amp; Cancellation Policy"
+        description="How cancellations and refunds work at Keplix: full refund more than 24 hours before your slot, partial inside 24 hours, and refunds back to your original payment method in 5-7 working days."
+        jsonLd={[breadcrumbSchema([{ name: 'Refund Policy', path: '/refund-policy' }])]}
+      />
 
       {/* Hero Banner */}
       <div className="relative z-10 px-4 pb-8 pt-[69px]">
@@ -191,7 +199,7 @@ const RefundPolicy: React.FC = () => {
             own content rather than part of it. */}
         <AdSlot slot="pageFooter" className="mt-10" />
       </div>
-    </div>
+    </main>
   );
 };
 

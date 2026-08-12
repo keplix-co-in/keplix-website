@@ -3,6 +3,8 @@ import { Shield, ChevronRight } from 'lucide-react';
 import PageBlob from '../components/PageBlob';
 import { sectionSubtitleClass } from '../constants/typography';
 import AdSlot from '../components/AdSlot';
+import Seo from '../components/Seo';
+import { breadcrumbSchema } from '../constants/schema';
 
 const Section: React.FC<{ id?: string; title: string; children: React.ReactNode }> = ({ id, title, children }) => (
   <div id={id} className="mb-10">
@@ -42,8 +44,14 @@ const PrivacyPolicy: React.FC = () => {
   };
 
   return (
-    <div className="relative overflow-hidden">
+    <main className="relative overflow-hidden">
       <PageBlob />
+
+      <Seo
+        title="Privacy Policy"
+        description="How Keplix collects, uses and protects your personal information, and the choices and rights you have over your data."
+        jsonLd={[breadcrumbSchema([{ name: 'Privacy Policy', path: '/privacy-policy' }])]}
+      />
 
       {/* Hero Banner */}
       <div className="relative z-10 px-4 pb-8 pt-[69px]">
@@ -433,7 +441,7 @@ const PrivacyPolicy: React.FC = () => {
             own content rather than part of it. */}
         <AdSlot slot="pageFooter" className="mt-10" />
       </div>
-    </div>
+    </main>
   );
 };
 
