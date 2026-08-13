@@ -1,5 +1,8 @@
 {
-  "rewrites": [{ "source": "/blog/(.*)", "destination": "/index.html" }],
+  "rewrites": [
+    { "source": "/blog/(.*)", "destination": "/app-shell.html" },
+    { "source": "/job/(.*)", "destination": "/app-shell.html" }
+  ],
   "headers": [
     {
       "source": "/(.*)",

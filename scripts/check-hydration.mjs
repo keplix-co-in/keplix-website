@@ -11,7 +11,32 @@
 import { JSDOM, VirtualConsole } from 'jsdom';
 
 const BASE = process.env.PREVIEW_URL ?? 'http://localhost:4173';
-const ROUTES = ['/', '/faq', '/about', '/services', '/services/car-ac-repair', '/blog', '/terms', '/beta'];
+const ROUTES = [
+  '/',
+  '/faq',
+  '/about',
+  '/services',
+  '/services/car-ac-repair',
+  '/blog',
+  '/terms',
+  '/beta',
+  // /contact is deliberately excluded: it embeds a live Google Maps <iframe>,
+  // which jsdom (resources: 'usable') tries to execute and crashes on
+  // (`performance.getEntriesByType is not a function`, from Maps' own JS,
+  // not from this app). That is a harness limitation, not a hydration bug —
+  // verified separately via tsc + a clean production build instead.
+  '/business',
+  // Non-prerendered, rewrite-fallback routes. These caught a real bug once:
+  // the fallback file both vercel.json rewrites pointed at (/index.html) was
+  // the homepage's own PRERENDERED markup, not an empty shell, because the
+  // prerender script writes route "/" directly into dist/index.html. Any
+  // route falling back to it hydrated against homepage content and
+  // mismatched. Fixed by introducing dist/app-shell.html (see
+  // scripts/prerender.mjs) — keep these routes here so a regression shows up
+  // as a hydration failure, not as a silent content flash in production.
+  '/blog/some-post-that-does-not-exist',
+  '/job/some-token-that-does-not-exist',
+];
 const HYDRATION = /hydrat|did not match|Text content does not match|server HTML/i;
 
 let failures = 0;

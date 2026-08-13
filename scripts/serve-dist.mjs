@@ -7,15 +7,32 @@
  *
  *   1. filesystem first, resolving <route>/index.html (Vercel checks files
  *      before applying rewrites)
- *   2. then the single /blog/* rewrite to the SPA shell
+ *   2. then whatever rewrites vercel.json declares, to the SPA shell
  *   3. otherwise 404.html with a genuine 404 status
+ *
+ * Rewrite prefixes are read from vercel.json itself, not hardcoded — this
+ * file went stale once already (only knew about /blog/*, so it silently
+ * 404'd the newly-added /job/* route and would have shipped that gap to
+ * production undetected).
  */
 import { createServer } from 'node:http';
 import { readFile, stat } from 'node:fs/promises';
 import { resolve, dirname, join, extname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const DIST = resolve(dirname(fileURLToPath(import.meta.url)), '..', 'dist');
+const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
+const DIST = resolve(ROOT, 'dist');
+
+const vercelConfig = JSON.parse(await readFile(resolve(ROOT, 'vercel.json'), 'utf8'));
+// "/blog/(.*)" -> "/blog/" — a simple prefix match is enough for every
+// rewrite this project actually declares. Each rule's own destination is
+// kept (not assumed to be /index.html) — a previous version of this file
+// hardcoded that assumption and silently mis-served /job/* once the rewrite
+// destination changed to /app-shell.html.
+const rewrites = vercelConfig.rewrites.map((r) => ({
+  prefix: r.source.replace(/\(\.\*\)$/, ''),
+  destination: r.destination,
+}));
 const PORT = Number(process.env.PORT ?? 4180);
 const TYPES = {
   '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css',
@@ -46,8 +63,9 @@ createServer(async (req, res) => {
   const index = await readIfFile(join(DIST, path, 'index.html'));
   if (index) return send(200, index, 'text/html');
 
-  if (path.startsWith('/blog/')) {
-    return send(200, await readFile(join(DIST, 'index.html')), 'text/html');
+  const matchedRewrite = rewrites.find((r) => path.startsWith(r.prefix));
+  if (matchedRewrite) {
+    return send(200, await readFile(join(DIST, matchedRewrite.destination)), 'text/html');
   }
 
   return send(404, await readFile(join(DIST, '404.html')), 'text/html');

@@ -3,6 +3,7 @@ import PageBlob from '../components/PageBlob';
 import { sectionSubtitleClass, cardTitleClass } from '../constants/typography';
 import Seo from '../components/Seo';
 import { breadcrumbSchema } from '../constants/schema';
+import AdSlot from '../components/AdSlot';
 
 const pillars = [
   {
@@ -226,6 +227,10 @@ const About: React.FC = () => {
             </div>
           </div>
         </div>
+      </section>
+
+      <section className="relative z-10 mx-auto max-w-page px-4 pb-16 sm:px-8">
+        <AdSlot slot="pageFooter" />
       </section>
     </main>
   );
