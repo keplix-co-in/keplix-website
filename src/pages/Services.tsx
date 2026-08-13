@@ -6,6 +6,7 @@ import Seo from '../components/Seo';
 import { breadcrumbSchema, serviceListSchema } from '../constants/schema';
 import { SERVICES, formatPrice } from '../constants/services';
 import { sectionSubtitleClass } from '../constants/typography';
+import AdSlot from '../components/AdSlot';
 
 const Services: React.FC = () => (
   <main className="relative overflow-hidden">
@@ -57,6 +58,10 @@ const Services: React.FC = () => (
           </Link>
         ))}
       </div>
+    </section>
+
+    <section className="relative z-10 mx-auto max-w-page px-4 pb-16 sm:px-8 lg:px-16">
+      <AdSlot slot="pageFooter" />
     </section>
   </main>
 );

@@ -6,53 +6,69 @@
 
 User-agent: *
 Allow: /
+Disallow: /job/
 
 # --- Search engines ---
 User-agent: Googlebot
 Allow: /
+Disallow: /job/
 
 User-agent: Bingbot
 Allow: /
+Disallow: /job/
 
 # --- AI answer engines (retrieval + citation) ---
 User-agent: OAI-SearchBot
 Allow: /
+Disallow: /job/
 
 User-agent: ChatGPT-User
 Allow: /
+Disallow: /job/
 
 User-agent: PerplexityBot
 Allow: /
+Disallow: /job/
 
 User-agent: Perplexity-User
 Allow: /
+Disallow: /job/
 
 User-agent: ClaudeBot
 Allow: /
+Disallow: /job/
 
 User-agent: Claude-User
 Allow: /
+Disallow: /job/
 
 User-agent: Claude-SearchBot
 Allow: /
+Disallow: /job/
 
 User-agent: Applebot
 Allow: /
+Disallow: /job/
 
 User-agent: Applebot-Extended
 Allow: /
+Disallow: /job/
 
 # --- Model training crawlers ---
 User-agent: GPTBot
 Allow: /
+Disallow: /job/
 
 User-agent: Google-Extended
 Allow: /
+Disallow: /job/
 
 User-agent: CCBot
 Allow: /
+Disallow: /job/
 
 User-agent: meta-externalagent
 Allow: /
+Disallow: /job/
 
 Sitemap: https://keplix.co.in/sitemap.xml

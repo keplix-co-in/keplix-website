@@ -263,6 +263,18 @@ async function main() {
   await assertRoutesMatch(staticRoutes);
 
   const template = await readFile(resolve(DIST, 'index.html'), 'utf8');
+
+  // Preserved BEFORE the loop below overwrites dist/index.html with the
+  // homepage's own prerendered markup (route '/' writes directly into
+  // DIST/index.html — see writeRoute). vercel.json's rewrites (/blog/*,
+  // /job/*) need a true empty shell to fall back to, not another page's
+  // rendered HTML: main.tsx calls hydrateRoot() whenever the root div is
+  // non-empty, so falling back to the homepage's markup made every
+  // /blog/:new-slug and /job/:token hydrate against homepage content,
+  // mismatch, and force a discard-and-client-rerender (a real, verified
+  // hydration mismatch — see verification notes for this change).
+  await writeFile(resolve(DIST, 'app-shell.html'), template, 'utf8');
+
   const { render, prepare } = await import(pathToFileURL(SSR_ENTRY).href);
   // Builds the jsdom-backed sanitiser that article bodies need.
   await prepare();

@@ -6,6 +6,7 @@ import { submitForm } from '../lib/submitForm';
 import { sectionSubtitleClass, cardTitleClass } from '../constants/typography';
 import Seo from '../components/Seo';
 import { breadcrumbSchema, organizationSchema } from '../constants/schema';
+import AdSlot from '../components/AdSlot';
 
 const contactMethods = [
   {
@@ -385,6 +386,11 @@ const ContactPage: React.FC = () => {
             </div>
           </div>
         </div>
+      </section>
+
+      {/* Footer-only, below the contact form — never above it. */}
+      <section className="relative z-10 mx-auto max-w-page px-4 pb-16 sm:px-8">
+        <AdSlot slot="pageFooter" />
       </section>
     </main>
   );

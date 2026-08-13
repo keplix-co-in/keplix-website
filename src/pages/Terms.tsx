@@ -5,6 +5,7 @@ import PageBlob from '../components/PageBlob';
 import { CONTACT } from '../constants/links';
 import Seo from '../components/Seo';
 import { breadcrumbSchema } from '../constants/schema';
+import AdSlot from '../components/AdSlot';
 
 /**
  * ⚠️ DRAFT TERMS — NOT LEGALLY REVIEWED
@@ -252,6 +253,8 @@ const Terms: React.FC = () => (
           </p>
         </Section>
       </div>
+
+      <AdSlot slot="pageFooter" className="mt-10" />
     </section>
   </main>
 );
