@@ -17,6 +17,7 @@ import HomePage from './pages/HomePage';
 import Services from './pages/Services';
 import Terms from './pages/Terms';
 import ServiceDetail from './pages/ServiceDetail';
+import TrackJob from './pages/TrackJob';
 import NotFound from './pages/NotFound';
 
 // Pages are imported eagerly on purpose. React.lazy was tried here and had to
@@ -52,6 +53,11 @@ function App() {
         <Route path="/faq" element={<FAQ />} />
         <Route path="/services" element={<Services />} />
         <Route path="/services/:slug" element={<ServiceDetail />} />
+        {/* Public tracking link sent by SMS/WhatsApp on walk-in job creation
+            (see keplix-backend WALK_IN_JOB_SHEET notification). Per-customer,
+            never prerendered — client-rendered only, matched by the /job/*
+            rewrite in vercel.json. */}
+        <Route path="/job/:token" element={<TrackJob />} />
         {/* Without this, every mistyped or stale URL returned HTTP 200 with an
             empty shell — a soft-404 farm that search engines index and that
             wastes crawl budget. */}

@@ -5,6 +5,7 @@ import { submitForm } from '../lib/submitForm';
 import { sectionSubtitleClass } from '../constants/typography';
 import Seo from '../components/Seo';
 import { breadcrumbSchema } from '../constants/schema';
+import AdSlot from '../components/AdSlot';
 
 const Beta = () => {
   const [seatsRemaining, setSeatsRemaining] = useState(() => {
@@ -438,6 +439,13 @@ const Beta = () => {
               </button>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Footer-only, below the CTA — never competes with "Apply Now". */}
+      <section className="relative z-10 py-16">
+        <div className="container mx-auto px-4">
+          <AdSlot slot="pageFooter" />
         </div>
       </section>
     </main>
