@@ -55,7 +55,12 @@ export const fetchBlogPost = (slug: string) =>
 
 export interface JobSheetItem {
   component: string;
-  status: 'GOOD' | 'ATTENTION' | 'REPLACE';
+  // Null when the vendor saved the sheet without filling this item in — the
+  // "skip" path still records the sheet so the job can always be completed.
+  status: 'GOOD' | 'ATTENTION' | 'REPLACE' | null;
+  // Present on walk-in service items, which carry a price; null on inspection
+  // components.
+  price?: string | number | null;
   notes: string | null;
   photos: string[];
 }

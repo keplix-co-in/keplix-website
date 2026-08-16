@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { CheckCircle2, AlertTriangle, XCircle, Car, MapPin, Compass } from 'lucide-react';
+import { CheckCircle2, AlertTriangle, XCircle, CircleDashed, Car, MapPin, Compass } from 'lucide-react';
 import PageBlob from '../components/PageBlob';
 import Seo from '../components/Seo';
 import { fetchJobSheet, type JobSheetResponse } from '../lib/api';
@@ -20,6 +20,13 @@ import { APP_LINKS } from '../constants/links';
  * in forwarded message history indefinitely.
  */
 
+import iconOil from '../assets/icons/oil_coin.png';
+import iconBrake from '../assets/icons/brake.png';
+import iconBattery from '../assets/icons/battery.png';
+import iconTyre from '../assets/icons/tyre.png';
+import iconAc from '../assets/icons/ac.png';
+import iconWrench from '../assets/icons/wrench.png';
+
 const STATUS_META: Record<
   'GOOD' | 'ATTENTION' | 'REPLACE',
   { label: string; color: string; bg: string; Icon: typeof CheckCircle2 }
@@ -28,6 +35,32 @@ const STATUS_META: Record<
   ATTENTION: { label: 'Attention needed', color: 'text-amber-700', bg: 'bg-amber-50', Icon: AlertTriangle },
   REPLACE: { label: 'Replace', color: 'text-red-700', bg: 'bg-red-50', Icon: XCircle },
 };
+
+// A vendor can now save a sheet without filling in each item ("skip"), so
+// status arrives as null. Without this the lookup below returned undefined and
+// reading .Icon off it crashed the whole page.
+const STATUS_UNSET = {
+  label: 'Recorded',
+  color: 'text-ink-faint',
+  bg: 'bg-gray-50',
+  Icon: CircleDashed,
+};
+
+/**
+ * Matched on keywords rather than the exact label, because the API sends the
+ * display label (not the stable component key) and an admin can rename a
+ * component at any time. Walk-in sheets list service names here, which simply
+ * fall through to the wrench.
+ */
+function iconFor(component: string): string {
+  const c = (component || '').toLowerCase();
+  if (c.includes('oil')) return iconOil;
+  if (c.includes('brake')) return iconBrake;
+  if (c.includes('batter')) return iconBattery;
+  if (c.includes('tyre') || c.includes('tire')) return iconTyre;
+  if (c.includes('ac') || c.includes('cabin')) return iconAc;
+  return iconWrench;
+}
 
 const JOB_STATUS_LABEL: Record<string, string> = {
   open: 'Checked in',
@@ -157,12 +190,20 @@ const TrackJob: React.FC = () => {
 
                   <div className="mt-5 space-y-3">
                     {data.health_sheet.items.map((item, i) => {
-                      const meta = STATUS_META[item.status];
+                      const meta = (item.status && STATUS_META[item.status]) || STATUS_UNSET;
                       const Icon = meta.Icon;
                       return (
                         <div key={i} className={`rounded-xl ${meta.bg} p-4`}>
                           <div className="flex items-center justify-between gap-3">
-                            <span className="font-bold text-ink-heading">{item.component}</span>
+                            <span className="flex items-center gap-2.5 font-bold text-ink-heading">
+                              <img
+                                src={iconFor(item.component)}
+                                alt=""
+                                aria-hidden="true"
+                                className="h-7 w-7 shrink-0 object-contain"
+                              />
+                              {item.component}
+                            </span>
                             <span className={`inline-flex items-center gap-1.5 text-sm font-bold ${meta.color}`}>
                               <Icon className="h-4 w-4" aria-hidden="true" />
                               {meta.label}
