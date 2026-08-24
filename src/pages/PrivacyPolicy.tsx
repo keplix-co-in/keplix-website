@@ -2,7 +2,10 @@ import React from 'react';
 import { Shield, ChevronRight } from 'lucide-react';
 import PageBlob from '../components/PageBlob';
 import { sectionSubtitleClass } from '../constants/typography';
-import AdSlot from '../components/AdSlot';
+// AdSlot deliberately removed: see the note in PrivacyPolicy.tsx history --
+// ads on boilerplate legal pages with no unique content is a documented
+// AdSense low-value-content rejection cause, and this site was rejected for
+// exactly that.
 import Seo from '../components/Seo';
 import { breadcrumbSchema } from '../constants/schema';
 
@@ -436,10 +439,6 @@ const PrivacyPolicy: React.FC = () => {
 
         </div>
 
-        {/* Sits outside the white content card, inside the same
-            max-w-4xl wrapper, so it reads as separate from the page's
-            own content rather than part of it. */}
-        <AdSlot slot="pageFooter" className="mt-10" />
       </div>
     </main>
   );
