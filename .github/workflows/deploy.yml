@@ -15,6 +15,25 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
 
+    # There was no Node/npm setup step at all here before -- the job ran
+    # whatever npm ships with the ubuntu-latest image, which drifts over time.
+    # It landed on npm 10.9.8, which has a known Arborist bug
+    # ("Cannot read properties of null (reading 'edgesOut')") that this repo's
+    # lockfile triggers -- specifically because it carries 121 optional
+    # platform-specific esbuild/rollup binaries (one per OS/arch Vite might
+    # build on), a shape that crashes 10.x's dependency-graph resolver but not
+    # 11.x's. `npm install` reproduces this crash-free locally with npm 11.7.0,
+    # confirming the lockfile itself is fine -- this is an npm-version bug, not
+    # a project bug. Pinning both Node and npm keeps the runner matching what
+    # was actually tested, instead of silently drifting to whatever ships next.
+    - name: Set up Node
+      uses: actions/setup-node@v4
+      with:
+        node-version: '22'
+
+    - name: Pin npm to a version without the Arborist edgesOut bug
+      run: npm install --global npm@11
+
     - name: Install Vercel CLI
       run: npm install --global vercel@latest
 
