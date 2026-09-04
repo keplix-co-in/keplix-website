@@ -7,7 +7,6 @@ import { APP_LINKS } from '../constants/links';
 import { sectionSubtitleClass, cardTitleClass } from '../constants/typography';
 import Seo from '../components/Seo';
 import { breadcrumbSchema, mobileAppSchemas } from '../constants/schema';
-import AdSlot from '../components/AdSlot';
 
 const stats = [
   { icon: '/icons/biz-stat-free.svg', line1: '100% Free', line2: 'to Join' },
@@ -377,7 +376,6 @@ const Business: React.FC = () => {
 
       {/* Footer-only, below the download CTA. */}
       <section className="relative z-10 mx-auto max-w-page px-4 pb-16 sm:px-8">
-        <AdSlot slot="pageFooter" />
       </section>
     </main>
   );

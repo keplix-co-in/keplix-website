@@ -1,16 +1,9 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Car, Warehouse, PlayCircle } from 'lucide-react';
+import { Car, PlayCircle, ShieldCheck, Warehouse } from 'lucide-react';
 import HeroVideoPanel from './HeroVideoPanel';
 import { APP_LINKS } from '../constants/links';
 import { sectionSubtitleClass } from '../constants/typography';
-
-const avatars = [
-  '/avatars/avatar-1.jpg',
-  '/avatars/avatar-2.jpg',
-  '/avatars/avatar-3.jpg',
-  '/avatars/avatar-4.jpg',
-];
 
 const Hero: React.FC = () => {
   const navigate = useNavigate();
@@ -56,19 +49,15 @@ const Hero: React.FC = () => {
                 Watch Demo
               </button>
             </div>
+            {/* Was "Trusted by 10,000+ car owners" over a row of stock
+                avatars, while /business simultaneously claimed 50,000+. Two
+                different unverifiable numbers on one site, on a product whose
+                own primary call to action is "Join Beta". Replaced with a claim
+                the product actually makes good on. */}
             <div className="flex items-center gap-3 pt-2">
-              <div className="flex items-center">
-                {avatars.map((src) => (
-                  <img
-                    key={src}
-                    src={src}
-                    alt=""
-                    className="-ml-2 h-10 w-10 rounded-full border-2 border-white object-cover first:ml-0"
-                  />
-                ))}
-              </div>
+              <ShieldCheck className="h-5 w-5 shrink-0 text-brand-red" aria-hidden="true" />
               <span className="text-sm font-medium text-ink-muted">
-                Trusted by 10,000+ car owners
+                Every workshop verified before it can accept a booking
               </span>
             </div>
           </div>

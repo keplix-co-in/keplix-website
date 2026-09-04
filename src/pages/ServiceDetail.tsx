@@ -115,6 +115,75 @@ const ServiceDetail: React.FC = () => {
         </div>
       </section>
 
+      {/* Long-form body. The lists above say WHAT the job is; these sections
+          explain what drives the price, how to read a quote and what a bad job
+          looks like -- the part someone comparing workshops actually needs. */}
+      <section className="relative z-10 mx-auto max-w-page px-4 pb-10 sm:px-8 lg:px-16">
+        <div className="mx-auto max-w-3xl space-y-10">
+          {service.sections.map((section) => (
+            <article key={section.heading}>
+              <h2 className="text-2xl font-bold text-ink-heading">{section.heading}</h2>
+              {section.body.map((para) => (
+                <p key={para.slice(0, 40)} className="mt-4 leading-relaxed text-ink-body">
+                  {para}
+                </p>
+              ))}
+            </article>
+          ))}
+        </div>
+      </section>
+
+      {/* Itemised costs. The product promise is that you see a breakdown before
+          you commit, so the page shows one too rather than a single vague band.
+          Scrolls inside its own container -- the page body must never scroll
+          sideways on a phone. */}
+      <section className="relative z-10 mx-auto max-w-page px-4 pb-10 sm:px-8 lg:px-16">
+        <div className="mx-auto max-w-3xl">
+          <h2 className="text-2xl font-bold text-ink-heading">
+            What you are paying for
+          </h2>
+          <p className="mt-3 text-ink-muted">
+            Indicative ranges for a hatchback or sedan in Delhi NCR. Bigger engines,
+            premium brands and genuine-OEM parts all push the number up.
+          </p>
+          <div className="mt-6 overflow-x-auto rounded-2xl border border-line-soft bg-white shadow-card">
+            <table className="w-full min-w-[560px] border-collapse text-left">
+              <thead>
+                <tr className="border-b border-line-soft bg-gray-50">
+                  <th scope="col" className="px-5 py-4 text-sm font-bold text-ink-heading">
+                    Item
+                  </th>
+                  <th scope="col" className="px-5 py-4 text-sm font-bold text-ink-heading">
+                    Typical range
+                  </th>
+                  <th scope="col" className="px-5 py-4 text-sm font-bold text-ink-heading">
+                    What moves the price
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {service.priceTable.map((row) => (
+                  <tr key={row.item} className="border-b border-line-soft last:border-0">
+                    <th
+                      scope="row"
+                      className="px-5 py-4 text-sm font-semibold text-ink-body"
+                    >
+                      {row.item}
+                    </th>
+                    <td className="whitespace-nowrap px-5 py-4 text-sm font-bold tabular-nums text-ink">
+                      {row.range}
+                    </td>
+                    <td className="px-5 py-4 text-sm leading-relaxed text-ink-muted">
+                      {row.note}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
       <section className="relative z-10 mx-auto max-w-page px-4 pb-10 sm:px-8 lg:px-16">
         <h2 className="text-2xl font-bold text-ink-heading">
           {service.name} — common questions
