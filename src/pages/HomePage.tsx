@@ -7,7 +7,6 @@ import Contact from '../components/Contact';
 import PageBlob from '../components/PageBlob';
 import Seo from '../components/Seo';
 import { organizationSchema, websiteSchema, localBusinessSchema, mobileAppSchemas } from '../constants/schema';
-import AdSlot from '../components/AdSlot';
 
 /**
  * Extracted from App so the route table can live in its own module — a
@@ -34,7 +33,6 @@ const HomePage: React.FC = () => (
         on the path to signing up. Placed last so it never competes with the
         primary CTA for attention. */}
     <section className="relative z-10 mx-auto max-w-page px-4 pb-16 sm:px-8">
-      <AdSlot slot="pageFooter" />
     </section>
   </main>
 );

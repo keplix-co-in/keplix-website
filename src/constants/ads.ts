@@ -11,9 +11,24 @@
  *     created in the AdSense dashboard (Ads → By ad unit).
  *
  * With no slot IDs set, the only ads that can appear are Auto ads, if that is
- * turned on in the AdSense dashboard. Note that Auto ads let Google choose
- * placement site-wide, which overrides the deliberate decision to keep ads off
- * the homepage, /beta, /contact and /business — leave it off to preserve that.
+ * turned on in the AdSense dashboard. Leave Auto ads OFF. They let Google place
+ * units site-wide, which overrides the placement policy below.
+ *
+ * WHERE ADS ARE ALLOWED, and why it matters
+ * -----------------------------------------
+ * Units appear ONLY on pages with substantial content: the nine service pages,
+ * /faq, /about, /blog and individual blog posts.
+ *
+ * They are deliberately absent from /, /beta, /contact, /business and the
+ * /services index. Those pages run 270-480 words, and ads on thin pages are a
+ * negative signal in Google's own policy guidance -- the exact ground this site
+ * was flagged on ("Low value content", 2026-09). This comment previously
+ * claimed that policy while the code rendered a pageFooter unit on all four of
+ * those pages; the code has been corrected to match.
+ *
+ * They are also absent from the policy pages (/privacy-policy, /cookie-policy,
+ * /terms, /refund-policy). Those are long, but the length is boilerplate: ads
+ * against legal text serve no reader and look like inventory padding.
  *
  * Overridable in Vercel (and .env.local for testing):
  *   VITE_ADSENSE_CLIENT            overrides the publisher ID; set empty to kill ads

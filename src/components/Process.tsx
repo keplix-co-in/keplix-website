@@ -1,5 +1,4 @@
 import React from 'react';
-import { Star } from 'lucide-react';
 import StoreBadges from './StoreBadges';
 import { APP_LINKS } from '../constants/links';
 import { sectionSubtitleClass } from '../constants/typography';
@@ -34,32 +33,19 @@ const Process: React.FC = () => {
           your car service — all in one app.
         </p>
 
+        {/* Removed here: "Trusted by 50,000+ car owners across India" over a
+            row of placeholder circles, five filled stars and "4.8/5 average
+            rating". None of it was substantiated, the homepage hero claimed
+            10,000+ at the same time, and a fixed five-star graphic next to an
+            average is not a real rating display. A product still asking people
+            to "Join Beta" cannot carry that social proof honestly, and an
+            AdSense reviewer weighing site quality reads it the same way.
+            Restore any of it once the numbers are real and sourced. */}
         <p className="mt-10 text-base text-ink-muted">
-          Trusted by 50,000+ car owners across India
+          Compare itemised prices from verified workshops before you book
         </p>
-        <div className="mt-4 flex items-center justify-center gap-3">
-          <div className="flex items-center">
-            {[0, 1, 2, 3].map((i) => (
-              <div
-                key={i}
-                className="-ml-2 h-9 w-9 rounded-full border-2 border-white bg-gray-300 first:ml-0"
-              />
-            ))}
-          </div>
-          <div className="flex items-center gap-1 text-yellow-400">
-            {[...Array(5)].map((_, i) => (
-              <Star key={i} size={18} fill="currentColor" strokeWidth={0} />
-            ))}
-          </div>
-          <span className="text-base font-semibold text-ink">
-            4.8/5 <span className="font-normal text-ink-muted">average rating</span>
-          </span>
-        </div>
 
-        <StoreBadges
-          androidHref={APP_LINKS.customerAndroid}
-          className="mt-8 justify-center"
-        />
+        <StoreBadges androidHref={APP_LINKS.customerAndroid} className="mt-8 justify-center" />
       </div>
     </section>
   );
