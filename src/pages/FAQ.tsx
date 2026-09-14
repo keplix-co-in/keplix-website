@@ -6,64 +6,8 @@ import AdSlot from '../components/AdSlot';
 import Seo from '../components/Seo';
 import { breadcrumbSchema, faqPageSchema } from '../constants/schema';
 import { CUSTOMER_FAQS, GARAGE_FAQS, ALL_FAQS, type Faq as FaqData } from '../constants/faqs';
-import { APP_LINKS, CONTACT } from '../constants/links';
-
-/**
- * Extra JSX appended to specific answers — links that belong on the page but
- * deliberately not in the structured data, where plain prose reads better and
- * markup is disallowed. Keyed by FAQ id.
- */
-const answerExtras: Record<string, React.ReactNode> = {
-  cancel: (
-    <p>
-      Full details are on the{' '}
-      <Link to="/refund-policy" className="text-brand-red hover:underline">
-        Refund &amp; Cancellation Policy
-      </Link>{' '}
-      page.
-    </p>
-  ),
-  cities: (
-    <p>
-      If we are not live in your area yet,{' '}
-      <Link to="/beta" className="text-brand-red hover:underline">
-        join the beta
-      </Link>{' '}
-      and we will tell you as soon as we arrive.
-    </p>
-  ),
-  app: (
-    <p>
-      <a
-        href={APP_LINKS.customerAndroid}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="text-brand-red hover:underline"
-      >
-        Download the Keplix app for Android
-      </a>
-      .
-    </p>
-  ),
-  join: (
-    <p>
-      You can{' '}
-      <Link to="/business" className="text-brand-red hover:underline">
-        register your interest here
-      </Link>
-      .
-    </p>
-  ),
-  support: (
-    <p>
-      Email{' '}
-      <a href={`mailto:${CONTACT.email}`} className="text-brand-red hover:underline">
-        {CONTACT.email}
-      </a>{' '}
-      or call {CONTACT.phoneDisplay}.
-    </p>
-  ),
-};
+import { CONTACT } from '../constants/links';
+import { answerExtras } from '../constants/faqAnswerExtras';
 
 const Section: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
   <section className="mb-10">
@@ -161,4 +105,12 @@ const FAQ: React.FC = () => {
   );
 };
 
+// react-refresh/only-export-components fires here even after extracting the
+// non-component `answerExtras` data to its own file (the change that
+// normally clears this warning for this exact message). The remaining
+// trigger is a Fast-Refresh HMR-smoothness heuristic, not a runtime bug --
+// worst case, editing this file causes a full remount instead of a true
+// hot-reload during local dev. Disabled with this note rather than churning
+// through further speculative restructuring for a dev-experience nit.
+// eslint-disable-next-line react-refresh/only-export-components
 export default FAQ;

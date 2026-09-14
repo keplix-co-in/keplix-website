@@ -56,6 +56,12 @@ const BlogPost: React.FC = () => {
     return () => {
       cancelled = true;
     };
+    // post?.slug is deliberately excluded: it's read only to bail out of a
+    // refetch when the build-time payload already matches, and this effect
+    // is itself what sets `post` -- including it would make the effect
+    // re-run on its own setPost call. Depend on `slug` (the actual trigger
+    // for "the user navigated to a different post") only.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [slug]);
 
   // The body is author-written HTML. It's already sanitised server-side on
