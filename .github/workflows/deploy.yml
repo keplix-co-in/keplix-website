@@ -5,7 +5,35 @@ on:
     branches: [ main]
 
 jobs:
+  # Gate added 2026-09-14 (audit F31): this workflow deployed straight to
+  # production on every push to main with no lint or build check at all.
+  # `npm run lint` was itself broken (used the invalid --ext flag with this
+  # project's flat eslint.config.js, so it errored on every run rather than
+  # actually checking anything -- fixed the same day this gate was added).
+  # There is still no test script/framework in this project (F30's other
+  # half); `npm run build` at least exercises the SSR + prerender pipeline,
+  # which is where a real regression here would most likely surface.
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      # Same Arborist edgesOut bug as the deploy job below -- see its comment.
+      - name: Pin npm to a version without the Arborist edgesOut bug
+        run: npm install --global npm@11
+      - name: Install dependencies
+        run: npm ci
+      - name: Lint
+        run: npm run lint
+      - name: Build
+        run: npm run build
+
   build-and-deploy:
+    needs: test
     runs-on: ubuntu-latest
 
     env:
