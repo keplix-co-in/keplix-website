@@ -102,8 +102,8 @@ const PrivacyPolicy: React.FC = () => {
             <p><strong className="text-ink-heading">In what situations and with which parties do we share personal information?</strong> We may share information in specific situations and with specific third parties.</p>
             <p><strong className="text-ink-heading">How do we keep your information safe?</strong> We have adequate organizational and technical processes and procedures in place to protect your personal information.</p>
             <p><strong className="text-ink-heading">What are your rights?</strong> Depending on where you are located geographically, the applicable privacy law may mean you have certain rights regarding your personal information.</p>
-            <p><strong className="text-ink-heading">How do you exercise your rights?</strong> The easiest way to exercise your rights is by submitting a{' '}
-              <a href="https://app.termly.io/dsar/d598263f-0e48-417d-98da-4692433180a0" target="_blank" rel="noopener noreferrer" className="text-brand-red hover:underline">data subject access request</a>, or by contacting us.
+            <p><strong className="text-ink-heading">How do you exercise your rights?</strong> If you have a Keplix account, the fastest way to access or delete your own data is directly in the app, under Profile &gt; Security &gt; "Export My Data" or "Delete Account". You can also submit a{' '}
+              <a href="https://app.termly.io/dsar/d598263f-0e48-417d-98da-4692433180a0" target="_blank" rel="noopener noreferrer" className="text-brand-red hover:underline">data subject access request</a>, or contact us directly, for anything the in-app options don't cover.
             </p>
           </div>
         </div>
@@ -141,18 +141,24 @@ const PrivacyPolicy: React.FC = () => {
               <li>Phone numbers</li>
               <li>Email addresses</li>
               <li>Mailing addresses</li>
-              <li>Billing addresses</li>
-              <li>Debit/credit card numbers</li>
               <li>Passwords</li>
               <li>Usernames</li>
               <li>Contact preferences</li>
               <li>Contact or authentication data</li>
             </ul>
-            <p><strong className="text-ink-heading">Sensitive Information.</strong> We do not process sensitive information.</p>
+            <p><strong className="text-ink-heading">Sensitive Information.</strong> For vendors (garage partners), we process government identity
+              document images, bank account and UPI payout details, date of birth, GST number, and precise business location (geolocation) --
+              required to verify a garage before it can accept bookings and to pay out earnings. For customers, we process government identity
+              document images where submitted for account verification. This data is retained for as long as the account is active plus any
+              period required by applicable financial or tax record-keeping law, and is processed on the basis of performing our contract with
+              you (verifying and paying vendors, verifying customer identity) and complying with legal obligations. You can request deletion of
+              this data, subject to those retention requirements, via the account deletion option in the app or by contacting us.</p>
             <p>
-              <strong className="text-ink-heading">Payment Data.</strong> We may collect data necessary to process your payment if you choose to
-              make purchases, such as your payment instrument number, and the security code associated with your payment instrument. All
-              payment data is handled and stored by our payment processors. You may find their privacy notice link(s) on their respective websites.
+              <strong className="text-ink-heading">Payment Data.</strong> Payments are processed by Razorpay, our payment gateway. When you make a
+              purchase, your card, UPI, or other payment instrument details are entered directly with Razorpay -- Keplix does not receive or
+              store your card number, UPI PIN, or any payment instrument security code. We retain only a gateway transaction reference and the
+              amount, status, and method of each payment, for accounting and support purposes. You may find Razorpay's privacy notice on their
+              website.
             </p>
             <p>
               <strong className="text-ink-heading">Social Media Login Data.</strong> We may provide you with the option to register with us using your

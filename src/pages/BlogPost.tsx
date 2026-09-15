@@ -56,6 +56,12 @@ const BlogPost: React.FC = () => {
     return () => {
       cancelled = true;
     };
+    // post?.slug is deliberately excluded: it's read only to bail out of a
+    // refetch when the build-time payload already matches, and this effect
+    // is itself what sets `post` -- including it would make the effect
+    // re-run on its own setPost call. Depend on `slug` (the actual trigger
+    // for "the user navigated to a different post") only.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [slug]);
 
   // The body is author-written HTML. It's already sanitised server-side on
@@ -123,6 +129,20 @@ const BlogPost: React.FC = () => {
 
         {!loading && notFound && (
           <div className="py-20 text-center">
+            {/* noindex, and the reason it matters here specifically.
+                vercel.json rewrites /blog/* to app-shell.html so a post published
+                since the last deploy still resolves. The side effect is that ANY
+                slug under /blog/ returns HTTP 200 -- including invented ones. With
+                no <Seo> on this branch the page also kept the shell's homepage
+                title, so a crawler saw an unlimited supply of 200-OK pages all
+                titled "Keplix - Drive Smarter, Book Faster": a textbook soft 404.
+                NotFound.tsx and TrackJob.tsx already did this; this branch was the
+                one that got missed. */}
+            <Seo
+              title="Article not found"
+              description="This article may have been moved or unpublished."
+              noindex
+            />
             <h1 className="text-3xl font-bold text-ink">Article not found</h1>
             <p className="mt-3 text-ink-muted">
               This post may have been moved or unpublished.

@@ -3,6 +3,7 @@ import Hero from '../components/Hero';
 import Services from '../components/Services';
 import Process from '../components/Process';
 import Future from '../components/Future';
+import HowItWorksDetail from '../components/HowItWorksDetail';
 import Contact from '../components/Contact';
 import PageBlob from '../components/PageBlob';
 import Seo from '../components/Seo';
@@ -26,6 +27,7 @@ const HomePage: React.FC = () => (
     <Services />
     <Process />
     <Future />
+    <HowItWorksDetail />
     <Contact />
 
     {/* Footer-only, below every conversion section — this page (and Beta,
