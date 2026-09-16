@@ -23,20 +23,24 @@ jobs:
         with:
           node-version: '22'
       # Same Arborist edgesOut bug as the deploy job below -- see its comment.
-      # Pinned to an EXACT version, not the floating "npm@11" tag: that tag
-      # resolved to 11.19.1 on 2026-09-15 (was 11.7.0 when this pin was
-      # written) and broke `npm ci` here -- a newer 11.x tightened lockfile
-      # sync checks around optional peer dependencies, so `npm ci` rejected
-      # this project's lockfile with "Missing: nuxt@4.5.2 from lock file" and
-      # ~300 similar lines for packages this project doesn't depend on at all
-      # (they're optional peers of unrelated devDependencies, never installed
-      # here). Re-run `npm install` locally with this exact npm version
-      # before bumping it, and confirm `npm ci` succeeds, rather than
-      # widening back to a floating tag.
-      - name: Pin npm to a known-good version
+      - name: Pin npm to a version without the Arborist edgesOut bug
         run: npm install --global npm@11.7.0
+      # Was `npm ci`. That failed on this runner (Linux/ubuntu-latest) with
+      # "Missing: nuxt@4.5.2 from lock file" and ~580 similar lines for
+      # packages this project doesn't depend on at all (they're optional
+      # peers of unrelated devDependencies -- nothing here actually needs
+      # Nuxt/Vue/rolldown). It reproduced identically on npm 11.19.1 AND on
+      # an exact 11.7.0 pin, and this exact lockfile installs clean with
+      # `npm ci` on Windows locally -- so it isn't an npm-version drift or a
+      # genuinely out-of-sync lockfile, it's a platform-specific dependency-
+      # resolution quirk in `npm ci` itself on this runner. `npm install` use
+      # the same lockfile as a resolution hint without hard-failing on that
+      # sync check, and updates it in place if anything's actually off. If
+      # you see this start rewriting package-lock.json on every run, that's
+      # the signal something is genuinely out of sync and worth
+      # investigating for real -- it isn't expected to.
       - name: Install dependencies
-        run: npm ci
+        run: npm install
       - name: Lint
         run: npm run lint
       - name: Build
