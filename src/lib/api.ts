@@ -47,11 +47,44 @@ async function getJson<T>(path: string): Promise<T> {
   return res.json() as Promise<T>;
 }
 
-export const fetchBlogPosts = () =>
-  getJson<Paginated<BlogPostSummary>>('/content/blog/posts').then((r) => r.data);
+// getJson trusts `res.json()` to match T with no runtime check (audit #129):
+// a proxy misconfiguration or an API error response that still returns 200
+// (e.g. an HTML fallback page) would otherwise flow straight into components
+// as if it were valid data instead of failing loudly. These two checks cover
+// the actual failure mode -- wrong top-level shape -- without adding a
+// schema-validation dependency for a two-endpoint site.
+function assertPaginated<T>(value: unknown, path: string): Paginated<T> {
+  if (
+    !value ||
+    typeof value !== 'object' ||
+    !Array.isArray((value as Paginated<T>).data)
+  ) {
+    throw new Error(`Unexpected response shape from ${path}`);
+  }
+  return value as Paginated<T>;
+}
 
-export const fetchBlogPost = (slug: string) =>
-  getJson<BlogPostFull>(`/content/blog/posts/${encodeURIComponent(slug)}`);
+function assertBlogPost(value: unknown, path: string): BlogPostFull {
+  if (
+    !value ||
+    typeof value !== 'object' ||
+    typeof (value as BlogPostFull).slug !== 'string' ||
+    typeof (value as BlogPostFull).content !== 'string'
+  ) {
+    throw new Error(`Unexpected response shape from ${path}`);
+  }
+  return value as BlogPostFull;
+}
+
+export const fetchBlogPosts = () =>
+  getJson<unknown>('/content/blog/posts').then(
+    (r) => assertPaginated<BlogPostSummary>(r, '/content/blog/posts').data,
+  );
+
+export const fetchBlogPost = (slug: string) => {
+  const path = `/content/blog/posts/${encodeURIComponent(slug)}`;
+  return getJson<unknown>(path).then((r) => assertBlogPost(r, path));
+};
 
 export interface JobSheetItem {
   component: string;
@@ -107,7 +140,17 @@ export async function fetchJobSheet(token: string): Promise<JobSheetResponse | n
   }
   if (!res.ok) throw new Error(`Request failed (${res.status})`);
 
-  return res.json() as Promise<JobSheetResponse>;
+  const body: unknown = await res.json();
+  if (
+    !body ||
+    typeof body !== 'object' ||
+    typeof (body as JobSheetResponse).status !== 'string' ||
+    typeof (body as JobSheetResponse).customer_first_name !== 'string' ||
+    !(body as JobSheetResponse).garage
+  ) {
+    throw new Error('Unexpected response shape from /content/job-sheet');
+  }
+  return body as JobSheetResponse;
 }
 
 /** "12 Aug 2026" — publishedAt can be null for anything not yet live. */

@@ -96,7 +96,11 @@ const PrivacyPolicy: React.FC = () => {
           <h2 className="text-xl font-bold text-ink-heading mb-4">SUMMARY OF KEY POINTS</h2>
           <div className="space-y-3 text-ink-body text-sm leading-relaxed">
             <p><strong className="text-ink-heading">What personal information do we process?</strong> When you visit, use, or navigate our Services, we may process personal information depending on how you interact with us and the Services, the choices you make, and the products and features you use.</p>
-            <p><strong className="text-ink-heading">Do we process any sensitive personal information?</strong> We do not process sensitive personal information.</p>
+            {/* Was "We do not process sensitive personal information" --
+                directly contradicted by the Sensitive Information section
+                below (ID scans, bank/UPI details, DOB, GST number for
+                vendors) (audit #47). This summary line now matches it. */}
+            <p><strong className="text-ink-heading">Do we process any sensitive personal information?</strong> Yes. For vendors (garage partners), we process government identity documents, bank/UPI payout details, date of birth and GST number, and for customers, government identity documents where submitted for verification. See "Sensitive Information" below for what this covers and why.</p>
             <p><strong className="text-ink-heading">Do we collect any information from third parties?</strong> We do not collect any information from third parties.</p>
             <p><strong className="text-ink-heading">How do we process your information?</strong> We process your information to provide, improve, and administer our Services, communicate with you, for security and fraud prevention, and to comply with law.</p>
             <p><strong className="text-ink-heading">In what situations and with which parties do we share personal information?</strong> We may share information in specific situations and with specific third parties.</p>
@@ -223,6 +227,17 @@ const PrivacyPolicy: React.FC = () => {
           <ul className="list-disc list-inside ml-4 space-y-2">
             <li><strong className="text-ink-heading">Business Transfers.</strong> We may share or transfer your information in connection with, or during negotiations of, any merger, sale of company assets, financing, or acquisition of all or a portion of our business to another company.</li>
             <li><strong className="text-ink-heading">When we use Google Maps Platform APIs.</strong> We may share your information with certain Google Maps Platform APIs to provide location-based services.</li>
+            {/* No sub-processor was named here beyond Google Maps and
+                Razorpay (mentioned separately under Payment Data), even
+                though the backend also sends data to Twilio, Cloudinary,
+                Firebase and Resend on every relevant request (audit #166). */}
+            <li><strong className="text-ink-heading">Service Providers.</strong> We share information with the following processors, each acting on our
+              instructions and only for the purpose named: <strong>Razorpay</strong> (payment processing -- see "Payment Data" above),{' '}
+              <strong>Twilio</strong> (SMS and WhatsApp notifications, using your phone number), <strong>Cloudinary</strong> (storage and delivery of
+              images you or a vendor upload, including identity documents), <strong>Firebase</strong> (push notifications and, for vendors, identity
+              verification during onboarding), and <strong>Resend</strong> (transactional emails, using your email address). We do not sell access to
+              your information to any of these providers, and each is contractually restricted to using it only to provide the service we've engaged
+              them for.</li>
             <li><strong className="text-ink-heading">Affiliates.</strong> We may share your information with our affiliates, in which case we will require those affiliates to honor this Privacy Notice.</li>
             <li><strong className="text-ink-heading">Business Partners.</strong> We may share your information with our business partners to offer you certain products, services or promotions.</li>
             <li><strong className="text-ink-heading">Other Users.</strong> When you share personal information or otherwise interact in the public areas with other users, such information may be viewed by all users and may be publicly distributed.</li>
