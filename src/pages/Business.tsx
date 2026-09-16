@@ -123,11 +123,17 @@ const Business: React.FC = () => {
               <img src="/icons/biz-btn-download.svg" alt="" className="h-5 w-5" loading="lazy" decoding="async" />
               Download Garage Partner App
             </a>
+            {/* Was "Become a partner" -- worded like the primary signup
+                action while sitting right next to the actual one (the app
+                download), with no visible difference in what each does
+                (audit #157). This routes to a generic contact form, not
+                onboarding, so the label now says that plainly instead of
+                competing with the download button for the same intent. */}
             <button
               onClick={() => navigate('/contact')}
               className="flex h-[53px] w-full items-center justify-center rounded-[8px] border border-[#e5e7eb] bg-white text-base font-bold leading-7 text-ink transition-colors hover:border-ink sm:w-[190px]"
             >
-              Become a partner
+              Talk to Our Team
             </button>
           </div>
 
@@ -208,7 +214,7 @@ const Business: React.FC = () => {
       <section className="relative z-10 mx-auto max-w-page px-4 pb-16 sm:px-8 lg:px-16">
         <div className="rounded-2xl bg-partner-deep px-6 py-16 sm:px-10">
           <h2 className="text-center text-2xl font-bold text-[#f3f3f4] sm:text-[36px]">
-            How it Works ?
+            How it Works?
           </h2>
           {/* Capped and centred: with justify-between across the full page
               width the first and last steps hugged the card edges and the

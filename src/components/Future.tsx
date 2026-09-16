@@ -14,6 +14,13 @@ const steps = [
   { icon: RefreshCw, title: 'Track Progress', description: 'Track your service in real-time.' },
 ];
 
+// "Verified" below was flagged as an unsubstantiated claim (audit #80) --
+// true (workshops do go through a real check, see updateVendorPayoutAccount/
+// vendor onboarding gate in the backend), but nothing on the page said what
+// it actually checks. HowItWorksDetail.tsx, rendered directly after this
+// component on the homepage, now spells that out ("What workshop
+// verification checks"), so the claim is substantiated on the same page
+// rather than floating unexplained in a stat grid.
 const trustItems = [
   { icon: '/icons/trust-workshops.svg', value: '500+', label: 'Partner Workshops' },
   { icon: '/icons/trust-verified.svg', value: 'Verified', label: 'Service Centers' },

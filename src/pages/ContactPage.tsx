@@ -11,7 +11,7 @@ const contactMethods = [
   {
     icon: '/icons/contact-email.svg',
     title: 'Email us',
-    description: "Send us an email and we'll respond within 24 hour",
+    description: "Send us an email and we'll respond within 24 hours",
     contact: CONTACT.email,
     href: CONTACT.gmailCompose,
   },
@@ -141,7 +141,7 @@ const ContactPage: React.FC = () => {
               </h1>
               <p className={`${sectionSubtitleClass} max-w-[512px] text-ink-muted`}>
                 We&apos;re here to help. Reach out to us through any of the
-                channels below..
+                channels below.
               </p>
             </div>
 

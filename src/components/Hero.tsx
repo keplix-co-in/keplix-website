@@ -33,9 +33,14 @@ const Hero: React.FC = () => {
               <br />
               in Minutes
             </h1>
+            {/* Was "book appointments instantly" directly above a "Join Beta"
+                CTA (audit #81) -- the product isn't self-serve live yet, so
+                the very next thing on the page contradicted "instantly".
+                Reworded rather than the CTA itself: "Join Beta" is the
+                established pattern used consistently across this site. */}
             <p className={`${sectionSubtitleClass} max-w-md leading-relaxed text-ink-muted`}>
-              Compare prices from verified workshops, book appointments
-              instantly and track your vehicle service journey
+              Compare prices from verified workshops, book your service in a
+              few taps and track your vehicle service journey
             </p>
             <div className="flex flex-wrap items-center gap-4 pt-2">
               <button

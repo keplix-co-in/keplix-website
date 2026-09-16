@@ -11,16 +11,17 @@ import Seo from '../components/Seo';
 import { breadcrumbSchema } from '../constants/schema';
 
 /**
- * ⚠️ DRAFT POLICY — NOT YET APPROVED
+ * Section 1 (cancellation refund amount) is kept in sync with the actual
+ * enforced policy in keplix-backend/services/refundPolicy.js -- audit #89
+ * found this page still describing an unimplemented 24-hour/50% draft while
+ * the backend had since shipped a different, simpler rule: full refund any
+ * time before work starts (booking status pending/confirmed/scheduled), no
+ * cancellation fee, no refund once status is in_progress or later. If that
+ * backend logic changes, update this section to match -- do not let the two
+ * drift apart again.
  *
- * The cancellation windows, percentages and processing times below were
- * drafted as reasonable defaults for a car-service marketplace. They have NOT
- * been reviewed or signed off by the business, and they are a binding
- * commitment to customers once this page is public.
- *
- * These same numbers are what the payment backend's refund endpoint still has
- * no policy for — whatever is agreed here should be encoded there too, so the
- * site and the system cannot drift apart.
+ * Everything else on this page (processing times, dispute windows) is
+ * process/support commitment, not something the backend enforces in code.
  */
 
 const Section: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
@@ -37,7 +38,7 @@ const RefundPolicy: React.FC = () => {
 
       <Seo
         title="Refund &amp; Cancellation Policy"
-        description="How cancellations and refunds work at Keplix: full refund more than 24 hours before your slot, partial inside 24 hours, and refunds back to your original payment method in 5-7 working days."
+        description="How cancellations and refunds work at Keplix: full refund any time before work starts, no refund once work has begun, and refunds back to your original payment method in 5-7 working days."
         jsonLd={[breadcrumbSchema([{ name: 'Refund Policy', path: '/refund-policy' }])]}
       />
 
@@ -85,17 +86,14 @@ const RefundPolicy: React.FC = () => {
           <Section title="1. Cancelling a booking">
             <p>
               You can cancel any booking from the <strong className="text-ink-heading">My Bookings</strong>{' '}
-              section of the Keplix app. What you get back depends on how close to the appointment
-              you cancel:
+              section of the Keplix app. What you get back depends on whether the workshop has
+              started work yet — not on how close you are to your slot:
             </p>
             <ul className="list-disc list-inside space-y-2 ml-4">
               <li>
-                <strong className="text-ink-heading">More than 24 hours before your slot —</strong>{' '}
-                full refund of everything you paid.
-              </li>
-              <li>
-                <strong className="text-ink-heading">Within 24 hours of your slot —</strong>{' '}
-                50% refund. The remainder covers the workshop's reserved capacity.
+                <strong className="text-ink-heading">Any time before work starts —</strong>{' '}
+                full refund of everything you paid, with no cancellation fee, even if that's minutes
+                before your slot.
               </li>
               <li>
                 <strong className="text-ink-heading">After work has started —</strong>{' '}

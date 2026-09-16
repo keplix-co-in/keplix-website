@@ -49,8 +49,12 @@ const Services: React.FC = () => (
               <span className="text-sm font-bold text-ink">
                 From {formatPrice(service.priceFrom)}
               </span>
+              {/* Was "Details" -- a generic label that could sit on any card
+                  on any site (audit #189). Every card here leads to the same
+                  action (see the itemised price table on ServiceDetail.tsx),
+                  so the CTA now names it. */}
               <span className="inline-flex items-center gap-1 text-sm font-semibold text-brand-red">
-                Details
+                Compare Prices
                 <ArrowRight size={16} aria-hidden="true" />
               </span>
             </div>
