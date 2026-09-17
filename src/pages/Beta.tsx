@@ -78,36 +78,6 @@ const Beta = () => {
     }
   ];
 
-  // Placeholder copy until real beta feedback comes in — see note in the UI.
-  // Deliberately no stock photos: attaching a real stranger's face to an
-  // invented quote is the part that actually misleads people.
-  const testimonials = [
-    {
-      name: "Arjun Malhotra",
-      role: "Car Owner · Gurugram",
-      initials: "AM",
-      accent: "bg-brand-red/10 text-brand-red",
-      quote:
-        "I'd been going to the same garage for years without ever questioning the bill. Comparing three quotes for my Creta's 40,000 km service saved me close to ₹4,000, and the workshop sent photos before they started work."
-    },
-    {
-      name: "Meera Krishnan",
-      role: "Fleet Manager · Noida",
-      initials: "MK",
-      accent: "bg-emerald-500/10 text-emerald-600",
-      quote:
-        "We run fourteen cabs and servicing used to mean a dozen phone calls a week. Now it's one place, and I finally have a service history I can pull up when a driver tells me something was already replaced."
-    },
-    {
-      name: "Sandeep Rawat",
-      role: "Car Owner · Delhi",
-      initials: "SR",
-      accent: "bg-partner/10 text-partner",
-      quote:
-        "Requested a pickup at nine in the evening honestly expecting nothing till morning. Someone called back within ten minutes and the car was collected the next day. That's why I stayed on the beta."
-    }
-  ];
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -221,7 +191,16 @@ const Beta = () => {
       {/* Application Form */}
       <section className="relative z-10 py-16">
         <div className="container mx-auto px-4">
-          <div className="grid lg:grid-cols-2 gap-12">
+          {/* Was a two-column grid with a "What Beta Users Say" panel next to
+              the form -- three testimonials attributed to named individuals
+              ("Arjun Malhotra", "Meera Krishnan", "Sandeep Rawat") who don't
+              exist, presented as "our current beta testers." Same problem as
+              the carousel removed from Future.tsx, worse in that it invented
+              specific named people rather than generic quotes -- removed
+              rather than reworded. Single-column now that there's nothing to
+              pair the form with; restore a two-column layout if/when there
+              are real, attributed testimonials to show alongside it. */}
+          <div className="mx-auto max-w-2xl">
             {/* Form */}
             <div className="bg-white border border-line-soft shadow-card rounded-xl p-8">
               <h3 className="text-3xl font-bold text-ink-heading mb-6">Apply for Beta Access</h3>
@@ -378,39 +357,6 @@ const Beta = () => {
                   )}
                 </button>
               </form>
-            </div>
-
-            {/* Testimonials */}
-            <div className="space-y-8">
-              <div>
-                <h3 className="text-3xl font-bold text-ink-heading mb-6">What Beta Users Say</h3>
-                <p className="text-ink-body mb-8">
-                  Hear from our current beta testers about their experience with Keplix.
-                </p>
-              </div>
-
-              {testimonials.map((testimonial, index) => (
-                <div 
-                  key={index}
-                  className="bg-white border border-line-soft shadow-card rounded-xl p-6 hover:shadow-cardHover transition-all duration-300"
-                >
-                  <div className="flex items-start gap-4">
-                    <div
-                      aria-hidden
-                      className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-full text-sm font-bold ${testimonial.accent}`}
-                    >
-                      {testimonial.initials}
-                    </div>
-                    <div className="flex-1">
-                      <p className="text-ink-body mb-4 italic">&ldquo;{testimonial.quote}&rdquo;</p>
-                      <div>
-                        <div className="text-ink-heading font-semibold">{testimonial.name}</div>
-                        <div className="text-brand-red text-sm">{testimonial.role}</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
             </div>
           </div>
         </div>

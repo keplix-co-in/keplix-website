@@ -16,9 +16,19 @@ import { breadcrumbSchema } from '../constants/schema';
  * found this page still describing an unimplemented 24-hour/50% draft while
  * the backend had since shipped a different, simpler rule: full refund any
  * time before work starts (booking status pending/confirmed/scheduled), no
- * cancellation fee, no refund once status is in_progress or later. If that
- * backend logic changes, update this section to match -- do not let the two
- * drift apart again.
+ * cancellation fee of ours, no refund once status is in_progress or later.
+ *
+ * One nuance this page must not drop again: PlatformSettings.refundGatewayFeeBorneBy
+ * is 'customer' in production (verified directly against the database, not
+ * just the code default), so resolveCancellationRefund() deducts the payment
+ * gateway's own fee from what's actually returned -- "full refund" here means
+ * no fee OF OURS, not that the customer always gets back 100% of what they
+ * paid. Saying otherwise would repeat the exact kind of website/backend
+ * mismatch audit #89 was about, just in the other direction.
+ *
+ * If refundPolicy.js's rules or PlatformSettings.refundGatewayFeeBorneBy
+ * change, update this section to match -- do not let the two drift apart
+ * again.
  *
  * Everything else on this page (processing times, dispute windows) is
  * process/support commitment, not something the backend enforces in code.
@@ -38,7 +48,7 @@ const RefundPolicy: React.FC = () => {
 
       <Seo
         title="Refund &amp; Cancellation Policy"
-        description="How cancellations and refunds work at Keplix: full refund any time before work starts, no refund once work has begun, and refunds back to your original payment method in 5-7 working days."
+        description="How cancellations and refunds work at Keplix: no cancellation fee before work starts, no refund once work has begun, refunded within 5-7 working days."
         jsonLd={[breadcrumbSchema([{ name: 'Refund Policy', path: '/refund-policy' }])]}
       />
 
@@ -92,8 +102,10 @@ const RefundPolicy: React.FC = () => {
             <ul className="list-disc list-inside space-y-2 ml-4">
               <li>
                 <strong className="text-ink-heading">Any time before work starts —</strong>{' '}
-                full refund of everything you paid, with no cancellation fee, even if that's minutes
-                before your slot.
+                full refund, with no cancellation fee of ours, even if that's minutes before your
+                slot. The payment gateway's own processing fee on the original payment is not
+                returned to us on a refund, so it is deducted from what comes back to you; we do
+                not add anything on top of that.
               </li>
               <li>
                 <strong className="text-ink-heading">After work has started —</strong>{' '}
