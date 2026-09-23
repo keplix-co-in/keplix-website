@@ -7,6 +7,9 @@ export const APP_LINKS = {
   /** Garage/vendor partner app (com.keplix.carservice) */
   vendorAndroid:
     'https://play.google.com/store/apps/details?id=com.keplix.carservice',
+  /** Garage/vendor partner web portal (keplix-webpage-vendors on Vercel).
+   *  Links to /welcome, the portal's one indexable landing page. */
+  vendorWeb: 'https://partner.keplix.co.in/welcome',
   /** No iOS builds live yet — App Store badges render as "Coming soon". */
   ios: null,
 } as const;

@@ -136,6 +136,20 @@ const Business: React.FC = () => {
               Talk to Our Team
             </button>
           </div>
+          {/* A text link rather than a third button: the app download stays the
+              primary action (see the audit #157 note above), and this serves
+              garages that already have an account or prefer a laptop. It is
+              also the internal link that gives search engines a path from
+              keplix.co.in to partner.keplix.co.in. */}
+          <p className="mt-4 text-sm text-ink-muted">
+            Prefer a computer?{' '}
+            <a
+              href={APP_LINKS.vendorWeb}
+              className="font-semibold text-partner underline-offset-4 hover:underline"
+            >
+              Use Keplix Partner on the web
+            </a>
+          </p>
 
           {/* max-w-[829px] is the Figma width of this row (node 431:4795), where
               the four items are 185.25px each with 24px gaps. The gaps below
