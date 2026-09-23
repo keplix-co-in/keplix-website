@@ -173,6 +173,14 @@ const Footer: React.FC = () => {
                 Users
               </a>
             </div>
+            {/* Site-wide entry point to the vendor web portal, so a returning
+                garage owner can find the login from any page. */}
+            <a
+              href={APP_LINKS.vendorWeb}
+              className="mt-4 inline-block text-sm font-semibold text-ink-muted hover:text-brand-blue"
+            >
+              Partner login (web) →
+            </a>
           </div>
 
           <div className="flex-1">
