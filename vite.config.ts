@@ -14,7 +14,10 @@ function apiDevServer(): Plugin {
     name: 'api-dev-server',
     apply: 'serve',
     configureServer(server) {
-      server.middlewares.use('/api/contact', async (req, res) => {
+      // Every handler in api/ needs listing here. /api/chat was missing at
+      // first, so the chatbot 404'd under `npm run dev`.
+      for (const name of ['contact', 'chat']) {
+      server.middlewares.use(`/api/${name}`, async (req, res) => {
         try {
           // Vercel parses the JSON body for us in production; Vite does not.
           const raw = await new Promise<string>((resolve, reject) => {
@@ -45,7 +48,7 @@ function apiDevServer(): Plugin {
           };
 
           // ssrLoadModule handles the TS/ESM transform for us.
-          const mod = await server.ssrLoadModule('/api/contact.ts');
+          const mod = await server.ssrLoadModule(`/api/${name}.ts`);
           await mod.default(shimReq, shimRes);
         } catch (err) {
           server.config.logger.error(`[api-dev-server] ${String(err)}`);
@@ -56,6 +59,7 @@ function apiDevServer(): Plugin {
           }
         }
       });
+      }
     },
   };
 }

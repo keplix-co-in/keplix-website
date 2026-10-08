@@ -61,7 +61,7 @@ const isEmail = (value: string): boolean => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(va
  * open-registration hosting, so trusting it on the production deployment would
  * let anyone spin up an allowed origin in about a minute.
  */
-const isAllowedOrigin = (origin: string | undefined): boolean => {
+export const isAllowedOrigin = (origin: string | undefined): boolean => {
   if (!origin) return false; // browsers always send Origin on a cross-origin POST
 
   if (origin === 'https://keplix.co.in' || origin === 'https://www.keplix.co.in') {

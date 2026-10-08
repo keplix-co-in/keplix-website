@@ -36,9 +36,12 @@ const CookieConsent: React.FC = () => {
       role="dialog"
       aria-live="polite"
       aria-label="Cookie consent"
-      className="fixed inset-x-0 bottom-0 z-50 px-4 pb-4"
+      // pointer-events-none on the full-width wrapper (and auto on the card)
+      // so its transparent strip doesn't swallow clicks meant for other
+      // fixed corner controls, like the chat button.
+      className="pointer-events-none fixed inset-x-0 bottom-0 z-50 px-4 pb-4"
     >
-      <div className="mx-auto flex max-w-3xl flex-col gap-4 rounded-2xl border border-line-soft bg-white p-5 shadow-cardHover sm:flex-row sm:items-center sm:gap-6">
+      <div className="pointer-events-auto mx-auto flex max-w-3xl flex-col gap-4 rounded-2xl border border-line-soft bg-white p-5 shadow-cardHover sm:flex-row sm:items-center sm:gap-6">
         <p className="flex-1 text-sm leading-relaxed text-ink-body">
           We use cookies to keep the site working and, with your permission, to
           show advertising from Google. You can change your choice any time on

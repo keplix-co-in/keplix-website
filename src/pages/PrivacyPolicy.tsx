@@ -63,7 +63,7 @@ const PrivacyPolicy: React.FC = () => {
             <Shield className="w-14 h-14 text-brand-red" />
           </div>
           <h1 className="text-4xl md:text-5xl font-bold mb-4 text-ink">Privacy Policy</h1>
-          <p className={`${sectionSubtitleClass} text-ink-muted`}>Last updated: <span className="text-brand-red font-semibold">March 07, 2026</span></p>
+          <p className={`${sectionSubtitleClass} text-ink-muted`}>Last updated: <span className="text-brand-red font-semibold">October 08, 2026</span></p>
         </div>
       </div>
 
@@ -238,6 +238,16 @@ const PrivacyPolicy: React.FC = () => {
               verification during onboarding), and <strong>Resend</strong> (transactional emails, using your email address). We do not sell access to
               your information to any of these providers, and each is contractually restricted to using it only to provide the service we've engaged
               them for.</li>
+            {/* Added with the website chat assistant (api/chat.ts). Keep this in
+                sync with what that endpoint actually does: no transcript
+                storage, messages sent to Gemini and, as fallback, Groq. */}
+            <li><strong className="text-ink-heading">Website chat assistant.</strong> When you use the "Ask Keplix" chat on our website,
+              the messages you type are sent to <strong>Google (Gemini API)</strong> and, if it is unavailable, <strong>Groq</strong> so they
+              can generate a reply. Before sending, we automatically remove anything that looks like a card number, OTP, PIN, CVV or password.
+              We do not store chat transcripts or link them to your account, and the conversation is cleared when you close or reload the page.
+              These providers may retain messages under their own terms and may use them to improve their services, so please do not
+              share personal, health or payment details in the chat. Chat replies are generated automatically for general information only;
+              your booking, price and refund are governed by the app and our Terms and Refund Policy.</li>
             <li><strong className="text-ink-heading">Affiliates.</strong> We may share your information with our affiliates, in which case we will require those affiliates to honor this Privacy Notice.</li>
             <li><strong className="text-ink-heading">Business Partners.</strong> We may share your information with our business partners to offer you certain products, services or promotions.</li>
             <li><strong className="text-ink-heading">Other Users.</strong> When you share personal information or otherwise interact in the public areas with other users, such information may be viewed by all users and may be publicly distributed.</li>
