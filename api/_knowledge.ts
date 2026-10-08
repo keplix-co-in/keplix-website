@@ -6,10 +6,10 @@
  * nowhere else are written by hand below. Keep them in sync with the backend
  * like RefundPolicy.tsx asks.
  */
-import { CUSTOMER_FAQS, GARAGE_FAQS, type Faq } from '../src/constants/faqs';
-import { SERVICES, formatPrice } from '../src/constants/services';
-import { SITE_URL, SITE_TAGLINE, DEFAULT_DESCRIPTION } from '../src/constants/site';
-import { APP_LINKS, CONTACT } from '../src/constants/links';
+import { CUSTOMER_FAQS, GARAGE_FAQS, type Faq } from '../src/constants/faqs.js';
+import { SERVICES, formatPrice } from '../src/constants/services.js';
+import { SITE_URL, SITE_TAGLINE, DEFAULT_DESCRIPTION } from '../src/constants/site.js';
+import { APP_LINKS, CONTACT } from '../src/constants/links.js';
 
 // The 'cancel' FAQ still describes the old 24-hour/partial-refund draft, which
 // the backend never shipped (see the header comment in RefundPolicy.tsx). The

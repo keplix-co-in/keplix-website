@@ -1,8 +1,14 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { KNOWLEDGE } from './_knowledge';
-import { CONTACT } from '../src/constants/links';
-import { SITE_URL } from '../src/constants/site';
-import { isAllowedOrigin } from './contact';
+// The `.js` extensions are required, not style. package.json is
+// "type": "module" and Vercel compiles each api/ file without bundling, so
+// plain Node ESM resolves these imports at runtime and can't find
+// extensionless paths. Without them, production crashed with
+// ERR_MODULE_NOT_FOUND / FUNCTION_INVOCATION_FAILED (500) on every request.
+// Vite and tsx resolve both forms, which is why local testing didn't catch it.
+import { KNOWLEDGE } from './_knowledge.js';
+import { CONTACT } from '../src/constants/links.js';
+import { SITE_URL } from '../src/constants/site.js';
+import { isAllowedOrigin } from './contact.js';
 import { createHmac, timingSafeEqual } from 'node:crypto';
 
 /**
