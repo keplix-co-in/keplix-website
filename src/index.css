@@ -131,6 +131,73 @@ body {
   animation: fade-in 0.8s ease-out 0.6s both;
 }
 
+/* Chat launcher (ChatWidget). The closed button keeps moving all the time so
+   visitors notice the assistant: it floats, two rings ripple out, the icon
+   wiggles every few seconds, and a dot blinks. It stays still while the chat is
+   open, and for visitors who ask for reduced motion. */
+/* `translate`, not `transform`, so the float stacks with the hover scale. */
+@keyframes chat-float {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -6px; }
+}
+@keyframes chat-ripple {
+  0% { transform: scale(1); opacity: 0.55; }
+  100% { transform: scale(1.9); opacity: 0; }
+}
+@keyframes chat-wiggle {
+  0%, 70%, 100% { transform: rotate(0) scale(1); }
+  74% { transform: rotate(-16deg) scale(1.12); }
+  78% { transform: rotate(14deg) scale(1.12); }
+  82% { transform: rotate(-10deg) scale(1.08); }
+  86% { transform: rotate(6deg) scale(1.04); }
+  90% { transform: rotate(0) scale(1); }
+}
+@keyframes chat-dot {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.3); }
+}
+@keyframes chat-pop {
+  from { transform: rotate(-90deg) scale(0.4); opacity: 0; }
+  to { transform: rotate(0) scale(1); opacity: 1; }
+}
+
+.chat-launcher { animation: chat-float 3s ease-in-out infinite; }
+.chat-launcher:hover { animation-play-state: paused; }
+.chat-launcher-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  background: #d9040d;
+  pointer-events: none;
+  animation: chat-ripple 2.4s cubic-bezier(0.2, 0.6, 0.4, 1) infinite;
+}
+.chat-launcher-ring-delay { animation-delay: 1.2s; }
+.chat-launcher-icon { animation: chat-wiggle 4s ease-in-out infinite; }
+.chat-launcher-dot { animation: chat-dot 1.4s ease-in-out infinite; }
+.chat-launcher-swap { animation: chat-pop 0.3s ease-out; }
+
+/* "Typing" bubble shown while a reply loads. */
+@keyframes chat-typing {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+  30% { transform: translateY(-4px); opacity: 1; }
+}
+.chat-typing-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background: #6b7280;
+  animation: chat-typing 1s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chat-typing-dot { animation: none; opacity: 0.7; }
+  .chat-launcher,
+  .chat-launcher-icon,
+  .chat-launcher-dot,
+  .chat-launcher-swap { animation: none; }
+  .chat-launcher-ring { display: none; }
+}
+
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;

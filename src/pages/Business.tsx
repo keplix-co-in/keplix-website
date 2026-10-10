@@ -11,7 +11,7 @@ import { breadcrumbSchema, mobileAppSchemas } from '../constants/schema';
 const stats = [
   { icon: '/icons/biz-stat-free.svg', line1: '100% Free', line2: 'to Join' },
   { icon: '/icons/biz-stat-verified.svg', line1: 'Verified', line2: 'Customers' },
-  { icon: '/icons/biz-stat-commission.svg', line1: 'No Commission', line2: 'on Bookings' },
+  { icon: '/icons/biz-stat-commission.svg', line1: 'Paid After', line2: 'Every Service' },
   { icon: '/icons/biz-stat-support.svg', line1: 'Dedicated', line2: 'Partner Support' },
 ];
 
@@ -90,7 +90,7 @@ const Business: React.FC = () => {
 
       <Seo
         title="Partner With Us — Grow Your Garage Business"
-        description="Join Keplix free with no commission on bookings. Get discovered by nearby car owners, receive verified service bookings and manage your workshop digitally."
+        description="Join Keplix free and get paid after every completed service. Get discovered by nearby car owners, receive verified service bookings and manage your workshop digitally."
         jsonLd={[breadcrumbSchema([{ name: 'Workshops', path: '/business' }]), ...mobileAppSchemas()]}
       />
 

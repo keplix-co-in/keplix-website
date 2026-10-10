@@ -5,6 +5,7 @@ import PageBlob from '../components/PageBlob';
 import { CONTACT } from '../constants/links';
 import Seo from '../components/Seo';
 import { breadcrumbSchema } from '../constants/schema';
+import { LEGAL } from '../constants/legal';
 // AdSlot deliberately removed from this page -- see PrivacyPolicy.tsx for why.
 
 /**
@@ -52,6 +53,7 @@ const Terms: React.FC = () => (
         <p className="text-lg text-ink-muted">
           The agreement between you and Keplix when you use this site or our apps.
         </p>
+        <p className="mt-2 text-sm text-ink-muted">Last updated: October 08, 2026</p>
       </div>
     </div>
 
@@ -64,6 +66,10 @@ const Terms: React.FC = () => (
             mechanics who work on your car, and we do not carry out the service
             ourselves. What we provide is the platform: discovery, comparable
             quotes, booking, payment handling and support.
+          </p>
+          <p>
+            Keplix is operated by {LEGAL.entityName}, {LEGAL.addressLines.join(', ')}
+            (“Keplix”, “we”, “us”).
           </p>
           <p>
             By creating an account, booking a service, or otherwise using the site
@@ -124,9 +130,9 @@ const Terms: React.FC = () => (
             <Link to="/refund-policy" className="text-brand-red hover:underline">
               Refund &amp; Cancellation Policy
             </Link>
-            , which forms part of these terms. In short: cancel well before your
-            slot and you are refunded in full; cancel close to it and a charge may
-            apply, because the workshop has held time for you.
+            , which forms part of these terms. In short: cancel any time before the
+            workshop starts work and you are refunded in full, with no cancellation
+            fee; once work has started, the booking is no longer refundable.
           </p>
           <p>
             If a workshop cancels on you, or fails to carry out the service, you
@@ -208,7 +214,20 @@ const Terms: React.FC = () => (
           </p>
         </Section>
 
-        <Section title="11. Privacy">
+        <Section title="11. AI assistant">
+          <p>
+            The chat assistant on our website answers questions using AI models
+            provided by third parties, as described in our Privacy Policy. Its
+            answers are general information only. They can be incomplete or wrong,
+            they are not a quote, and they do not change these terms, our Refund
+            &amp; Cancellation Policy, or any booking. Where an answer conflicts
+            with these terms or with what the app shows for your booking, the terms
+            and the app prevail. Please do not share payment details or passwords
+            in the chat.
+          </p>
+        </Section>
+
+        <Section title="12. Privacy">
           <p>
             How we handle your personal data is set out in our{' '}
             <Link to="/privacy-policy" className="text-brand-red hover:underline">
@@ -222,7 +241,7 @@ const Terms: React.FC = () => (
           </p>
         </Section>
 
-        <Section title="12. Changes to these terms">
+        <Section title="13. Changes to these terms">
           <p>
             We may update these terms as the service develops. Where a change
             materially affects your rights, we will give notice through the app or
@@ -231,7 +250,7 @@ const Terms: React.FC = () => (
           </p>
         </Section>
 
-        <Section title="13. Governing law">
+        <Section title="14. Governing law">
           <p>
             These terms are governed by the laws of India, and the courts at Delhi
             have jurisdiction over any dispute. We would much rather resolve
@@ -239,7 +258,24 @@ const Terms: React.FC = () => (
           </p>
         </Section>
 
-        <Section title="14. Contact">
+        <Section title="15. Grievances">
+          <p>
+            Complaints about a booking, a workshop or how we handle your data can
+            be sent to our Grievance Officer at{' '}
+            <a href={`mailto:${LEGAL.grievanceEmail}`} className="text-brand-red hover:underline">
+              {LEGAL.grievanceEmail}
+            </a>
+            . We acknowledge complaints within {LEGAL.grievanceAckHours} hours and
+            aim to resolve them within {LEGAL.grievanceResolveDays} days. Full
+            details are in section 16 of our{' '}
+            <Link to="/privacy-policy#grievance" className="text-brand-red hover:underline">
+              Privacy Policy
+            </Link>
+            .
+          </p>
+        </Section>
+
+        <Section title="16. Contact">
           <p>
             Questions about these terms: email{' '}
             <a href={`mailto:${CONTACT.email}`} className="text-brand-red hover:underline">

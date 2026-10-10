@@ -19,6 +19,7 @@ const ROUTES = [
   '/services/car-ac-repair',
   '/blog',
   '/terms',
+  '/partner-terms',
   '/beta',
   // /contact is deliberately excluded: it embeds a live Google Maps <iframe>,
   // which jsdom (resources: 'usable') tries to execute and crashes on

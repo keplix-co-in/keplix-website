@@ -8,6 +8,7 @@ import { sectionSubtitleClass } from '../constants/typography';
 // exactly that.
 import Seo from '../components/Seo';
 import { breadcrumbSchema } from '../constants/schema';
+import { LEGAL } from '../constants/legal';
 
 const Section: React.FC<{ id?: string; title: string; children: React.ReactNode }> = ({ id, title, children }) => (
   <div id={id} className="mb-10">
@@ -38,6 +39,8 @@ const tocItems = [
   { id: 'policyupdates', label: '12. DO WE MAKE UPDATES TO THIS NOTICE?' },
   { id: 'contact', label: '13. HOW CAN YOU CONTACT US ABOUT THIS NOTICE?' },
   { id: 'request', label: '14. HOW CAN YOU REVIEW, UPDATE, OR DELETE THE DATA WE COLLECT FROM YOU?' },
+  { id: 'dpdp', label: '15. YOUR RIGHTS UNDER INDIAN LAW (DPDP ACT, 2023)' },
+  { id: 'grievance', label: '16. GRIEVANCE OFFICER' },
 ];
 
 const PrivacyPolicy: React.FC = () => {
@@ -435,10 +438,8 @@ const PrivacyPolicy: React.FC = () => {
         <Section id="contact" title="13. HOW CAN YOU CONTACT US ABOUT THIS NOTICE?">
           <p>If you have questions or comments about this notice, you may contact us by post at:</p>
           <div className="bg-gray-50 border border-line-soft rounded-xl p-5 mt-4 space-y-1">
-            <p className="font-semibold text-ink-heading">Keplix Private Limited</p>
-            <p>9/2659, Kailash Nagar, Gandhi Nagar</p>
-            <p>Delhi, 110031</p>
-            <p>India</p>
+            <p className="font-semibold text-ink-heading">{LEGAL.entityName}</p>
+            {LEGAL.addressLines.map((l) => <p key={l}>{l}</p>)}
             <p className="mt-2">
               Email:{' '}
               <a href="mailto:privacy@keplix.co.in" className="text-brand-red hover:underline">privacy@keplix.co.in</a>
@@ -465,6 +466,47 @@ const PrivacyPolicy: React.FC = () => {
             >
               data subject access request
             </a>.
+          </p>
+        </Section>
+
+        {/* Sections 15–16: India-specific. The Termly template above is written for
+            a generic audience; these state the DPDP Act 2023 rights and the
+            grievance contact the IT Rules 2011 require. Draft — owner/legal review. */}
+        <Section id="dpdp" title="15. YOUR RIGHTS UNDER INDIAN LAW (DPDP ACT, 2023)">
+          <p>
+            We process your personal data on the basis of your consent, given when you create an account or book a service,
+            and for the legitimate uses the Digital Personal Data Protection Act, 2023 allows (for example, complying with a
+            legal obligation). As a Data Principal you have the right to:
+          </p>
+          <ul className="list-disc list-inside ml-4 space-y-1">
+            <li>get a summary of the personal data we process about you and who we have shared it with;</li>
+            <li>have inaccurate or incomplete data corrected, and outdated data updated;</li>
+            <li>have your data erased once it is no longer needed, unless the law requires us to keep it;</li>
+            <li>withdraw your consent at any time — as easily as you gave it — without affecting processing done before;</li>
+            <li>nominate another person to exercise these rights if you die or become incapable of doing so; and</li>
+            <li>have a grievance addressed by our Grievance Officer (section 16) and, if you are not satisfied, complain to the Data Protection Board of India.</li>
+          </ul>
+          <p>
+            Payment and tax records are kept for as long as Indian tax and accounting law requires, even after your account is closed.
+          </p>
+        </Section>
+
+        <Section id="grievance" title="16. GRIEVANCE OFFICER">
+          <p>
+            In line with the Information Technology Act, 2000, the rules made under it, and the Consumer Protection (E-Commerce)
+            Rules, 2020, you can contact our Grievance Officer about any complaint about your data or our services:
+          </p>
+          <div className="bg-gray-50 border border-line-soft rounded-xl p-5 mt-4 space-y-1">
+            <p className="font-semibold text-ink-heading">{LEGAL.grievanceOfficerName ?? 'Grievance Officer'}</p>
+            <p>{LEGAL.entityName}</p>
+            {LEGAL.addressLines.map((l) => <p key={l}>{l}</p>)}
+            <p className="mt-2">
+              Email:{' '}
+              <a href={`mailto:${LEGAL.grievanceEmail}`} className="text-brand-red hover:underline">{LEGAL.grievanceEmail}</a>
+            </p>
+          </div>
+          <p>
+            We acknowledge complaints within {LEGAL.grievanceAckHours} hours and aim to resolve them within {LEGAL.grievanceResolveDays} days.
           </p>
         </Section>
 

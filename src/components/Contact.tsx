@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { submitForm } from '../lib/submitForm';
 import { sectionSubtitleClass, cardTitleClass } from '../constants/typography';
+import LazyVideo from './LazyVideo';
 
 const RADIO_ACCENT = '#2563eb';
 
@@ -64,19 +65,12 @@ const Contact: React.FC = () => {
       <div className="mx-auto max-w-page">
         <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
           <div className="aspect-square w-full max-w-md overflow-hidden rounded-3xl bg-black">
-            <video
+            <LazyVideo
               src="/mapani.mp4"
-              autoPlay
-              loop
-              muted
-              playsInline
-              // Below the fold — don't spend a phone's data on it until the
-              // browser actually gets round to playing it.
-              preload="none"
               className="h-full w-full object-cover"
             >
               Your browser does not support the video tag.
-            </video>
+            </LazyVideo>
           </div>
 
           <div>

@@ -103,7 +103,7 @@ export const GARAGE_FAQS: Faq[] = [
     id: 'cost',
     question: 'What does it cost to join Keplix as a garage?',
     answer:
-      'Joining Keplix is free, and we do not take a commission on your bookings. You keep what you charge.',
+      'Joining Keplix is free. Keplix keeps a platform fee (currently 10%) from each completed booking, and you receive the balance as a payout.',
   },
   {
     id: 'payouts',

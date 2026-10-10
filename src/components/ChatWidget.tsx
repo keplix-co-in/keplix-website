@@ -206,7 +206,15 @@ const ChatWidget: React.FC = () => {
               </div>
             )}
 
-            {loading && <p className="text-xs text-ink-muted">Typing…</p>}
+            {loading && (
+              <div className="flex justify-start" role="status" aria-label="Keplix is typing">
+                <span className="flex items-center gap-1 rounded-2xl bg-line-soft px-3 py-3">
+                  <span className="chat-typing-dot" />
+                  <span className="chat-typing-dot [animation-delay:0.15s]" />
+                  <span className="chat-typing-dot [animation-delay:0.3s]" />
+                </span>
+              </div>
+            )}
             {error && (
               <p className="text-xs text-brand-red">
                 {error}{' '}
@@ -262,9 +270,25 @@ const ChatWidget: React.FC = () => {
         type="button"
         aria-label={open ? 'Close chat' : 'Open Keplix assistant'}
         onClick={() => setOpen((o) => !o)}
-        className="fixed bottom-4 right-4 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-brand-red text-white shadow-cardHover transition-colors hover:bg-brand-redHover"
+        className={`fixed bottom-4 right-4 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-brand-red text-white shadow-cardHover transition-[background-color,transform] duration-200 hover:scale-110 hover:bg-brand-redHover active:scale-95 ${
+          open ? '' : 'chat-launcher'
+        }`}
       >
-        {open ? <X size={24} /> : <MessageCircle size={24} />}
+        {/* Attention animation while closed; the classes live in index.css. */}
+        {!open && (
+          <>
+            <span aria-hidden="true" className="chat-launcher-ring" />
+            <span aria-hidden="true" className="chat-launcher-ring chat-launcher-ring-delay" />
+            <span
+              aria-hidden="true"
+              className="chat-launcher-dot absolute right-0.5 top-0.5 h-3.5 w-3.5 rounded-full border-2 border-white bg-green-500"
+            />
+          </>
+        )}
+        {/* key remounts the icon on toggle so it replays the pop-in. */}
+        <span key={open ? 'x' : 'chat'} className="chat-launcher-swap relative flex">
+          {open ? <X size={24} /> : <MessageCircle size={24} className="chat-launcher-icon" />}
+        </span>
       </button>
     </>
   );

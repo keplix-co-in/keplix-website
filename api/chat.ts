@@ -24,12 +24,17 @@ import { createHmac, timingSafeEqual } from 'node:crypto';
 
 const MAX_TURNS = 10;
 const MAX_CHARS = 500;
-// An alias, not a pinned version: gemini-2.5-flash was closed to new keys
-// (404) and broke the bot, and the alias always points at the current Flash.
+// Aliases, not pinned versions: gemini-2.5-flash was closed to new keys (404)
+// and broke the bot, and an alias always points at the current model.
 const GEMINI_MODEL = process.env.GEMINI_MODEL || 'gemini-flash-latest';
 const GEMINI_LITE_MODEL = process.env.GEMINI_LITE_MODEL || 'gemini-flash-lite-latest';
-const GROQ_MODEL = process.env.GROQ_MODEL || 'llama-3.3-70b-versatile';
-const UPSTREAM_TIMEOUT_MS = 20_000;
+// llama-3.3-70b-versatile was retired by Groq (404), which silently left the
+// bot with no fallback. gpt-oss-120b answered the eval questions in ~1s.
+const GROQ_MODEL = process.env.GROQ_MODEL || 'openai/gpt-oss-120b';
+// The fast providers get a short timeout so a hung call falls through quickly;
+// full Flash is slow on the free tier, so it keeps the long one.
+const FAST_TIMEOUT_MS = 10_000;
+const SLOW_TIMEOUT_MS = 20_000;
 
 const SYSTEM_PROMPT = `You are the Keplix assistant on keplix.co.in. Keplix is a car-service marketplace in India.
 Help car owners and garage owners using ONLY the facts in the KNOWLEDGE section below.
@@ -180,9 +185,15 @@ const guardReply = (reply: string): string =>
     ? 'Sorry, I can only help with questions about Keplix services, bookings and refunds.'
     : reply;
 
-const withTimeout = () => AbortSignal.timeout(UPSTREAM_TIMEOUT_MS);
+// Carries the HTTP status so the caller can tell "quota used up" (429, don't
+// retry) from "overloaded" (503, worth one retry).
+class UpstreamError extends Error {
+  constructor(message: string, readonly status: number) {
+    super(message);
+  }
+}
 
-async function callGemini(model: string, msgs: Msg[]): Promise<string> {
+async function callGemini(model: string, msgs: Msg[], timeoutMs: number): Promise<string> {
   const key = process.env.GEMINI_API_KEY;
   if (!key) throw new Error('GEMINI_API_KEY not set');
   const r = await fetch(
@@ -190,7 +201,7 @@ async function callGemini(model: string, msgs: Msg[]): Promise<string> {
     {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key },
-      signal: withTimeout(),
+      signal: AbortSignal.timeout(timeoutMs),
       body: JSON.stringify({
         systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
         contents: msgs.map((m) => ({
@@ -203,7 +214,7 @@ async function callGemini(model: string, msgs: Msg[]): Promise<string> {
       }),
     },
   );
-  if (!r.ok) throw new Error(`Gemini ${model} ${r.status}`);
+  if (!r.ok) throw new UpstreamError(`Gemini ${model} ${r.status}`, r.status);
   const data = await r.json();
   const text: string | undefined = data?.candidates?.[0]?.content?.parts
     ?.map((p: { text?: string }) => p.text ?? '')
@@ -212,27 +223,26 @@ async function callGemini(model: string, msgs: Msg[]): Promise<string> {
   return text.trim();
 }
 
-// The free tier often answers 503 (overloaded), and sometimes 429. Retry
-// once, then try the lighter Flash-Lite model, which has its own quota,
-// before falling back to Groq. Without this, roughly half the questions failed
-// in local testing.
+// Speed order (measured 2026-10-10 with the full knowledge pack, free tier):
+// Flash-Lite ~1.5s, Groq gpt-oss-120b ~1s (but see the token limit in askGroq;
+// when it refuses, it does so in ~0.2s), and full Flash 7–17s. So Flash-Lite
+// goes first, Groq second, and Flash only as a slow last resort. Putting Flash
+// first, as before, made every reply take 7–20s.
+//
+// A 503 (overloaded) gets one quick retry. A 429 (quota used up) moves on
+// straight away, because retrying it only added delay.
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
-async function askGemini(msgs: Msg[]): Promise<string> {
-  let lastErr: unknown;
-  for (const model of [GEMINI_MODEL, GEMINI_LITE_MODEL]) {
-    for (let attempt = 0; attempt < 2; attempt++) {
-      try {
-        return await callGemini(model, msgs);
-      } catch (err) {
-        lastErr = err;
-        if ((err as Error).message.includes('not set')) throw err;
-        console.error('[chat]', (err as Error).message);
-        if (attempt === 0) await sleep(800);
-      }
+const askGeminiModel = (model: string, timeoutMs: number) =>
+  async (msgs: Msg[]): Promise<string> => {
+    try {
+      return await callGemini(model, msgs, timeoutMs);
+    } catch (err) {
+      if (!(err instanceof UpstreamError) || err.status !== 503) throw err;
+      console.error('[chat]', err.message, '- retrying');
+      await sleep(300);
+      return callGemini(model, msgs, timeoutMs);
     }
-  }
-  throw lastErr;
-}
+  };
 
 async function askGroq(msgs: Msg[]): Promise<string> {
   const key = process.env.GROQ_API_KEY;
@@ -240,15 +250,20 @@ async function askGroq(msgs: Msg[]): Promise<string> {
   const r = await fetch('https://api.groq.com/openai/v1/chat/completions', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${key}` },
-    signal: withTimeout(),
+    signal: AbortSignal.timeout(FAST_TIMEOUT_MS),
     body: JSON.stringify({
       model: GROQ_MODEL,
       temperature: 0.3,
+      // gpt-oss is a reasoning model; low effort keeps it fast.
+      ...(GROQ_MODEL.startsWith('openai/gpt-oss') ? { reasoning_effort: 'low' } : {}),
+      // Keep this small. Groq's free tier allows 8,000 tokens a minute and the
+      // prompt alone is ~7,700, so a bigger cap gets a 413 (too large). The
+      // same limit means Groq can only cover short, single-question chats.
       max_tokens: 600,
       messages: [{ role: 'system', content: SYSTEM_PROMPT }, ...msgs],
     }),
   });
-  if (!r.ok) throw new Error(`Groq ${r.status}`);
+  if (!r.ok) throw new UpstreamError(`Groq ${r.status}`, r.status);
   const data = await r.json();
   const text: string | undefined = data?.choices?.[0]?.message?.content;
   if (!text?.trim()) throw new Error('Groq empty response');
@@ -293,7 +308,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
   }
 
-  const providers = [askGemini, askGroq];
+  const providers = [
+    askGeminiModel(GEMINI_LITE_MODEL, FAST_TIMEOUT_MS),
+    askGroq,
+    askGeminiModel(GEMINI_MODEL, SLOW_TIMEOUT_MS),
+  ];
   for (const ask of providers) {
     try {
       return res.status(200).json({ reply: guardReply(await ask(msgs)), pass });

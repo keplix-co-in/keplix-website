@@ -4,6 +4,7 @@ import { sectionSubtitleClass, cardTitleClass } from '../constants/typography';
 import Seo from '../components/Seo';
 import { breadcrumbSchema } from '../constants/schema';
 import AdSlot from '../components/AdSlot';
+import LazyVideo from '../components/LazyVideo';
 
 const pillars = [
   {
@@ -154,18 +155,12 @@ const About: React.FC = () => {
             {/* The story runs long, so the video sticks alongside it while you
                 read instead of leaving a tall empty column. */}
             <div className="lg:sticky lg:top-28">
-              <video
+              <LazyVideo
                 src="/our-story-video.mp4"
-                autoPlay
-                loop
-                muted
-                playsInline
-                // Well below the fold on mobile.
-                preload="none"
                 className="aspect-[620/353] w-full rounded-2xl object-cover shadow-[0px_16px_32px_-12px_rgba(11,21,33,0.25)]"
               >
                 Your browser does not support the video tag.
-              </video>
+              </LazyVideo>
               <p className="mt-5 text-sm font-semibold uppercase tracking-[0.12em] text-ink-faint">
                 Vardan Chaturvedi &middot; Founder
               </p>

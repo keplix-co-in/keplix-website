@@ -68,6 +68,7 @@ const STATIC_ROUTES = [
   ['/beta', 'monthly', '0.6'],
   ['/refund-policy', 'yearly', '0.4'],
   ['/terms', 'yearly', '0.3'],
+  ['/partner-terms', 'yearly', '0.3'],
   ['/privacy-policy', 'yearly', '0.3'],
   ['/cookie-policy', 'yearly', '0.3'],
 ];
@@ -155,8 +156,8 @@ function buildLlmsTxt(posts, services = []) {
 
 > Keplix is an Indian online marketplace for car servicing. Car owners compare
 > prices from verified local workshops, book a service slot in the app, pay
-> securely, and track the work in real time. Garages join free and pay no
-> commission on bookings.
+> securely, and track the work in real time. Garages join free; Keplix keeps a
+> platform fee from each completed booking.
 
 ## What Keplix does
 
@@ -179,12 +180,13 @@ Rolling out city by city across India, starting with Delhi NCR.
 
 - [Home](${SITE_URL}/): what Keplix is and how it works.
 - [FAQ](${SITE_URL}/faq): booking, pricing, payment, cancellations, refunds, and garage partnership.
-- [For garages](${SITE_URL}/business): joining Keplix as a workshop partner — free, no commission.
+- [For garages](${SITE_URL}/business): joining Keplix as a workshop partner — free to join, platform fee on completed bookings.
 - [Refund & cancellation policy](${SITE_URL}/refund-policy): cancellation windows and refund timelines.
 - [About](${SITE_URL}/about): the company and why it was founded.
 - [Contact](${SITE_URL}/contact): support channels.
 - [Blog](${SITE_URL}/blog): car care guides and servicing advice.
 - [Terms of Service](${SITE_URL}/terms): the agreement covering bookings and payment.
+- [Partner Terms](${SITE_URL}/partner-terms): the agreement for partner workshops — platform fee, payouts, service standards.
 
 ## Service pages
 

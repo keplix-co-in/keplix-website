@@ -17,6 +17,7 @@ import FAQ from './pages/FAQ';
 import HomePage from './pages/HomePage';
 import Services from './pages/Services';
 import Terms from './pages/Terms';
+import PartnerTerms from './pages/PartnerTerms';
 import ServiceDetail from './pages/ServiceDetail';
 import TrackJob from './pages/TrackJob';
 import NotFound from './pages/NotFound';
@@ -51,6 +52,7 @@ function App() {
         <Route path="/cookie-policy" element={<CookiePolicy />} />
         <Route path="/refund-policy" element={<RefundPolicy />} />
         <Route path="/terms" element={<Terms />} />
+        <Route path="/partner-terms" element={<PartnerTerms />} />
         <Route path="/faq" element={<FAQ />} />
         <Route path="/services" element={<Services />} />
         <Route path="/services/:slug" element={<ServiceDetail />} />

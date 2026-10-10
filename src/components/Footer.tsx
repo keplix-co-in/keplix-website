@@ -41,6 +41,7 @@ const columns = [
       { label: 'Terms of Service', path: '/terms' },
       { label: 'Privacy Policy', path: '/privacy-policy' },
       { label: 'Refund Policy', path: '/refund-policy' },
+      { label: 'Partner Terms', path: '/partner-terms' },
     ],
   },
   {
