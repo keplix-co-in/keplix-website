@@ -10,6 +10,7 @@ import { CUSTOMER_FAQS, GARAGE_FAQS, type Faq } from '../src/constants/faqs.js';
 import { SERVICES, formatPrice } from '../src/constants/services.js';
 import { SITE_URL, SITE_TAGLINE, DEFAULT_DESCRIPTION } from '../src/constants/site.js';
 import { APP_LINKS, CONTACT } from '../src/constants/links.js';
+import { ABOUT_PILLARS, FOUNDER } from '../src/constants/about.js';
 
 // The 'cancel' FAQ still describes the old 24-hour/partial-refund draft, which
 // the backend never shipped (see the header comment in RefundPolicy.tsx). The
@@ -35,6 +36,29 @@ export const KNOWLEDGE = `
 # Keplix: ${SITE_TAGLINE}
 ${DEFAULT_DESCRIPTION}
 Website: ${SITE_URL}
+
+## About Keplix
+- Keplix is a car-service marketplace: it connects car owners with verified workshops (garages) near them. Owners compare itemised prices, book a slot, pay and track the job in one app. Workshops get customers and run their jobs through Keplix.
+- Where: rolling out city by city, starting with Delhi NCR and expanding across India. The app shows the workshops available near you.
+- Founded by ${FOUNDER.name} (${FOUNDER.title}). ${FOUNDER.name} ${FOUNDER.background}
+- Why it exists: ${FOUNDER.story}
+${ABOUT_PILLARS.map((p) => `- ${p.title}: ${p.description}`).join('\n')}
+- The vision is an aspiration, not a claim about today.
+- No figures (number of garages, customers, bookings, cities) are published here; don't state any.
+
+## Why choose Keplix (car owners)
+Every point restates a fact elsewhere in KNOWLEDGE; the source is in brackets.
+- Verified workshops: each partner is checked before it can take bookings, rated by real customers, and removed if it falls below standard. [FAQ: verified]
+- Upfront, itemised prices you compare like for like before booking, with no platform fee added on top. [FAQ: compare]
+- Book a slot in minutes in the app; the workshop confirms it. [FAQ: book]
+- Pay securely in the app (UPI, cards, net banking); Keplix never sees your card, and the money is held until the service is complete. [FAQ: payment-methods, payment-safe]
+- Track the job live: accepted, in progress, completed. [FAQ: track]
+- Fair cancellation: full refund if you cancel before work starts; 100% refund if the workshop cancels or doesn't show; a dispute process if you're unhappy. [Cancellation and refund policy]
+- Your car's full service history in one place, useful when selling. [FAQ: history]
+- Real humans on WhatsApp, phone and email. [Contact]
+
+## Why join Keplix (garages / workshops)
+Free to join; customers who have already chosen and paid; paid out after every completed service (Keplix keeps a 10% platform fee); dedicated partner support; digital tools to manage bookings, walk-ins and payouts. [Business page, garage FAQs]
 
 ## Apps
 - Customer app (Android): ${APP_LINKS.customerAndroid}

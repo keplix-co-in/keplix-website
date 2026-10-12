@@ -5,29 +5,10 @@ import Seo from '../components/Seo';
 import { breadcrumbSchema } from '../constants/schema';
 import AdSlot from '../components/AdSlot';
 import LazyVideo from '../components/LazyVideo';
+import { ABOUT_PILLARS } from '../constants/about';
 
-const pillars = [
-  {
-    icon: '/icons/about-mission.svg',
-    title: 'Our Mission',
-    description: 'To simplify car care and build trust between car owners and garages.',
-  },
-  {
-    icon: '/icons/about-vision.svg',
-    title: 'Our Vision',
-    description: "To become India's most trusted car care platform.",
-  },
-  {
-    icon: '/icons/about-values.svg',
-    title: 'Our Values',
-    description: 'Transparency, Trust, Customer First, Innovation.',
-  },
-  {
-    icon: '/icons/about-promise.svg',
-    title: 'Our Promise',
-    description: 'Better car care experiences for everyone.',
-  },
-];
+// Mission/vision/values live in constants/about.ts, shared with the chatbot.
+const pillars = ABOUT_PILLARS;
 
 const journey = [
   { year: '2024', title: 'The Idea', description: 'KEPLIX was founded with a simple idea to make car care better.' },

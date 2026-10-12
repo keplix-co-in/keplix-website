@@ -55,7 +55,9 @@ const GREETING: Msg = {
 // "* " bullets become "• ". Nothing else is interpreted, and React escapes the
 // rest, so model output can never inject markup.
 const TOKEN_RE = /(\[[^\]]+\]\(https?:\/\/[^\s)]+\)|https?:\/\/[^\s)]+|\*\*[^*]+\*\*)/g;
-const linkClass = 'break-all text-brand-red underline';
+// overflow-wrap:anywhere, not break-all: break-all split even short links
+// ("ht / tps://keplix.co.in") instead of moving them to the next line.
+const linkClass = '[overflow-wrap:anywhere] text-brand-red underline';
 const renderText = (text: string) =>
   text
     .replace(/^\s*[*-]\s+/gm, '• ')
