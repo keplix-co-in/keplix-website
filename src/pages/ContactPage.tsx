@@ -5,7 +5,7 @@ import { CONTACT, SOCIALS } from '../constants/links';
 import { submitForm } from '../lib/submitForm';
 import { sectionSubtitleClass, cardTitleClass } from '../constants/typography';
 import Seo from '../components/Seo';
-import { breadcrumbSchema, organizationSchema } from '../constants/schema';
+import { breadcrumbSchema } from '../constants/schema';
 
 const contactMethods = [
   {
@@ -125,7 +125,10 @@ const ContactPage: React.FC = () => {
       <Seo
         title="Contact Us — Support and Enquiries"
         description="Get in touch with the Keplix team by email, phone, WhatsApp or social. We are available to help with bookings, refunds and partnership enquiries."
-        jsonLd={[breadcrumbSchema([{ name: 'Contact', path: '/contact' }]), organizationSchema()]}
+        // No organizationSchema() here: the homepage is the one place it is
+        // defined, and other nodes point at it by @id. A second full copy per
+        // page invites the two to drift apart.
+        jsonLd={[breadcrumbSchema([{ name: 'Contact', path: '/contact' }])]}
       />
 
       {/* Hero + Get in Touch */}

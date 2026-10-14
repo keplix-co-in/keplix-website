@@ -14,6 +14,8 @@ export interface BlogPostSummary {
   category: string;
   readTime: number | null;
   publishedAt: string | null;
+  /** Optional: older backend builds don't return it. */
+  updatedAt?: string | null;
   author?: { name: string } | null;
 }
 

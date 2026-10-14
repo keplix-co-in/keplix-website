@@ -6,7 +6,8 @@ import Seo from '../components/Seo';
 import NotFound from './NotFound';
 import AdSlot from '../components/AdSlot';
 import { breadcrumbSchema, faqPageSchema, serviceSchema } from '../constants/schema';
-import { SERVICES, formatPrice, serviceBySlug } from '../constants/services';
+import { formatPrice, serviceBySlug, type Service } from '../constants/services';
+import { RELATED_SERVICES, SERVICE_GUIDES } from '../constants/serviceLinks';
 import { sectionSubtitleClass } from '../constants/typography';
 
 const ServiceDetail: React.FC = () => {
@@ -17,7 +18,12 @@ const ServiceDetail: React.FC = () => {
   // /services/anything would return a thin 200 for any URL a crawler invented.
   if (!service) return <NotFound />;
 
-  const related = SERVICES.filter((s) => s.slug !== service.slug).slice(0, 4);
+  // Hand-picked rather than the first four in the list, which left the last
+  // four services with no links from any other service page.
+  const related = (RELATED_SERVICES[service.slug] ?? [])
+    .map(serviceBySlug)
+    .filter((s): s is Service => Boolean(s));
+  const guides = SERVICE_GUIDES[service.slug] ?? [];
 
   return (
     <main className="relative overflow-hidden">
@@ -211,8 +217,27 @@ const ServiceDetail: React.FC = () => {
         <AdSlot slot="pageFooter" className="mt-10" />
       </section>
 
+      {/* Hub -> spoke links to the supporting articles (see serviceLinks.ts). */}
+      {guides.length > 0 && (
+        <section className="relative z-10 mx-auto max-w-page px-4 pb-10 sm:px-8 lg:px-16">
+          <h2 className="text-2xl font-bold text-ink-heading">Guides worth reading first</h2>
+          <ul className="mt-6 grid gap-4 sm:grid-cols-2">
+            {guides.map((guide) => (
+              <li key={guide.slug}>
+                <Link
+                  to={`/blog/${guide.slug}`}
+                  className="block h-full rounded-2xl border border-line-soft bg-white p-5 font-bold text-ink-heading shadow-card transition-shadow hover:text-brand-red hover:shadow-cardHover"
+                >
+                  {guide.title}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
       <section className="relative z-10 mx-auto max-w-page px-4 pb-16 sm:px-8 lg:px-16">
-        <h2 className="text-2xl font-bold text-ink-heading">Other services</h2>
+        <h2 className="text-2xl font-bold text-ink-heading">Related services</h2>
         <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {related.map((s) => (
             <Link

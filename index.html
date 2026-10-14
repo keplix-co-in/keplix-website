@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en-IN">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/jpeg" href="/kep-icon.jpg.jpeg" />
@@ -10,9 +10,17 @@
       href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Sora:wght@400..800&display=swap"
       rel="stylesheet"
     />
-    <title>Keplix - Drive Smarter, Book Faster</title>
-    <meta name="description" content="Revolutionary automotive service platform. Book, compare, and track auto services at your fingertips." />
-    <meta name="keywords" content="automotive, car service, maintenance, keplix, vehicle care" />
+    <!-- Fallback head for app-shell.html, which is what /blog/* serves for a post
+         published since the last deploy. Prerendered pages replace both tags
+         (scripts/prerender.mjs), so these only need to be accurate, not specific.
+         Kept in step with SITE_TAGLINE and DEFAULT_DESCRIPTION in site.ts. -->
+    <title>Keplix — Drive Smarter, Book Faster</title>
+    <meta name="description" content="Compare prices from verified car workshops, book a service in minutes and track it in real time. Keplix connects car owners with trusted garages across India." />
+    <!-- AdSense site ownership. The ad script itself only loads after cookie
+         consent (src/constants/ads.ts), so the review crawler, which never
+         consents, would otherwise find no AdSense marker in the HTML. This tag
+         loads nothing and sets no cookies. Must match DEFAULT_ADSENSE_CLIENT. -->
+    <meta name="google-adsense-account" content="ca-pub-9187009647712371" />
   </head>
   <body>
     <div id="root"></div>

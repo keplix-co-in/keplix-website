@@ -7,7 +7,7 @@ import HowItWorksDetail from '../components/HowItWorksDetail';
 import Contact from '../components/Contact';
 import PageBlob from '../components/PageBlob';
 import Seo from '../components/Seo';
-import { organizationSchema, websiteSchema, localBusinessSchema, mobileAppSchemas } from '../constants/schema';
+import { organizationSchema, websiteSchema, mobileAppSchemas } from '../constants/schema';
 
 /**
  * Extracted from App so the route table can live in its own module — a
@@ -21,7 +21,7 @@ const HomePage: React.FC = () => (
     <Seo
       title="Compare &amp; Book Car Services Online"
       description="Compare prices from verified car workshops near you, book a service in minutes and track it in real time. Keplix brings transparent pricing to car care across India."
-      jsonLd={[organizationSchema(), websiteSchema(), localBusinessSchema(), ...mobileAppSchemas()]}
+      jsonLd={[organizationSchema(), websiteSchema(), ...mobileAppSchemas()]}
     />
     <Hero />
     <Services />

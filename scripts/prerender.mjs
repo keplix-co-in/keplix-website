@@ -73,18 +73,44 @@ const STATIC_ROUTES = [
   ['/cookie-policy', 'yearly', '0.3'],
 ];
 
+/**
+ * Blog slugs that vercel.json permanently redirects elsewhere (a retired
+ * duplicate, say). Read from vercel.json itself rather than listed here, so
+ * adding a redirect there is all it takes to drop the old URL from the
+ * sitemap and llms.txt.
+ */
+async function redirectedBlogSlugs() {
+  const config = JSON.parse(await readFile(resolve(ROOT, 'vercel.json'), 'utf8'));
+  return new Set(
+    (config.redirects ?? [])
+      .map((r) => /^\/blog\/([^/:*()]+)$/.exec(r.source)?.[1])
+      .filter(Boolean),
+  );
+}
+
 async function fetchPosts() {
+  const REDIRECTED_BLOG_SLUGS = await redirectedBlogSlugs();
   const base = process.env.VITE_API_BASE_URL ?? '';
   if (!base) {
     console.warn('[prerender] VITE_API_BASE_URL not set — blog posts will not be prerendered.');
     return [];
   }
   try {
-    const res = await fetch(`${base}/content/blog/posts`, { headers: { Accept: 'application/json' } });
+    // Explicit limit: the endpoint pages at 24 by default, so without it every
+    // post beyond the 24 newest silently dropped out of the sitemap and the
+    // prerender once the blog grew past that.
+    const res = await fetch(`${base}/content/blog/posts?limit=500`, {
+      headers: { Accept: 'application/json' },
+    });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const body = await res.json();
     const posts = Array.isArray(body) ? body : (body?.data ?? []);
-    return posts.filter((p) => p?.slug);
+    if (body?.pagination?.totalPages > 1) {
+      console.warn(`[prerender] ${body.pagination.total} posts but only ${posts.length} fetched — raise the limit.`);
+    }
+    // A slug that vercel.json redirects (e.g. a retired duplicate) must not be
+    // listed in the sitemap or llms.txt even while it's still published.
+    return posts.filter((p) => p?.slug && !REDIRECTED_BLOG_SLUGS.has(p.slug));
   } catch (error) {
     // Deliberately non-fatal: a flaky content API must not break a deploy.
     // The static pages still prerender and /blog/* falls back to client
@@ -121,18 +147,34 @@ const xmlEscape = (s) =>
   String(s).replace(/[<>&'"]/g, (c) => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;', "'": '&apos;', '"': '&quot;' }[c]));
 
 function buildSitemap(posts, services = []) {
-  const today = new Date().toISOString().slice(0, 10);
+  // <lastmod> is only written where the real date is known. Previously every
+  // static and service URL got the build date, so each deploy claimed the
+  // whole site had just changed; Google stops trusting lastmod from a site
+  // that does that, which also discards the genuine dates on blog posts.
+  const day = (d) => (d ? String(d).slice(0, 10) : null);
   const entry = (loc, lastmod, changefreq, priority) =>
-    `  <url>\n    <loc>${loc}</loc>\n    <lastmod>${lastmod}</lastmod>\n` +
+    `  <url>\n    <loc>${loc}</loc>\n` +
+    (lastmod ? `    <lastmod>${lastmod}</lastmod>\n` : '') +
     `    <changefreq>${changefreq}</changefreq>\n    <priority>${priority}</priority>\n  </url>`;
 
+  // The blog index changes whenever a post is published or edited.
+  const newestPost = posts
+    .map((p) => day(p.updatedAt ?? p.publishedAt))
+    .filter(Boolean)
+    .sort()
+    .pop();
+
   const urls = [
-    ...STATIC_ROUTES.map(([path, cf, pr]) => entry(`${SITE_URL}${path}`, today, cf, pr)),
-    ...services.map(({ path }) => entry(`${SITE_URL}${path}`, today, 'monthly', '0.8')),
+    ...STATIC_ROUTES.map(([path, cf, pr]) =>
+      entry(`${SITE_URL}${path}`, path === '/blog' ? newestPost : null, cf, pr),
+    ),
+    ...services.map(({ path }) => entry(`${SITE_URL}${path}`, null, 'monthly', '0.8')),
     ...posts.map((p) =>
       entry(
         `${SITE_URL}/blog/${xmlEscape(p.slug)}`,
-        p.publishedAt ? String(p.publishedAt).slice(0, 10) : today,
+        // updatedAt needs the backend's public select to include it; older
+        // API builds fall back to the publish date.
+        day(p.updatedAt ?? p.publishedAt),
         'monthly',
         '0.7',
       ),

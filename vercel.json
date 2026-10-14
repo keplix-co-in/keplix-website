@@ -1,4 +1,17 @@
 {
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "www.keplix.co.in" }],
+      "destination": "https://keplix.co.in/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/blog/summer-car-care-check",
+      "destination": "/blog/summer-car-care-checklist",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     { "source": "/blog/(.*)", "destination": "/app-shell.html" },
     { "source": "/job/(.*)", "destination": "/app-shell.html" }

@@ -186,7 +186,7 @@ export const SERVICES: Service[] = [
     heading: 'Car AC Repair & Gas Refill',
     title: 'Car AC Repair & Gas Refill — Compare Prices',
     description:
-      'Car AC not cooling? Compare prices from verified workshops for gas refill, compressor repair and cooling coil replacement. Diagnosis before you pay.',
+      'Car AC repair and gas refill prices from verified Delhi NCR workshops: leak test, compressor, condenser and cooling coil. Diagnosis before you pay.',
     intro:
       'When a car AC stops cooling, the cause is usually one of three things, and they differ enormously in cost: the refrigerant has leaked out, the compressor has failed, or the condenser is blocked. A refill on a system that is leaking is money thrown away — the gas will be gone again within weeks — so insist on a leak test first.',
     included: [
@@ -273,11 +273,6 @@ export const SERVICES: Service[] = [
         question: 'How much does a car AC gas refill cost in India?',
         answer:
           'A straightforward refill typically runs ₹1,500–₹3,500 depending on the refrigerant your car uses — R134a is cheaper than the R1234yf used in newer cars. If a leak has to be repaired first, expect more.',
-      },
-      {
-        question: 'How often does car AC gas need topping up?',
-        answer:
-          'A sealed AC system should not need topping up at all. If yours needs gas every year, it has a leak. Repeated refills without fixing the leak also lose the compressor oil that circulates with the refrigerant, which eventually destroys the compressor.',
       },
       {
         question: 'Why is my car AC cooling only when the car is moving?',
@@ -703,11 +698,6 @@ export const SERVICES: Service[] = [
         answer:
           'It makes washing far easier and protects against UV fading and light chemical etching. It does not prevent scratches or dents. If the car lives outdoors, the UV protection alone usually justifies it.',
       },
-      {
-        question: 'How often should a car be washed?',
-        answer:
-          'Every one to two weeks in normal use. More often if it is parked under trees or near construction — bird droppings and cement dust are both alkaline and will etch clear coat within days in the heat.',
-      },
     ],
   },
   {
@@ -803,11 +793,6 @@ export const SERVICES: Service[] = [
         question: 'What should I do first when the car breaks down?',
         answer:
           'Get the car off the carriageway if it still moves, switch on the hazard lights, and place the warning triangle well behind the car — further than feels necessary on a highway. Then get yourself and any passengers out and away from the traffic side before calling anyone.',
-      },
-      {
-        question: 'Can I keep driving if the engine is overheating?',
-        answer:
-          'No. Stop as soon as it is safe and let it cool. Continuing to drive an overheating engine can warp the cylinder head — a repair that costs many times what a tow would have. Do not open the radiator cap while it is hot.',
       },
       {
         question: 'How much does towing cost?',
@@ -911,11 +896,6 @@ export const SERVICES: Service[] = [
           'Only the parts affected by the work. A manufacturer can decline a claim for damage caused by a badly wired accessory, but cannot void the whole warranty over a set of seat covers. Electrical work is where care matters most.',
       },
       {
-        question: 'Are aftermarket infotainment systems reliable?',
-        answer:
-          'Quality varies widely. Look for a unit with a proper canbus adapter for your specific model so the steering controls and reverse camera keep working, and expect to pay for it — the cheapest units tend to fail on exactly those integrations.',
-      },
-      {
         question: 'Which accessories are not legal in India?',
         answer:
           'Pressure horns, very dark window film, and coloured or excessively bright auxiliary lights all attract fines. Structural body modifications need approval. A reputable workshop will tell you before fitting rather than after.',
@@ -1009,12 +989,7 @@ export const SERVICES: Service[] = [
       {
         question: 'How long do brake pads last?',
         answer:
-          'Anywhere between 25,000 and 60,000 km, and the spread is almost entirely down to how and where you drive. Dense city traffic with constant stop-start wears pads several times faster than highway use. Weight matters too, so a loaded SUV goes through pads faster than a light hatchback. Have them measured at each service rather than guessing from the odometer.',
-      },
-      {
-        question: 'How long do brake pads last?',
-        answer:
-          'Typically 30,000–50,000 km, but city driving with constant stop-start traffic wears them much faster — 20,000 km is common in dense traffic. Rear pads usually last considerably longer than front.',
+          'Anywhere between 25,000 and 60,000 km, and the spread is almost entirely down to how and where you drive. Dense city traffic with constant stop-start wears pads several times faster than highway use. Weight matters too, so a loaded SUV goes through pads faster than a light hatchback. Rear pads usually last considerably longer than the front. Have them measured at each service rather than guessing from the odometer.',
       },
       {
         question: 'Why do my brakes squeal?',

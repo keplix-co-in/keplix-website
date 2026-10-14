@@ -5,9 +5,11 @@ import { ArrowLeft } from 'lucide-react';
 import PageBlob from '../components/PageBlob';
 import AdSlot from '../components/AdSlot';
 import Seo from '../components/Seo';
-import { blogPostingSchema, breadcrumbSchema } from '../constants/schema';
+import { blogPostingSchema, breadcrumbSchema, postAuthorName } from '../constants/schema';
 import { fetchBlogPost, formatPostDate, type BlogPostFull } from '../lib/api';
 import { getInitialData } from '../lib/initialData';
+import { serviceBySlug } from '../constants/services';
+import { serviceSlugForPost } from '../constants/serviceLinks';
 import { sanitizeHtml } from '../lib/sanitize';
 
 /**
@@ -67,6 +69,10 @@ const BlogPost: React.FC = () => {
   // The body is author-written HTML. It's already sanitised server-side on
   // write; sanitising again here means a bad row in the DB still can't run
   // script in a visitor's browser.
+  // Spoke -> hub: every article sends readers on to the service it relates to
+  // (see serviceLinks.ts). Without it, posts had no link to any service page.
+  const relatedService = post ? serviceBySlug(serviceSlugForPost(post.slug)) : undefined;
+
   const safeHtml = useMemo(
     () => (post ? sanitizeHtml(post.content) : ''),
     [post],
@@ -165,7 +171,7 @@ const BlogPost: React.FC = () => {
               canonical={`/blog/${post.slug}`}
               type="article"
               publishedTime={post.publishedAt}
-              author={post.author?.name}
+              author={postAuthorName(post.author)}
               jsonLd={[
                 blogPostingSchema(post),
                 breadcrumbSchema([
@@ -192,8 +198,10 @@ const BlogPost: React.FC = () => {
                 {post.title}
               </h1>
               <p className="mt-4 text-sm text-ink-faint">
+                {/* postAuthorName swaps the admin account's "Super Admin"
+                    label for the editorial team, matching the JSON-LD. */}
                 {[
-                  post.author?.name,
+                  postAuthorName(post.author),
                   formatPostDate(post.publishedAt),
                   post.readTime ? `${post.readTime} min read` : null,
                 ]
@@ -223,6 +231,23 @@ const BlogPost: React.FC = () => {
                 <AdSlot key={`mid-${slug}`} slot="articleMid" className="my-8" />,
                 midAdHost,
               )}
+
+            {relatedService && (
+              <aside className="mt-12 rounded-2xl border border-line-soft bg-white p-6 shadow-card">
+                <p className="text-xs font-semibold uppercase tracking-wide text-brand-red">
+                  Related service
+                </p>
+                <Link
+                  to={`/services/${relatedService.slug}`}
+                  className="mt-2 block text-xl font-bold text-ink-heading hover:text-brand-red"
+                >
+                  {relatedService.heading}
+                </Link>
+                <p className="mt-2 text-sm text-ink-muted">
+                  What the job involves, typical prices in Delhi NCR, and how to read a quote.
+                </p>
+              </aside>
+            )}
 
             <AdSlot key={`end-${slug}`} slot="articleEnd" className="mt-12" />
           </>
