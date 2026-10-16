@@ -2,6 +2,7 @@ import React from 'react';
 import StoreBadges from './StoreBadges';
 import { APP_LINKS } from '../constants/links';
 import { sectionSubtitleClass } from '../constants/typography';
+import Picture from './Picture';
 
 const Process: React.FC = () => {
   return (
@@ -13,12 +14,16 @@ const Process: React.FC = () => {
           '/home-app-screen-3.png',
           '/home-app-screen-4.png',
         ].map((src) => (
-          <img
+          <Picture
             key={src}
             src={src}
             alt="Keplix app showcase"
             loading="lazy"
             decoding="async"
+            // Intrinsic size of the screenshots, so the grid reserves height
+            // before they load instead of shifting the section below.
+            width={984}
+            height={1713}
             className="w-full rounded-2xl bg-[#f7e6e6]"
           />
         ))}

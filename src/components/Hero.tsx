@@ -4,6 +4,7 @@ import { Car, PlayCircle, ShieldCheck, Warehouse } from 'lucide-react';
 import HeroVideoPanel from './HeroVideoPanel';
 import { APP_LINKS } from '../constants/links';
 import { sectionSubtitleClass } from '../constants/typography';
+import Picture from './Picture';
 
 const Hero: React.FC = () => {
   const navigate = useNavigate();
@@ -115,9 +116,15 @@ const Hero: React.FC = () => {
                   </a>
                 </div>
               </div>
-              <img
+              <Picture
                 src="/hero-phone-customer.png"
                 alt="Keplix customer app"
+                // Lazy on purpose: below sm these are display:none, and an eager
+                // hidden <img> is still downloaded. Chrome and Firefox skip lazy
+                // images that never render, so phones no longer pay ~70 KB for
+                // nothing. Not the LCP element on any breakpoint (the heading is).
+                loading="lazy"
+                decoding="async"
                 className="hidden h-[280px] w-auto shrink-0 self-center object-contain sm:block lg:h-[320px]" width={549} height={1106} />
             </div>
 
@@ -143,9 +150,15 @@ const Hero: React.FC = () => {
                   </button>
                 </div>
               </div>
-              <img
+              <Picture
                 src="/hero-phone-garage.png"
                 alt="Keplix garage partner app"
+                // Lazy on purpose: below sm these are display:none, and an eager
+                // hidden <img> is still downloaded. Chrome and Firefox skip lazy
+                // images that never render, so phones no longer pay ~70 KB for
+                // nothing. Not the LCP element on any breakpoint (the heading is).
+                loading="lazy"
+                decoding="async"
                 className="hidden h-[280px] w-auto shrink-0 self-center object-contain sm:block lg:h-[320px]" width={547} height={1106} />
             </div>
           </div>

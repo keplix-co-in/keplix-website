@@ -3,6 +3,8 @@ import { createRoot, hydrateRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import App from './App.tsx';
+// Before index.css so the @font-face rules exist when the base styles name the families.
+import './fonts.css';
 import './index.css';
 import { inject } from '@vercel/analytics';
 

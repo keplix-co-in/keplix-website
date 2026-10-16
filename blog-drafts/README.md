@@ -35,6 +35,14 @@ cadence. Suggested order (dates are targets, not hard rules):
 | 05 | `05-winter-smog-car-care.html` | 2026-11-02 | Before smog season peaks. |
 | 04 | `04-wheel-alignment-vs-balancing.html` | 2026-11-09 | |
 | 06 | `06-clutch-wear-city-driving.html` | 2026-11-16 | |
+| 07 | `07-exide-vs-amaron-car-battery.html` | 2026-11-19 | Needs 03 live first. |
+| 08 | `08-car-not-starting-causes.html` | 2026-11-23 | Needs 03 live first. |
+| 09 | `09-highway-breakdown-what-to-do.html` | 2026-11-26 | Category "Safety" may need creating. |
+| 10 | `10-tubeless-puncture-repair-or-replace.html` | 2026-11-30 | Category "Tyres" may need creating. |
+| 11 | `11-cng-car-maintenance.html` | 2026-12-03 | |
+| 12 | `12-ppf-vs-ceramic-coating.html` | 2026-12-10 | |
+| 13 | `13-aftermarket-accessories-and-warranty.html` | 2026-12-17 | |
+| 14 | `14-r134a-vs-r1234yf-car-ac-gas.html` | 2026-12-24 | Verify the Kigali freeze year and the A2L class before publishing. |
 
 **Order matters for one link:** post 05 links to post 03
 (`/blog/car-battery-life-in-india`). Publish 03 first, or that link 404s.

@@ -4,12 +4,11 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/jpeg" href="/kep-icon.jpg.jpeg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Sora:wght@400..800&display=swap"
-      rel="stylesheet"
-    />
+    <!-- Fonts are self-hosted (@fontsource-variable, imported in src/main.tsx)
+         rather than pulled from fonts.googleapis.com: the Google stylesheet was
+         a render-blocking cross-origin request, plus two extra connections,
+         before first paint. The woff2 files are bundled into hashed /assets
+         with the CSS. -->
     <!-- Fallback head for app-shell.html, which is what /blog/* serves for a post
          published since the last deploy. Prerendered pages replace both tags
          (scripts/prerender.mjs), so these only need to be accurate, not specific.

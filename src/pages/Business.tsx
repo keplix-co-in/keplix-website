@@ -7,6 +7,7 @@ import { APP_LINKS } from '../constants/links';
 import { sectionSubtitleClass, cardTitleClass } from '../constants/typography';
 import Seo from '../components/Seo';
 import { breadcrumbSchema, mobileAppSchemas } from '../constants/schema';
+import Picture from '../components/Picture';
 
 const stats = [
   { icon: '/icons/biz-stat-free.svg', line1: '100% Free', line2: 'to Join' },
@@ -290,7 +291,7 @@ const Business: React.FC = () => {
             </div>
           </div>
           <div className="flex justify-center">
-            <img
+            <Picture
               src="/app-features-phone.png"
               alt="Keplix Garage Partner app dashboard"
               className="w-full max-w-[270px] rounded-2xl shadow-cardHover"
@@ -307,13 +308,16 @@ const Business: React.FC = () => {
               screenshots at ~40% of the row. */}
           <div className="grid grid-cols-2 gap-6 sm:gap-14 lg:grid-cols-4">
             {appScreens.map((src) => (
-              <img
+              <Picture
                 key={src}
                 src={src}
                 alt="Keplix Garage Partner app screen"
                 className="w-full"
                 loading="lazy"
                 decoding="async"
+                // Intrinsic size, reserves the row height (no CLS).
+                width={984}
+                height={1713}
               />
             ))}
           </div>
@@ -383,7 +387,7 @@ const Business: React.FC = () => {
                 </p>
               </div>
             </div>
-            <img
+            <Picture
               src="/biz-cta-illustration.png"
               alt=""
               aria-hidden

@@ -6,6 +6,7 @@ import { breadcrumbSchema } from '../constants/schema';
 import AdSlot from '../components/AdSlot';
 import LazyVideo from '../components/LazyVideo';
 import { ABOUT_PILLARS } from '../constants/about';
+import Picture from '../components/Picture';
 
 // Mission/vision/values live in constants/about.ts, shared with the chatbot.
 const pillars = ABOUT_PILLARS;
@@ -64,7 +65,7 @@ const About: React.FC = () => {
               </p>
             </div>
             <div className="flex justify-center">
-              <img
+              <Picture
                 src="/about-hero-illustration.png"
                 alt="Illustration of a person working at a laptop"
                 className="w-full max-w-[520px]"
@@ -172,7 +173,7 @@ const About: React.FC = () => {
           <div className="grid items-start gap-12 lg:grid-cols-[512fr_656fr]">
             <div className="flex w-full flex-col items-center gap-3">
               <div className="rounded-full border-2 border-[#f3f4f6] p-1.5">
-                <img
+                <Picture
                   src="/ceo-vardan.jpg"
                   alt="Vardan Chaturvedi, CEO &amp; Founder"
                   className="h-32 w-32 rounded-full object-cover"

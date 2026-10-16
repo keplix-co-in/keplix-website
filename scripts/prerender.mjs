@@ -30,7 +30,7 @@
  *   404 in production instead of silently working. assertRoutesMatch() below
  *   fails the build on that mismatch so it can never reach a deploy.
  */
-import { writeFile, mkdir, readFile } from 'node:fs/promises';
+import { writeFile, mkdir, readFile, readdir } from 'node:fs/promises';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
@@ -301,12 +301,37 @@ async function assertRoutesMatch(routes) {
 
 const MIN_TEXT_LENGTH = 500;
 
+/**
+ * Preloads the latin Plus Jakarta Sans woff2 (src/fonts.css).
+ *
+ * Without it the browser only discovers the font after downloading and parsing
+ * the CSS, so body text either paints late or swaps visibly. Done here rather
+ * than in index.html because Vite hashes the filename. Only the upright latin
+ * file: it is the one every page needs; preloading italic, latin-ext or Sora
+ * would spend bandwidth on fonts many pages never use. Applied to the template,
+ * so app-shell.html gets it too. If the file is not found (fonts.css changed),
+ * warn and carry on — a missing preload is a perf regression, not a broken page.
+ */
+async function withFontPreload(html) {
+  const assets = await readdir(resolve(DIST, 'assets'));
+  const font = assets.find((f) => /^plus-jakarta-sans-latin-wght-normal-.*\.woff2$/.test(f));
+  if (!font) {
+    console.warn('[prerender] body font woff2 not found in dist/assets — no preload added.');
+    return html;
+  }
+  // crossorigin is required even same-origin: fonts are always fetched in CORS
+  // mode, and a preload without it is not reused by the @font-face request.
+  const link = `<link rel="preload" href="/assets/${font}" as="font" type="font/woff2" crossorigin>`;
+  return html.replace('</head>', `    ${link}
+  </head>`);
+}
+
 async function main() {
   const services = await serviceRoutes();
   const staticRoutes = [...STATIC_ROUTES.map(([p]) => p), ...services.map((s) => s.path)];
   await assertRoutesMatch(staticRoutes);
 
-  const template = await readFile(resolve(DIST, 'index.html'), 'utf8');
+  const template = await withFontPreload(await readFile(resolve(DIST, 'index.html'), 'utf8'));
 
   // Preserved BEFORE the loop below overwrites dist/index.html with the
   // homepage's own prerendered markup (route '/' writes directly into

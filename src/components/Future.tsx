@@ -6,6 +6,7 @@ import {
   RefreshCw,
   } from 'lucide-react';
 import { cardTitleClass } from '../constants/typography';
+import Picture from './Picture';
 
 const steps = [
   { icon: Search, title: 'Search Service', description: 'Tell us what your car needs.' },
@@ -73,7 +74,7 @@ const Future: React.FC = () => {
         {/* Centre the illustration + cards as one group, rather than letting the
             row start left and leaving the cards floating in the leftover space. */}
         <div className="mt-10 flex flex-col items-center gap-8 lg:flex-row lg:items-center lg:justify-center lg:gap-16">
-          <img
+          <Picture
             src="/trust-illustration.png"
             alt="Customer reviews illustration"
             className="w-full max-w-[355px] shrink-0 rounded-2xl"
