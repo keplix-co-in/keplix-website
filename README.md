@@ -62,6 +62,22 @@ npm run build
 npm run deploy
 ```
 
+## 🛠️ Maintenance mode
+
+`public/status.json` is the maintenance switch for **both** websites:
+
+```json
+{ "maintenance": true, "message": "Planned upgrade, back soon.", "until": "4:00 PM IST" }
+```
+
+- Edit it, then push to `main`. Vercel deploys in about a minute. Check https://keplix.co.in/status.json afterwards.
+- On keplix.co.in, `src/components/MaintenanceBanner.tsx` shows a red banner above the header. It renders on the client only, so the prerendered HTML and SEO are unchanged.
+- On partner.keplix.co.in, the portal (`keplix-webpage-vendors`) reads the same file and shows a full maintenance page.
+- `vercel.json` serves the file with `no-store` and allows CORS only for `https://partner.keplix.co.in`.
+- It fails open: only a literal `true` turns it on, and a broken or unreachable file means "off".
+- Logic is in `src/lib/maintenanceStatus.js`. Run its test with `node --test src/lib/__tests__/maintenanceStatus.test.mjs`.
+- The mobile apps use Firebase Remote Config instead. See `docs/maintenance-and-updates/` at the repo root.
+
 ## 📁 Project Structure
 
 ```

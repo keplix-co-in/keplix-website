@@ -4,6 +4,7 @@ import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
 import CookieConsent from './components/CookieConsent';
 import ChatWidget from './components/ChatWidget';
+import MaintenanceBanner from './components/MaintenanceBanner';
 import About from './pages/About';
 import Blog from './pages/Blog';
 import BlogPost from './pages/BlogPost';
@@ -39,6 +40,7 @@ function App() {
     <div className={`min-h-screen ${isBusiness ? 'business-wash' : 'page-wash'}`}>
       <ScrollToTop />
       <CookieConsent />
+      <MaintenanceBanner />
       <Header />
       <Routes>
         <Route path="/" element={<HomePage />} />

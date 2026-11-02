@@ -19,7 +19,11 @@ const Picture: React.FC<PictureProps> = ({ src, ...img }) => (
   // display:contents so the <img> stays the flex/grid item and its layout
   // classes (shrink-0, self-center, hidden sm:block) keep working unchanged.
   <picture className="contents">
-    <source srcSet={src.replace(/\.(png|jpe?g)$/i, '.webp')} type="image/webp" />
+    {/* hidden: under display:contents Chrome made <source> a grid item, so
+        in Process.tsx's 4-col grid every <source> took a cell and the phones
+        landed in columns 1 and 3 with blank gaps. display:none doesn't affect
+        srcset selection. */}
+    <source className="hidden" srcSet={src.replace(/\.(png|jpe?g)$/i, '.webp')} type="image/webp" />
     <img src={src} {...img} />
   </picture>
 );
