@@ -28,7 +28,7 @@ export const CUSTOMER_FAQS: Faq[] = [
     id: 'compare',
     question: 'Can I compare car service prices before booking?',
     answer:
-      'Yes — that is the point of Keplix. Every workshop shows an itemised price for the service you selected, so you can compare like for like rather than guessing. There are no platform fees added on top of the price you see.',
+      'Yes — that is the point of Keplix. Every workshop shows an itemised price for the service you selected, so you can compare like for like rather than guessing. A platform fee is added at checkout and shown before you pay, so you always see the full total up front.',
   },
   {
     id: 'payment-methods',
@@ -103,7 +103,7 @@ export const GARAGE_FAQS: Faq[] = [
     id: 'cost',
     question: 'What does it cost to join Keplix as a garage?',
     answer:
-      'Joining Keplix is free. Keplix keeps a platform fee (currently 10%) from each completed booking, and you receive the balance as a payout.',
+      'Joining Keplix is free. The platform fee is paid by the customer at checkout, so you receive your full listed service price as a payout for each completed booking.',
   },
   {
     id: 'payouts',

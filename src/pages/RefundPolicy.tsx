@@ -50,7 +50,7 @@ const RefundPolicy: React.FC = () => {
           </div>
           <h1 className="text-4xl md:text-5xl font-bold mb-4 text-ink">Refund &amp; Cancellation Policy</h1>
           <p className="text-ink-muted text-lg">
-            Last updated: <span className="text-brand-red font-semibold">March 07, 2026</span>
+            Last updated: <span className="text-brand-red font-semibold">November 06, 2026</span>
           </p>
         </div>
       </div>
@@ -92,8 +92,8 @@ const RefundPolicy: React.FC = () => {
             <ul className="list-disc list-inside space-y-2 ml-4">
               <li>
                 <strong className="text-ink-heading">Any time before work starts —</strong>{' '}
-                full refund of everything you paid, with no cancellation fee, even if that's minutes
-                before your slot.
+                full refund of the service price, with no cancellation fee, even if that's minutes
+                before your slot. The platform fee is not refunded (see section 5).
               </li>
               <li>
                 <strong className="text-ink-heading">After work has started —</strong>{' '}
@@ -107,8 +107,9 @@ const RefundPolicy: React.FC = () => {
             <p>
               If a partner workshop cancels your booking, cannot honour the slot, or does not turn
               up, you receive a{' '}
-              <strong className="text-ink-heading">100% refund regardless of timing</strong> — including
-              cancellations made minutes before the appointment. We will also help you rebook with
+              <strong className="text-ink-heading">100% refund of the service price regardless of timing</strong>{' '}
+              — including cancellations made minutes before the appointment. The platform fee is not
+              refunded (see section 5). We will also help you rebook with
               another verified workshop nearby.
             </p>
           </Section>
@@ -150,6 +151,11 @@ const RefundPolicy: React.FC = () => {
 
           <Section title="5. What is not refundable">
             <ul className="list-disc list-inside space-y-2 ml-4">
+              <li>
+                The Keplix platform fee shown at checkout. It is charged on top of the service price
+                and is not refunded in any case, including cancellations by you or the workshop; only
+                the service price is refunded.
+              </li>
               <li>
                 Diagnostic or inspection fees, where the inspection has already been carried out and
                 the findings shared with you.

@@ -15,8 +15,10 @@ import { breadcrumbSchema } from '../constants/schema';
  * agrees to. This page fills that gap.
  *
  * Kept deliberately in step with what the backend does today:
- *   - platform fee: PlatformSettings.platformFeePercentage (10% default),
- *     withheld from the booking amount at payout — matches Terms.tsx §4.
+ *   - platform fee: PlatformSettings.platformFeePercentage. Policy change
+ *     2026-11-06: the fee is charged to the CUSTOMER on top of the service
+ *     price at checkout; the partner receives the full listed service price.
+ *     The fee is non-refundable (RefundPolicy.tsx §5) — matches Terms.tsx §4.
  *   - payment is held until the service is completed — Terms.tsx §4.
  *   - customer refunds follow RefundPolicy.tsx / services/refundPolicy.js.
  * If any of those change, update this page in the same change. Have counsel
@@ -55,7 +57,7 @@ const PartnerTerms: React.FC = () => (
           The agreement between your workshop and Keplix when you use the Keplix Partner app or
           the partner portal.
         </p>
-        <p className="mt-2 text-sm text-ink-muted">Last updated: October 08, 2026</p>
+        <p className="mt-2 text-sm text-ink-muted">Last updated: November 06, 2026</p>
       </div>
     </div>
 
@@ -103,10 +105,11 @@ const PartnerTerms: React.FC = () => (
 
         <Section title="4. Platform fee and payouts">
           <p>
-            Joining Keplix is free. For each booking completed through Keplix, Keplix keeps a platform
-            fee (currently 10% of the booking amount) and pays you the balance. We will give you
-            notice in the app or by email before changing the fee, and the change will apply only to
-            bookings made after it takes effect.
+            Joining Keplix is free. Keplix charges the customer a platform fee, shown at checkout,
+            on top of your listed service price. Nothing is deducted from your side for this fee:
+            for each booking completed through Keplix, you receive your full listed service price
+            (plus any additional work the customer approved). Keplix sets the platform fee and may
+            change it; changes apply only to bookings made after they take effect.
           </p>
           <p>
             Customers pay Keplix in the app. The money is held until the service is marked complete

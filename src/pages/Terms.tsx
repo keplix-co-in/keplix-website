@@ -53,7 +53,7 @@ const Terms: React.FC = () => (
         <p className="text-lg text-ink-muted">
           The agreement between you and Keplix when you use this site or our apps.
         </p>
-        <p className="mt-2 text-sm text-ink-muted">Last updated: October 08, 2026</p>
+        <p className="mt-2 text-sm text-ink-muted">Last updated: November 06, 2026</p>
       </div>
     </div>
 
@@ -115,11 +115,13 @@ const Terms: React.FC = () => (
             Payment for a booking is held by Keplix and released to the workshop
             after the service is completed. This is deliberate: it means that if
             something goes wrong, the money has not already left the system.
-            Keplix retains a platform fee from each completed booking; the workshop
-            receives the balance.
+            At checkout, Keplix adds a platform fee, shown before you pay, on top of
+            the service price; the workshop receives the full service price. The
+            platform fee is non-refundable — see the Cancellation and Refund Policy.
           </p>
           <p>
-            You agree to pay the amount confirmed at booking, plus any additional
+            You agree to pay the amount confirmed at booking (service price plus
+            platform fee), plus any additional
             work you have separately approved.
           </p>
         </Section>

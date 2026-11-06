@@ -49,16 +49,16 @@ ${ABOUT_PILLARS.map((p) => `- ${p.title}: ${p.description}`).join('\n')}
 ## Why choose Keplix (car owners)
 Every point restates a fact elsewhere in KNOWLEDGE; the source is in brackets.
 - Verified workshops: each partner is checked before it can take bookings, rated by real customers, and removed if it falls below standard. [FAQ: verified]
-- Upfront, itemised prices you compare like for like before booking, with no platform fee added on top. [FAQ: compare]
+- Upfront, itemised prices you compare like for like before booking, plus a platform fee added at checkout and shown before you pay. [FAQ: compare]
 - Book a slot in minutes in the app; the workshop confirms it. [FAQ: book]
 - Pay securely in the app (UPI, cards, net banking); Keplix never sees your card, and the money is held until the service is complete. [FAQ: payment-methods, payment-safe]
 - Track the job live: accepted, in progress, completed. [FAQ: track]
-- Fair cancellation: full refund if you cancel before work starts; 100% refund if the workshop cancels or doesn't show; a dispute process if you're unhappy. [Cancellation and refund policy]
+- Fair cancellation: full refund of the service price if you cancel before work starts; 100% service-price refund if the workshop cancels or doesn't show; the platform fee is non-refundable; a dispute process if you're unhappy. [Cancellation and refund policy]
 - Your car's full service history in one place, useful when selling. [FAQ: history]
 - Real humans on WhatsApp, phone and email. [Contact]
 
 ## Why join Keplix (garages / workshops)
-Free to join; customers who have already chosen and paid; paid out after every completed service (Keplix keeps a 10% platform fee); dedicated partner support; digital tools to manage bookings, walk-ins and payouts. [Business page, garage FAQs]
+Free to join; customers who have already chosen and paid; paid out after every completed service (the customer pays the platform fee at checkout, so you get your full listed service price); dedicated partner support; digital tools to manage bookings, walk-ins and payouts. [Business page, garage FAQs]
 
 ## Apps
 - Customer app (Android): ${APP_LINKS.customerAndroid}
@@ -76,12 +76,12 @@ Free to join; customers who have already chosen and paid; paid out after every c
 
 ## Cancellation and refund policy (authoritative)
 - Customers cancel from My Bookings in the app.
-- Cancel any time before the workshop starts work: full refund and no cancellation fee, even minutes before the slot.
+- Cancel any time before the workshop starts work: full refund of the service price and no cancellation fee, even minutes before the slot.
 - Once work has started: no refund for cancelling. If unhappy with the work, raise a dispute instead.
-- If the workshop cancels, can't honour the slot, or doesn't turn up: 100% refund, and we help rebook.
+- If the workshop cancels, can't honour the slot, or doesn't turn up: 100% refund of the service price, and we help rebook.
 - Refunds go to the original payment method only and usually arrive in 5–7 working days. The customer gets a reference number.
 - Disputes: within 7 days of the service, with the booking reference and photos. Acknowledged within 48 hours, and we aim to resolve them within 7 working days. The outcome can be free rework, a partial refund or a full refund.
-- Not refundable: diagnostic fees for inspections already done and shared, fitted parts that aren't faulty (warranty applies), and no-shows who didn't cancel.
+- Not refundable: the Keplix platform fee charged at checkout (never refunded, in any case; only the service price is refunded), diagnostic fees for inspections already done and shared, fitted parts that aren't faulty (warranty applies), and no-shows who didn't cancel.
 - The policy page is marked as a draft pending final approval. Full text: ${SITE_URL}/refund-policy
 
 ## Job tracking
