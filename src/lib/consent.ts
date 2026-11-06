@@ -1,4 +1,5 @@
 import { ADSENSE_SCRIPT_SRC, ADS_ENABLED } from '../constants/ads';
+import { isJobPath } from './privacy.js';
 
 /**
  * Cookie-consent state for advertising cookies.
@@ -70,6 +71,10 @@ let scriptRequested = false;
  */
 export const loadAdsenseScript = () => {
   if (!ADS_ENABLED || scriptRequested || typeof document === 'undefined') return;
+  // A-005 / SYS-005: never load AdSense on /job/<token>. Google's script reads
+  // the page URL, which there is the customer's tracking credential.
+  // scriptRequested stays false, so the next page load elsewhere still loads it.
+  if (isJobPath(window.location.pathname)) return;
   if (document.querySelector(`script[src^="${ADSENSE_SCRIPT_SRC.split('?')[0]}"]`)) {
     scriptRequested = true;
     return;

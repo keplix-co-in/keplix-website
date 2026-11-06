@@ -7,8 +7,12 @@ import App from './App.tsx';
 import './fonts.css';
 import './index.css';
 import { inject } from '@vercel/analytics';
+import { redactJobUrl } from './lib/privacy.js';
 
-inject();
+// A-005 / SYS-005: /job/<token> carries a customer's tracking token in the
+// path, and analytics used to record it verbatim. Redact it to
+// /job/[redacted] before any event leaves the browser.
+inject({ beforeSend: (event) => ({ ...event, url: redactJobUrl(event.url) }) });
 
 const container = document.getElementById('root')!;
 

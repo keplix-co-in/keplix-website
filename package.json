@@ -13,7 +13,8 @@
     "build": "vite build && vite build --ssr src/entry-server.tsx --outDir dist-ssr && node scripts/prerender.mjs",
     "lint": "eslint . --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "build:spa": "vite build"
+    "build:spa": "vite build",
+    "test": "node --test \"src/lib/__tests__/*.test.mjs\" \"api/__tests__/*.test.mjs\" \"scripts/__tests__/*.test.mjs\""
   },
   "dependencies": {
     "@vercel/analytics": "^2.0.0",

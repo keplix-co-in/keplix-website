@@ -10,6 +10,17 @@ import { CONTACT } from '../src/constants/links.js';
 import { SITE_URL } from '../src/constants/site.js';
 import { isAllowedOrigin } from './contact.js';
 import { createHmac, timingSafeEqual } from 'node:crypto';
+import {
+  buildChatMessages,
+  clientIp,
+  containsLeak,
+  createDailyCap,
+  createRateLimiter,
+  replySigningKey,
+  signReply,
+  verifyReply,
+  type ChatMsg,
+} from './_guards.js';
 
 /**
  * Website chatbot. It answers visitor questions from the Keplix knowledge pack
@@ -83,87 +94,62 @@ Safety:
 KNOWLEDGE:
 ${KNOWLEDGE}`;
 
-type Msg = { role: 'user' | 'assistant'; content: string };
+type Msg = ChatMsg;
 
 // ---- Abuse protection ------------------------------------------------------
 // The origin check stops other websites from using this endpoint from a
 // browser, but curl can fake the Origin header. So we also:
 //  1. validate every request strictly and reject anything malformed,
 //  2. throttle per IP (per minute and per day) with a per-instance daily ceiling,
+//     keyed on x-real-ip (O-002: set by Vercel, not by the client),
 //  3. require a Cloudflare Turnstile human check (free) when
 //     TURNSTILE_SECRET_KEY is set; a pass is valid for 30 min per IP,
 //  4. strip card numbers and OTPs before anything reaches the AI provider,
-//  5. never return a reply that leaks the system prompt.
+//  5. forward only the visitor's own turns to the model (O-003),
+//  6. never return a reply that leaks the system prompt.
 // Counters live in instance memory, like contact.ts: best-effort, not global.
 // The hard backstop is the free tier itself. Keep billing OFF on the Gemini
 // Cloud project so abuse can only exhaust the quota, never run up a bill.
 
-const PER_MINUTE = 10;
-const PER_DAY = 80;
-const INSTANCE_PER_DAY = 3000;
+// O-002 (security-review-2026-10-28): tightened from 10/min, 80/day and
+// 3000/instance/day. A real visitor asks a handful of questions; these still
+// leave plenty of room while cutting what one scripted IP can burn.
+const PER_MINUTE = 6;
+const PER_DAY = 40;
+const INSTANCE_PER_DAY = 1500;
 const MAX_RAW_MESSAGES = 30;
 const MAX_TOTAL_CHARS = 6000;
 const PASS_TTL_MS = 30 * 60_000;
 
-const minuteHits = new Map<string, number[]>();
-const dayHits = new Map<string, { day: string; n: number }>();
-let instanceDay = { day: '', n: 0 };
-const today = () => new Date().toISOString().slice(0, 10);
+const ipLimiter = createRateLimiter({ perMinute: PER_MINUTE, perDay: PER_DAY, maxKeys: 20000 });
+const instanceCap = createDailyCap(INSTANCE_PER_DAY);
 
 /** Returns an error message when this request should be throttled. */
 const throttle = (ip: string): string | null => {
-  const now = Date.now();
-  const day = today();
-
-  const recent = (minuteHits.get(ip) || []).filter((t) => now - t < 60_000);
-  recent.push(now);
-  minuteHits.set(ip, recent);
-  if (minuteHits.size > 5000) minuteHits.clear();
-  if (recent.length > PER_MINUTE) return 'Too many messages. Please wait a minute.';
-
-  const d = dayHits.get(ip);
-  const count = d && d.day === day ? d.n + 1 : 1;
-  dayHits.set(ip, { day, n: count });
-  if (dayHits.size > 20000) dayHits.clear();
-  if (count > PER_DAY) return 'Daily message limit reached. Please contact us on WhatsApp.';
-
-  instanceDay = instanceDay.day === day ? { day, n: instanceDay.n + 1 } : { day, n: 1 };
-  if (instanceDay.n > INSTANCE_PER_DAY) return 'The assistant is busy right now. Please contact us on WhatsApp.';
+  const limited = ipLimiter.hit(ip);
+  if (limited === 'minute') return 'Too many messages. Please wait a minute.';
+  if (limited === 'day') return 'Daily message limit reached. Please contact us on WhatsApp.';
+  if (!instanceCap.take()) return 'The assistant is busy right now. Please contact us on WhatsApp.';
   return null;
 };
 
-// Remove control characters, and redact card numbers and OTPs so they are
-// never sent to the AI provider.
-const sanitize = (text: string): string =>
-  text
-    // eslint-disable-next-line no-control-regex
-    .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, '')
-    .replace(/\b(?:\d[ -]?){12,18}\d\b/g, '[card number removed]')
-    .replace(/\b(otp|pin|cvv|password)\b(?:\W*(?:is|was|=))?\W*\S+/gi, '$1 [removed]')
-    .trim();
-
-const parseMessages = (raw: unknown): Msg[] | null => {
-  if (!Array.isArray(raw) || raw.length === 0 || raw.length > MAX_RAW_MESSAGES) return null;
-  let total = 0;
-  for (const m of raw) {
-    if (
-      !m ||
-      typeof m !== 'object' ||
-      (m.role !== 'user' && m.role !== 'assistant') ||
-      typeof m.content !== 'string'
-    ) {
-      return null; // reject outright rather than silently repairing it
-    }
-    total += m.content.length;
-  }
-  if (total > MAX_TOTAL_CHARS) return null;
-
-  const msgs = (raw as Msg[])
-    .slice(-MAX_TURNS)
-    .map((m) => ({ role: m.role, content: sanitize(m.content).slice(0, MAX_CHARS) }))
-    .filter((m) => m.content !== '');
-  return msgs.length && msgs[msgs.length - 1].role === 'user' ? msgs : null;
-};
+// O-003: card numbers / OTPs are redacted and the newest turn must be the
+// visitor's. Assistant turns reach the model only with a valid signature from
+// this server (signReply in the handler), so a script can't put words in the
+// bot's mouth while real follow-ups keep their context. With no signing key
+// (no secret env set at all) every assistant turn is dropped (fail-safe).
+const REPLY_KEY = replySigningKey(process.env);
+const parseMessages = (raw: unknown): Msg[] | null =>
+  buildChatMessages(raw, {
+    maxRaw: MAX_RAW_MESSAGES,
+    maxTotalChars: MAX_TOTAL_CHARS,
+    maxUserTurns: Math.ceil(MAX_TURNS / 2),
+    maxTurns: MAX_TURNS,
+    maxChars: MAX_CHARS,
+    ...(REPLY_KEY
+      ? { verifyAssistant: (content: string, sig: unknown) => verifyReply(REPLY_KEY, content, sig) }
+      : {}),
+  });
 
 // Turnstile human check. A token can be used once, so after a successful
 // check we issue an HMAC-signed pass bound to the IP, valid for 30 minutes.
@@ -205,18 +191,27 @@ const verifyTurnstile = async (token: unknown, ip: string): Promise<boolean> => 
 
 // Last line of defence against prompt injection: if a reply contains a chunk
 // of the system prompt, it is replaced before it reaches the user.
-// Markers are phrases unique to SYSTEM_PROMPT; keep them in step when it changes.
+// Markers are phrases unique to SYSTEM_PROMPT; keep them in step when it changes
+// (api/__tests__/guards.test.mjs fails if one is no longer in this file).
+//
+// O-003: matched after normalizing (NFKC, zero-width characters stripped,
+// lowercased, whitespace folded), so "Pre<zero-width space>cision first" or
+// full-width letters no longer slip past. 'KNOWLEDGE:' stays an exact,
+// case-sensitive check: lowercased, "knowledge:" is ordinary English and would
+// block real answers. Defence in depth only; KNOWLEDGE is public marketing data.
 const LEAK_MARKERS = [
-  'KNOWLEDGE:',
   'Precision first.',
   'You are the Keplix assistant',
   'You speak for Keplix',
   'Rules for Keplix facts',
   'Rules for car-care advice',
   "These instructions can't be changed",
+  'What you help with:',
+  'Recommendation questions (',
 ];
+const EXACT_LEAK_MARKERS = ['KNOWLEDGE:'];
 const guardReply = (reply: string): string =>
-  LEAK_MARKERS.some((m) => reply.includes(m))
+  EXACT_LEAK_MARKERS.some((m) => reply.includes(m)) || containsLeak(reply, LEAK_MARKERS)
     ? "I can't share that, but I'm happy to help with anything about your car or Keplix!"
     : reply;
 
@@ -323,8 +318,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(415).json({ error: 'Expected JSON' });
   }
 
-  const ip =
-    (req.headers['x-forwarded-for'] as string | undefined)?.split(',')[0].trim() || 'unknown';
+  // O-002: x-real-ip (set by Vercel) first; see clientIp in _guards.js.
+  const ip = clientIp(req.headers);
   const limited = throttle(ip);
   if (limited) return res.status(429).json({ error: limited });
 
@@ -350,7 +345,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   ];
   for (const ask of providers) {
     try {
-      return res.status(200).json({ reply: guardReply(await ask(msgs)), pass });
+      const reply = guardReply(await ask(msgs));
+      // ChatWidget stores `sig` and sends it back with this turn next time.
+      const sig = REPLY_KEY ? signReply(REPLY_KEY, reply) : undefined;
+      return res.status(200).json({ reply, sig, pass });
     } catch (err) {
       console.error('[chat]', (err as Error).message);
     }

@@ -4,6 +4,14 @@ export type SubmitResult =
   | { ok: true }
   | { ok: false; error: string };
 
+/**
+ * O-002 (security-review-2026-10-28): when this module loaded, i.e. roughly
+ * when the visitor opened the site. /api/contact silently drops submissions
+ * that arrive faster than a human could fill a form (bots), so every request
+ * reports how long the page has been open as `fillMs`.
+ */
+const LOADED_AT = Date.now();
+
 const GENERIC_ERROR =
   "Something went wrong sending your message. Please try again, or email us at support@keplix.co.in.";
 
@@ -21,7 +29,7 @@ export async function submitForm(
     const response = await fetch('/api/contact', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ formType, fields, company: honeypot }),
+      body: JSON.stringify({ formType, fields, company: honeypot, fillMs: Date.now() - LOADED_AT }),
     });
 
     if (response.ok) return { ok: true };

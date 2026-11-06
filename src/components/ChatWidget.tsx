@@ -36,7 +36,26 @@ const loadTurnstile = (): Promise<void> =>
     document.head.appendChild(s);
   });
 
-type Msg = { role: 'user' | 'assistant'; content: string };
+// `sig` is the server's signature on an assistant reply. It is sent back so the
+// server can trust that turn as context (api/chat.ts, O-003); a turn without a
+// valid one is dropped server-side, so tampering only loses context.
+type Msg = { role: 'user' | 'assistant'; content: string; sig?: string };
+
+// Keeps requests inside the server's 30-message / 6000-char limits (which
+// reject the whole request); the server only uses the last 10 turns anyway.
+const HISTORY_TURNS = 10;
+const HISTORY_CHARS = 5500;
+const historyFor = (msgs: Msg[]): Msg[] => {
+  const out: Msg[] = [];
+  let total = 0;
+  for (let i = msgs.length - 1; i >= 0 && out.length < HISTORY_TURNS; i--) {
+    total += msgs[i].content.length;
+    if (total > HISTORY_CHARS && out.length) break;
+    out.unshift(msgs[i]);
+  }
+  while (out.length > 1 && out[0].role !== 'user') out.shift();
+  return out;
+};
 
 const SUGGESTIONS = [
   'How do I book a car service?',
@@ -143,7 +162,7 @@ const ChatWidget: React.FC = () => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         // The greeting is UI-only, so it isn't sent to the model.
-        body: JSON.stringify({ messages: next.slice(1), turnstileToken: token, pass }),
+        body: JSON.stringify({ messages: historyFor(next.slice(1)), turnstileToken: token, pass }),
       });
       const data = await r.json().catch(() => ({}));
       if (data.pass) setPass(data.pass);
@@ -154,7 +173,10 @@ const ChatWidget: React.FC = () => {
         if (widgetId.current) window.turnstile?.reset(widgetId.current);
       }
       if (!r.ok || !data.reply) throw new Error(data.error || 'Something went wrong.');
-      setMessages((m) => [...m, { role: 'assistant', content: data.reply }]);
+      setMessages((m) => [
+        ...m,
+        { role: 'assistant', content: data.reply, ...(typeof data.sig === 'string' ? { sig: data.sig } : {}) },
+      ]);
     } catch (e) {
       setError((e as Error).message);
     } finally {

@@ -29,10 +29,30 @@
  *   The catch: a route in App.tsx that is missing from STATIC_ROUTES will now
  *   404 in production instead of silently working. assertRoutesMatch() below
  *   fails the build on that mismatch so it can never reach a deploy.
+ *
+ * WHY vercel.json's CSP IS ENFORCED (security finding O-005, 2026-11-05):
+ *
+ *   It was Report-Only with 'unsafe-inline' in script-src, so it stopped
+ *   nothing (it would not have stopped the O-001 JSON-LD breakout). The one
+ *   inline script the site had, window.__KEPLIX_DATA__, is now an inert
+ *   <script type="application/json"> block (compose() below), and compose()
+ *   fails the build if any executable inline <script> appears, so script-src
+ *   has no 'unsafe-inline'. The AdSense / Google ad hosts are allowlisted by
+ *   owner decision; the production API origin (Cloud Run run.app host) is in
+ *   connect-src; style-src keeps 'unsafe-inline' (React style attributes and
+ *   ad iframes). A second, stricter Content-Security-Policy-Report-Only
+ *   header (named hosts, no *.google.com) is there for tuning: check the
+ *   browser console for its reports before tightening the enforced one.
+ *   When the API host or a third-party script changes, update BOTH policies.
+ *
+ *   /job/* also gets Referrer-Policy: no-referrer, X-Robots-Tag: noindex and
+ *   no-store (A-005 / SYS-005: the token in that URL is the credential). That
+ *   rule is listed after the "/(.*)" catch-all so its Referrer-Policy wins.
  */
 import { writeFile, mkdir, readFile, readdir } from 'node:fs/promises';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
+import { isSafeSlug, routeOutputFile, resolveInside, dataScriptTag, findInlineScripts } from './prerender-utils.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '..');
@@ -110,7 +130,17 @@ async function fetchPosts() {
     }
     // A slug that vercel.json redirects (e.g. a retired duplicate) must not be
     // listed in the sitemap or llms.txt even while it's still published.
-    return posts.filter((p) => p?.slug && !REDIRECTED_BLOG_SLUGS.has(p.slug));
+    // A-006: a slug becomes an output path (dist/blog/<slug>/index.html), so
+    // only plain slug characters are allowed; "../" etc. is skipped, not
+    // written. The post still works through the /blog/* client-render rewrite.
+    return posts.filter((p) => {
+      if (!p?.slug) return false;
+      if (!isSafeSlug(p.slug)) {
+        console.warn(`[prerender] skipping post with unsafe slug ${JSON.stringify(String(p.slug).slice(0, 80))}`);
+        return false;
+      }
+      return !REDIRECTED_BLOG_SLUGS.has(p.slug);
+    });
   } catch (error) {
     // Deliberately non-fatal: a flaky content API must not break a deploy.
     // The static pages still prerender and /blog/* falls back to client
@@ -138,9 +168,10 @@ async function fetchPost(slug) {
 
 /** Writes dist/<route>/index.html (or dist/index.html for the root). */
 async function writeRoute(route, html) {
-  const outDir = route === '/' ? DIST : resolve(DIST, `.${route}`);
-  await mkdir(outDir, { recursive: true });
-  await writeFile(resolve(outDir, 'index.html'), html, 'utf8');
+  // A-006: routeOutputFile throws if the resolved path would leave dist/.
+  const file = routeOutputFile(DIST, route);
+  await mkdir(dirname(file), { recursive: true });
+  await writeFile(file, html, 'utf8');
 }
 
 const xmlEscape = (s) =>
@@ -249,20 +280,24 @@ Email: support@keplix.co.in
  * Every page would have looked identical in search results.
  */
 function compose(template, html, head, data) {
-  // </script> inside the JSON would close the tag early; U+2028/9 are literal
-  // line terminators in JS string context and break the parse.
-  const payload = data
-    ? `<script>window.__KEPLIX_DATA__=${JSON.stringify(data)
-        .replace(/</g, '\\u003c')
-        .replace(/\u2028/g, '\\u2028')
-        .replace(/\u2029/g, '\\u2029')}</script>`
-    : '';
+  // O-005: an inert <script type="application/json"> block, read back by
+  // src/lib/initialData.ts, instead of the old inline
+  // `<script>window.__KEPLIX_DATA__=…</script>`, so the enforced CSP in
+  // vercel.json needs no 'unsafe-inline' in script-src. The JSON is escaped by
+  // the shared safeJsonForScript (O-001: `<` and U+2028/9).
+  const payload = dataScriptTag(data);
 
-  return template
+  const page = template
     .replace(/\s*<title>[\s\S]*?<\/title>/, '')
     .replace(/\s*<meta\s+name="description"[^>]*>/, '')
     .replace('<div id="root"></div>', `<div id="root">${html}</div>${payload}`)
     .replace('</head>', `    ${head}\n  </head>`);
+
+  // O-005: the enforced CSP blocks inline script, so fail the build on one
+  // instead of shipping a page whose script silently never runs.
+  const inline = findInlineScripts(page);
+  if (inline.length) throw new Error(`inline <script> would be blocked by the CSP: ${inline[0]}`);
+  return page;
 }
 
 /**
@@ -342,7 +377,8 @@ async function main() {
   // /blog/:new-slug and /job/:token hydrate against homepage content,
   // mismatch, and force a discard-and-client-rerender (a real, verified
   // hydration mismatch — see verification notes for this change).
-  await writeFile(resolve(DIST, 'app-shell.html'), template, 'utf8');
+  if (findInlineScripts(template).length) throw new Error('index.html template has an inline <script> (blocked by the CSP)');
+  await writeFile(resolveInside(DIST, 'app-shell.html'), template, 'utf8');
 
   const { render, prepare } = await import(pathToFileURL(SSR_ENTRY).href);
   // Builds the jsdom-backed sanitiser that article bodies need.

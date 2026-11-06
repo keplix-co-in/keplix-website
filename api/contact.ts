@@ -1,5 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { Resend } from 'resend';
+import { checkFillTime, clientIp, createDailyCap, createRateLimiter, pickAllowedFields } from './_guards.js';
 
 /**
  * Public, unauthenticated mail endpoint for the marketing site's forms.
@@ -12,8 +13,25 @@ import { Resend } from 'resend';
 const TO = process.env.CONTACT_TO || 'support@keplix.co.in';
 const FROM = process.env.EMAIL_FROM || 'Keplix <noreply@keplix.co.in>';
 
+// O-004 (security-review-2026-10-28): every value is capped per field. Long
+// free text only where a form actually has it; everything else is short.
 const MAX_FIELD_LENGTH = 5000;
-const MAX_FIELDS = 20;
+const FIELD_LIMITS: Record<string, number> = Object.assign(Object.create(null), {
+  name: 120,
+  email: 254,
+  phone: 32,
+  subject: 200,
+  message: MAX_FIELD_LENGTH,
+  inquiryType: 60,
+  city: 100,
+  vehicleType: 100,
+  experience: 2000,
+  feedback: MAX_FIELD_LENGTH,
+  role: 60,
+  help: 200,
+  seatsRemaining: 10,
+});
+const DEFAULT_FIELD_LIMIT = 500;
 
 type FormType = 'contact' | 'beta' | 'quick' | 'newsletter';
 
@@ -41,6 +59,8 @@ const FIELD_LABELS: Record<string, string> = Object.assign(Object.create(null), 
   feedback: 'Feedback',
   role: 'Role',
   help: 'Looking for',
+  // Sent by the /beta form; listed so the O-004 allowlist below keeps it.
+  seatsRemaining: 'Seats remaining (as shown)',
 });
 
 const escapeHtml = (value: string): string =>
@@ -88,18 +108,25 @@ const singleLine = (value: string): string => value.replace(/[\r\n]+/g, ' ').tri
  * state (Vercel WAF / KV) or a CAPTCHA; the origin check above is what actually
  * keeps other sites from driving this endpoint.
  */
-const RATE_LIMIT_WINDOW_MS = 60_000;
-const RATE_LIMIT_MAX = 5;
-const hits = new Map<string, number[]>();
+// O-002: tightened from 5/minute with no daily limit. Nobody legitimately
+// sends more than a few contact forms; keyed on x-real-ip (see clientIp).
+const ipLimiter = createRateLimiter({ perMinute: 3, perDay: 10 });
 
-const isRateLimited = (ip: string): boolean => {
-  const now = Date.now();
-  const recent = (hits.get(ip) || []).filter((t) => now - t < RATE_LIMIT_WINDOW_MS);
-  recent.push(now);
-  hits.set(ip, recent);
-  if (hits.size > 5000) hits.clear(); // crude memory ceiling
-  return recent.length > RATE_LIMIT_MAX;
-};
+/**
+ * A-003 / SYS-007: a per-instance daily ceiling on mail actually handed to
+ * Resend. The RESEND_API_KEY here has been shared with the backend, which
+ * sends OTP and booking mail through it, so a flood through this public form
+ * could exhaust the shared quota and block those. CONTACT_DAILY_CAP overrides
+ * the default; the owner steps move this site to its own restricted key.
+ */
+const DAILY_SEND_CAP = Math.max(1, Number(process.env.CONTACT_DAILY_CAP) || 50);
+const sendCap = createDailyCap(DAILY_SEND_CAP);
+
+/**
+ * O-002: a human needs more than this long between page load and submit.
+ * Faster submissions get a silent fake success, like the honeypot.
+ */
+const MIN_FILL_MS = 1500;
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'POST') {
@@ -131,6 +158,17 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(200).json({ ok: true });
   }
 
+  // O-002: minimum fill time (src/lib/submitForm.ts sends fillMs). Too fast
+  // is a bot, so it gets the same silent success as the honeypot. Missing is
+  // a direct POST or a tab still running the pre-deploy bundle. That is let
+  // through (honeypot, rate limit and send cap still apply): a 400 there would
+  // make a real visitor refresh and lose what they typed, and a script that
+  // POSTs directly can just send any fillMs anyway, so rejecting 'missing'
+  // buys almost no protection for a real UX cost.
+  const fill = checkFillTime(body.fillMs, MIN_FILL_MS);
+  if (fill === 'too-fast') return res.status(200).json({ ok: true });
+  if (fill === 'missing') console.warn('[contact] submission without fillMs');
+
   const formType = (
     typeof body.formType === 'string' ? body.formType : 'contact'
   ) as FormType;
@@ -138,15 +176,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(400).json({ error: 'Unknown form type' });
   }
 
-  const rawFields = body.fields;
-  if (typeof rawFields !== 'object' || rawFields === null || Array.isArray(rawFields)) {
+  // O-004: only keys listed in FIELD_LABELS survive (unknown keys are dropped,
+  // so attacker-chosen labels never reach the staff email), each value capped.
+  const entries = pickAllowedFields(body.fields, FIELD_LABELS, FIELD_LIMITS, DEFAULT_FIELD_LIMIT);
+  if (!entries) {
     return res.status(400).json({ error: 'Missing fields' });
   }
-
-  const entries = Object.entries(rawFields as Record<string, unknown>)
-    .filter(([, v]) => typeof v === 'string' && v.trim() !== '')
-    .slice(0, MAX_FIELDS)
-    .map(([k, v]) => [k, (v as string).trim().slice(0, MAX_FIELD_LENGTH)] as const);
 
   if (entries.length === 0) {
     return res.status(400).json({ error: 'Nothing to send' });
@@ -157,16 +192,23 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(400).json({ error: 'Invalid email address' });
   }
 
-  const ip =
-    (req.headers['x-forwarded-for'] as string | undefined)?.split(',')[0].trim() ||
-    'unknown';
-  if (isRateLimited(ip)) {
+  // O-002: x-real-ip (set by Vercel) first; see clientIp in _guards.js.
+  const ip = clientIp(req.headers);
+  if (ipLimiter.hit(ip)) {
     return res.status(429).json({ error: 'Too many requests. Please try again shortly.' });
   }
 
   if (!process.env.RESEND_API_KEY) {
     console.error('[contact] RESEND_API_KEY is not set');
     return res.status(500).json({ error: 'Email is not configured' });
+  }
+
+  // A-003 / SYS-007: checked last, so only mail we would really send counts.
+  if (!sendCap.take()) {
+    console.error('[contact] daily send cap reached');
+    return res.status(503).json({
+      error: 'We are receiving a lot of messages right now. Please email support@keplix.co.in directly.',
+    });
   }
 
   const label = FORM_LABELS[formType];
@@ -180,7 +222,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       ([key, value]) =>
         `<tr>
            <td style="padding:6px 12px 6px 0;vertical-align:top;color:#6b7280;white-space:nowrap">${escapeHtml(
-             FIELD_LABELS[key] || key,
+             FIELD_LABELS[key],
            )}</td>
            <td style="padding:6px 0;vertical-align:top;color:#111827">${escapeHtml(
              value,
@@ -198,7 +240,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   `;
 
   const text = entries
-    .map(([key, value]) => `${FIELD_LABELS[key] || key}: ${value}`)
+    .map(([key, value]) => `${FIELD_LABELS[key]}: ${value}`)
     .join('\n');
 
   try {

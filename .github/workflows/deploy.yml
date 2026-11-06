@@ -4,45 +4,62 @@ on:
   push:
     branches: [ main]
 
+# A-008 (security-review-2026-10-28): least privilege. Neither job writes to
+# the repo; the deploy authenticates to Vercel with its own token secret.
+permissions:
+  contents: read
+
+# A-008 / O-005: every third-party action is pinned to a full commit SHA (the
+# tag it was resolved from on 2026-11-05 is in the trailing comment). A tag can
+# be moved to point at different code; a SHA cannot. To upgrade, resolve the
+# new tag with `gh api repos/<owner>/<repo>/git/ref/tags/<tag>` (if that is an
+# annotated tag, follow .object.url to the commit) and replace both.
+#
+# The Vercel CLI is pinned to an exact version for the same reason
+# (`vercel@latest` ran whatever was published most recently, with
+# VERCEL_TOKEN in its environment). Bump it deliberately.
+env:
+  VERCEL_CLI_VERSION: '65.11.0'
+  NPM_VERSION: '11.7.0'
+
 jobs:
   # Gate added 2026-09-14 (audit F31): this workflow deployed straight to
   # production on every push to main with no lint or build check at all.
   # `npm run lint` was itself broken (used the invalid --ext flag with this
   # project's flat eslint.config.js, so it errored on every run rather than
   # actually checking anything -- fixed the same day this gate was added).
-  # There is still no test script/framework in this project (F30's other
-  # half); `npm run build` at least exercises the SSR + prerender pipeline,
-  # which is where a real regression here would most likely surface.
+  # `npm test` (node:test unit tests, added 2026-11-05) and `npm run build`
+  # (which exercises the SSR + prerender pipeline) run here too.
   test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
       - name: Set up Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: '22'
       # Same Arborist edgesOut bug as the deploy job below -- see its comment.
       - name: Pin npm to a version without the Arborist edgesOut bug
-        run: npm install --global npm@11.7.0
-      # Was `npm ci`. That failed on this runner (Linux/ubuntu-latest) with
-      # "Missing: nuxt@4.5.2 from lock file" and ~580 similar lines for
-      # packages this project doesn't depend on at all (they're optional
-      # peers of unrelated devDependencies -- nothing here actually needs
-      # Nuxt/Vue/rolldown). It reproduced identically on npm 11.19.1 AND on
-      # an exact 11.7.0 pin, and this exact lockfile installs clean with
-      # `npm ci` on Windows locally -- so it isn't an npm-version drift or a
-      # genuinely out-of-sync lockfile, it's a platform-specific dependency-
-      # resolution quirk in `npm ci` itself on this runner. `npm install` use
-      # the same lockfile as a resolution hint without hard-failing on that
-      # sync check, and updates it in place if anything's actually off. If
-      # you see this start rewriting package-lock.json on every run, that's
-      # the signal something is genuinely out of sync and worth
-      # investigating for real -- it isn't expected to.
+        run: npm install --global "npm@${NPM_VERSION}"
+      # A-008: `npm ci` installs exactly what package-lock.json says and fails
+      # instead of rewriting it. Plain `npm ci` fails on this Linux runner with
+      # "Missing: nuxt@4.5.2 from lock file" (and rolldown, ...): those are
+      # optional PEER deps of unrelated devDependencies that npm on Linux
+      # insists on, though this exact lockfile passes `npm ci` on Windows.
+      # --legacy-peer-deps skips peer auto-install, which is what makes the
+      # lockfile match; verified 2026-11-05 on Linux, node 22 + npm 11.7.0,
+      # with an unchanged lockfile (452 packages; lint, test and build pass).
+      # Regenerating the lockfile on Linux would remove the need for the flag;
+      # that belongs with the dependency upgrade work.
       - name: Install dependencies
-        run: npm install
+        run: npm ci --legacy-peer-deps
       - name: Lint
         run: npm run lint
+      - name: Unit tests
+        run: npm test
       - name: Build
         run: npm run build
 
@@ -52,10 +69,15 @@ jobs:
 
     env:
       VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      # A-008: GitHub expression values go through env and are quoted in the
+      # shell, never interpolated into the script text itself.
+      VERCEL_PROJECT_NAME: ${{ github.event.repository.name }}
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      with:
+        persist-credentials: false
 
     # There was no Node/npm setup step at all here before -- the job ran
     # whatever npm ships with the ubuntu-latest image, which drifts over time.
@@ -69,20 +91,21 @@ jobs:
     # a project bug. Pinning both Node and npm keeps the runner matching what
     # was actually tested, instead of silently drifting to whatever ships next.
     - name: Set up Node
-      uses: actions/setup-node@v4
+      uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
       with:
         node-version: '22'
 
     # Pinned to an exact version -- see the test job's step above for why
     # the floating "npm@11" tag broke `npm ci` on 2026-09-15.
     - name: Pin npm to a known-good version
-      run: npm install --global npm@11.7.0
+      run: npm install --global "npm@${NPM_VERSION}"
 
+    # A-008: exact version, not vercel@latest (see the top of this file).
     - name: Install Vercel CLI
-      run: npm install --global vercel@latest
+      run: npm install --global "vercel@${VERCEL_CLI_VERSION}"
 
     - name: Link Vercel Project
-      run: vercel link --yes --project="${{ github.event.repository.name }}" --token="$VERCEL_TOKEN"
+      run: vercel link --yes --project="$VERCEL_PROJECT_NAME" --token="$VERCEL_TOKEN"
 
     # The CLI authenticates from --token, not from a VERCEL_TOKEN environment
     # variable, so the flag has to be passed explicitly. It is written as

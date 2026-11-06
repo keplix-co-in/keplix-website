@@ -8,6 +8,7 @@ import {
   SITE_TAGLINE,
   absoluteUrl,
 } from '../constants/site';
+import { safeJsonForScript } from '../lib/safeJson.js';
 
 interface SeoProps {
   /** Page title WITHOUT the brand suffix — that's appended here. */
@@ -87,9 +88,12 @@ const Seo: React.FC<SeoProps> = ({
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={imageUrl} />
 
+      {/* O-001: safeJsonForScript, not bare JSON.stringify. Helmet writes this
+          text raw into the prerendered HTML, so a blog title containing
+          "</script>" used to break out of the block and execute. */}
       {jsonLd.map((block, i) => (
         <script key={i} type="application/ld+json">
-          {JSON.stringify(block)}
+          {safeJsonForScript(block)}
         </script>
       ))}
     </Helmet>

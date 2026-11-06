@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { CheckCircle2, AlertTriangle, XCircle, CircleDashed, Car, MapPin, Compass } from 'lucide-react';
 import PageBlob from '../components/PageBlob';
 import Seo from '../components/Seo';
@@ -107,7 +108,14 @@ const TrackJob: React.FC = () => {
   return (
     <div className="relative overflow-hidden">
       <PageBlob />
-      <Seo title="Service tracking" description="Track your vehicle service status." noindex />
+      <Seo title="Service tracking" description="Track your vehicle service status." noindex canonical="/job" />
+      {/* A-005 / SYS-005: the token in this URL is the credential. no-referrer
+          keeps it out of the Referer header on any outbound link or request
+          (vercel.json also sends Referrer-Policy: no-referrer for /job/*), and
+          canonical="/job" keeps it out of og:url. */}
+      <Helmet>
+        <meta name="referrer" content="no-referrer" />
+      </Helmet>
 
       <main className="relative z-10 mx-auto max-w-2xl px-4 py-12 sm:px-8">
         {loading && (
