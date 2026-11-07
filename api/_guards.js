@@ -182,7 +182,18 @@ const replyMac = (key, ts, content) =>
  * when none is set; the caller then drops all assistant turns (fail-safe,
  * never "accept unsigned").
  */
+// Warn once per instance (not per request) when falling back. The fallback stays
+// so the bot keeps working, but rotating an AI/Turnstile key would then silently
+// invalidate every signed reply in flight. Owner: set CHAT_SIGNING_SECRET in Vercel.
+let warnedSigningFallback = false;
+
 export function replySigningKey(env) {
+  if (!env.CHAT_SIGNING_SECRET && !warnedSigningFallback) {
+    warnedSigningFallback = true;
+    console.warn(
+      '[chat] CHAT_SIGNING_SECRET is not set; deriving the reply-signing key from another server secret. Set CHAT_SIGNING_SECRET in Vercel.'
+    );
+  }
   const root = env.CHAT_SIGNING_SECRET || env.TURNSTILE_SECRET_KEY || env.GEMINI_API_KEY || env.GROQ_API_KEY;
   if (!root) return null;
   return createHmac('sha256', root).update('keplix-chat-reply-signing-key-v1').digest();

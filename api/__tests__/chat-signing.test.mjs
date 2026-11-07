@@ -80,3 +80,17 @@ test('chat.ts signs every reply it returns and verifies turns with the same key'
   const widget = await readFile(new URL('../../src/components/ChatWidget.tsx', import.meta.url), 'utf8');
   assert.match(widget, /sig: data\.sig/);
 });
+
+test('missing CHAT_SIGNING_SECRET warns once, keeps the fallback, never logs the secret', async (t) => {
+  // Fresh module instance so the warn-once flag starts unset.
+  const { replySigningKey: fresh } = await import(`../_guards.js?warn=${Date.now()}`);
+  const warn = t.mock.method(console, 'warn', () => {});
+  const env = { GEMINI_API_KEY: 'gemini-secret-value' };
+  assert.ok(fresh(env));
+  assert.ok(fresh(env));
+  assert.equal(warn.mock.callCount(), 1);
+  assert.doesNotMatch(String(warn.mock.calls[0].arguments[0]), /gemini-secret-value/);
+  warn.mock.resetCalls();
+  fresh({ CHAT_SIGNING_SECRET: 's' });
+  assert.equal(warn.mock.callCount(), 0);
+});

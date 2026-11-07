@@ -20,17 +20,5 @@ export const DEFAULT_OG_IMAGE = `${SITE_URL}/og-image.png`;
 export const DEFAULT_DESCRIPTION =
   'Compare prices from verified car workshops, book a service in minutes and track it in real time. Keplix connects car owners with trusted garages across India.';
 
-/** The service categories the marketplace covers, used in Service schema and llms.txt. */
-export const SERVICE_CATEGORIES = [
-  'Car servicing and maintenance',
-  'AC repair and gas refill',
-  'Battery replacement',
-  'Tyre replacement and wheel alignment',
-  'Denting and painting',
-  'Car wash and detailing',
-  'Breakdown assistance',
-  'Car accessories fitting',
-] as const;
-
 export const absoluteUrl = (path: string): string =>
   path.startsWith('http') ? path : `${SITE_URL}${path.startsWith('/') ? path : `/${path}`}`;
