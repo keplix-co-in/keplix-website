@@ -14,11 +14,13 @@
     "lint": "eslint . --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "build:spa": "vite build",
-    "test": "node --test \"src/lib/__tests__/*.test.mjs\" \"api/__tests__/*.test.mjs\" \"scripts/__tests__/*.test.mjs\""
+    "test": "vitest run",
+    "test:node": "node --test \"src/lib/__tests__/*.test.mjs\" \"api/__tests__/*.test.mjs\" \"scripts/__tests__/*.test.mjs\"",
+    "test:all": "npm run test && npm run test:node"
   },
   "dependencies": {
     "@vercel/analytics": "^2.0.0",
-    "@vitejs/plugin-react": "^4.3.1",
+    "@vitejs/plugin-react": "^4.7.0",
     "dompurify": "^3.4.17",
     "lucide-react": "^0.344.0",
     "react": "^18.3.1",
@@ -26,7 +28,7 @@
     "react-helmet-async": "^3.0.0",
     "react-router-dom": "^7.18.2",
     "resend": "^6.18.1",
-    "vite": "^5.4.2"
+    "vite": "^6.4.5"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.1",
@@ -36,7 +38,7 @@
     "@types/jsdom": "^30.0.0",
     "@types/react": "^18.3.5",
     "@types/react-dom": "^18.3.0",
-    "@vercel/node": "^5.9.7",
+    "@vercel/node": "^5.10.2",
     "autoprefixer": "^10.4.18",
     "eslint": "^9.9.1",
     "eslint-plugin-react-hooks": "^5.1.0-rc.0",
@@ -48,6 +50,13 @@
     "sharp": "^0.35.3",
     "tailwindcss": "^3.4.1",
     "typescript": "^5.5.3",
-    "typescript-eslint": "^8.3.0"
+    "typescript-eslint": "^8.3.0",
+    "vitest": "^4.1.12"
+  },
+  "overrides": {
+    "@vercel/node": {
+      "path-to-regexp": "^6.3.0",
+      "ajv": "^8.18.0"
+    }
   }
 }

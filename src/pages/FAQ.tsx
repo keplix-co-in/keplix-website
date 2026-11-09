@@ -112,5 +112,5 @@ const FAQ: React.FC = () => {
 // worst case, editing this file causes a full remount instead of a true
 // hot-reload during local dev. Disabled with this note rather than churning
 // through further speculative restructuring for a dev-experience nit.
-// eslint-disable-next-line react-refresh/only-export-components
+ 
 export default FAQ;
